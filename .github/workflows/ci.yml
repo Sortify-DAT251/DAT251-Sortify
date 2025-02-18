@@ -45,3 +45,16 @@ jobs:
         path: build/reports/tests/
         retention-days: 7
 
+
+    - name: generate JaCoCo report
+      run .gradlew jacocoTestReport --no-daemon
+
+    - name: Upload JaCoCo coverage
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: jacoco-report
+        path: build/reports/jacoco/test/html/
+        retention-days: 7
+
+
