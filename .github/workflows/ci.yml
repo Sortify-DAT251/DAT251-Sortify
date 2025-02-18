@@ -46,7 +46,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-result
-        path: build/reports/tests/
+        path: backend/build/reports/tests/
         if-no-files-found: warn
         retention-days: 7
 
@@ -60,7 +60,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: jacoco-report
-        path: build/reports/jacoco/test/html/
+        path: backend/build/reports/jacoco/test/html/
         if-no-files-found: warn
         retention-days: 7
 
