@@ -1,0 +1,67 @@
+name: CI/CD Pipeline
+run-name: ${{ github.actor }} is testing
+on:
+  workflow_dispatch: # Enables running workflow manually
+  push:
+    branches:
+      - main
+      - '**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Set up Gradle
+      uses: gradle/wrapper-validation-action@v1
+      with:
+        gradle-version: '7.4'
+
+    - name: Grant execute permissions to Gradlew
+      run: chmod +x gradlew
+      working-directory: backend
+
+    - name: Build with Gradle
+      run: ./gradlew build --no-daemon
+      working-directory: backend
+
+    - name: Test with Gradle
+      run: ./gradlew test --no-daemon
+      working-directory: backend
+
+    - name: Upload Test Result
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-result
+        path: backend/build/reports/tests/
+        if-no-files-found: warn
+        retention-days: 7
+
+
+    - name: generate JaCoCo report
+      run: ./gradlew jacocoTestReport --no-daemon
+      working-directory: backend
+
+    - name: Upload JaCoCo coverage
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: jacoco-report
+        path: backend/build/reports/jacoco/test/html/
+        if-no-files-found: warn
+        retention-days: 7
+
+
