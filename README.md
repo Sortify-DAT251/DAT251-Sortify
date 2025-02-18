@@ -1,4 +1,7 @@
-# Dat251_project
+# DAT251-Sortify
 
 Petter R-N
+
 Kaja W S
+
+Mina M B T
