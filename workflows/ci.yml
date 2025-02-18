@@ -27,8 +27,21 @@ jobs:
       with:
         gradle-version: '7.4'
 
+    - name: Grant execute permissions to Gradlew
+      run: chmod +x gradlew
+
+
     - name: Build with Gradle
       run: ./gradlew build --no-daemon
 
-    - name: Run tests (placeholder)
-      run: echo "Run tests here"  # Placeholder, actual test step will be added later
+    - name: Test with Gradle
+      run: ./gradlew test --no-daemon
+
+    - name: Upload Test Result
+      if: always()
+      uses: actions/upload-artifact@4
+      with:
+        name: test-result
+        path: build/reports/tests/
+        retention-days: 7
+
