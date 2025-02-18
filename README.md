@@ -8,6 +8,7 @@ Mina M B T
 
 Mampenda
 
+Erik G I
 
 Sortify is a group project in the Dat251 subject at Western Norway University of Applied Sciences , and is developed by Mampenda, Mina, Kaja, Petter and Morten.
 
