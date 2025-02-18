@@ -35,9 +35,11 @@ jobs:
 
     - name: Build with Gradle
       run: backend/gradlew build --no-daemon
+      working-directory: backend
 
     - name: Test with Gradle
       run: backend/gradlew test --no-daemon
+      working-directory: backend
 
     - name: Upload Test Result
       if: always()
