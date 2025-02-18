@@ -48,7 +48,7 @@ jobs:
 
 
     - name: generate JaCoCo report
-      run: .gradlew jacocoTestReport --no-daemon
+      run: ./gradlew jacocoTestReport --no-daemon
 
     - name: Upload JaCoCo coverage
       if: always()
