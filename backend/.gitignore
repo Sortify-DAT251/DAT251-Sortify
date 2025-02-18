@@ -1,6 +1,10 @@
 HELP.md
-.gradle
+# Standard rules to exclude files and directories
+
+# Gradle
+.gradle/
 build/
+gradle-app.settings
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
