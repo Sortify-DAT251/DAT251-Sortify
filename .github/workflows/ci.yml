@@ -30,14 +30,14 @@ jobs:
         gradle-version: '7.4'
 
     - name: Grant execute permissions to Gradlew
-      run: chmod +x gradlew
+      run: chmod +x backend/gradlew
 
 
     - name: Build with Gradle
-      run: ./gradlew build --no-daemon
+      run: backend/gradlew build --no-daemon
 
     - name: Test with Gradle
-      run: ./gradlew test --no-daemon
+      run: backend/gradlew test --no-daemon
 
     - name: Upload Test Result
       if: always()
