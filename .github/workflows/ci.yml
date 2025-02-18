@@ -40,10 +40,11 @@ jobs:
 
     - name: Upload Test Result
       if: always()
-      uses: actions/upload-artifact@4
+      uses: actions/upload-artifact@v4
       with:
         name: test-result
         path: build/reports/tests/
+        if-no-files-found: warn
         retention-days: 7
 
 
@@ -56,6 +57,7 @@ jobs:
       with:
         name: jacoco-report
         path: build/reports/jacoco/test/html/
+        if-no-files-found: warn
         retention-days: 7
 
 
