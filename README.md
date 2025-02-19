@@ -1,15 +1,3 @@
-# DAT251-Sortify
-
-Petter R-N
-
-Kaja W S
-
-Mina M B T
-
-Mampenda
-
-Erik G I
-
 # ♻️ Sortify
 
 ## 🚀 About This Project
