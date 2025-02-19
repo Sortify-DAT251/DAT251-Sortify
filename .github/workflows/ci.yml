@@ -62,6 +62,6 @@ jobs:
         retention-days: 7
     
     - name: Build Docker image
-      run: docker build -t sortify-backend .
+      run: docker build -t sortify-backend ./backend
       
 
