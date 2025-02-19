@@ -69,6 +69,8 @@ If you run into trouble with the program
  rm -rf ~/.gradle/caches
   rm -rf .gradle
 ./gradlew clean build --stacktrace
+./gradlew bootJar
+./gradlew bootRun
 ```
 
 **2.** Try closing and re-opening the IDE.
