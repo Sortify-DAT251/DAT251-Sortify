@@ -32,18 +32,37 @@ git clone https://github.com/Sortify-DAT251/DAT251-Sortify.git
 cd DAT251-Sortify
 ```
 
-**2️⃣ Run the Backend**
+**2️⃣ Run the Backend without Docker**
+If you want to run the backend without Docker, follow these steps:
 
 ```bash
-cd DAT251-Sortify/backendS
+cd DAT251-Sortify/backend
 ./gradlew clean build
+./gradlew bootJar
 ./gradlew bootRun
 ```
 
-**0️⃣ Troubleshoot**
+**3️⃣ Run the Backend with Docker Locally**
+To run the backend using Docker locally, follow these steps:
+
+1. ### START DOCKER DESKTOP ON YOUR LOCAL MACHINE
+
+2. Run the following commands:
+
+```bash
+# Build the Docker Image (remember the period after "sortify-backend")
+docker build -t sortify-backend .
+
+# Run the Docker container
+docker run -p 9876:9876 sortify-backend
+```
+
+The backend should now be running on http://localhost:9876. You can access it by visiting this URL in your browser or through an API client like Postman.
+
+**4️⃣ Troubleshoot**
 If you run into trouble with the program
 
-**1.** Try these terminal commands:
+**1.** Clean Gradle caches and restart the build:
 
 ```bash
 ./gradlew --stop

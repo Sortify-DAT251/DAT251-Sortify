@@ -48,7 +48,6 @@ jobs:
         if-no-files-found: warn
         retention-days: 7
 
-
     - name: generate JaCoCo report
       run: ./gradlew jacocoTestReport --no-daemon
       working-directory: backend
@@ -61,5 +60,8 @@ jobs:
         path: backend/build/reports/jacoco/test/html/
         if-no-files-found: warn
         retention-days: 7
-
+    
+    - name: Build Docker image
+      run: docker build -t sortify-backend .
+      
 
