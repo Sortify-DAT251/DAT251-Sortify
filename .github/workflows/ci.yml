@@ -24,10 +24,8 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Set up Gradle
+    - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v1
-      with:
-        gradle-version: '7.4'
 
     - name: Grant execute permissions to Gradlew
       run: chmod +x gradlew
