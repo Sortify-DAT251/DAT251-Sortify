@@ -37,9 +37,37 @@ Sortify is an application designed to make it easier for the user to recycle and
 
 ## 🚀 Getting Started
 
-### 1️⃣ Clone the Repository
+**1️⃣ Clone the Repository**
 
 ```bash
 git clone https://github.com/Sortify-DAT251/DAT251-Sortify.git
 cd DAT251-Sortify
 ```
+
+**2️⃣ Run the Backend**
+
+```bash
+cd DAT251-Sortify/backendS
+./gradlew clean build
+./gradlew bootRun
+```
+
+**0️⃣ Troubleshoot**
+If you run into trouble with the program
+
+**1.** Try these terminal commands:
+
+```bash
+./gradlew --stop
+ rm -rf ~/.gradle/caches
+  rm -rf .gradle
+./gradlew clean build --stacktrace
+```
+
+**2.** Try closing and re-opening the IDE.
+
+**3.** If you're using `VSCode`, try uninstalling "Kotlin by fwcd" and only use "Kotling Language by mathiasfrohlich"
+
+**If you're still having troubles, ask chat..**
+
+Numbers: 0️⃣ 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣
