@@ -63,5 +63,43 @@ jobs:
     
     - name: Build Docker image
       run: docker build -t sortify-backend ./backend
-      
+  frontend:
+    runs-on: ubuntu-latest
 
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.x'
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: frontend
+
+    - name: Build with npm
+      run: npm run build
+      working-directory: frontend
+
+    - name: Upload build artifact
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifact
+        path: frontend/build/reports/
+        if-no-files-found: warn
+        retention-days: 7
+    
+    - name: start localhost
+      run: npm run dev 
+      working-directory: frontend
+    
+    - name: test localhost  
+      run: |
+        if  curl -s http://localhost:9876 | grep "OK"; then
+          echo "✅ Localhost test passed" && exit 0
+        else
+          echo "❌ Localhost test failed" && exit 1
+      
