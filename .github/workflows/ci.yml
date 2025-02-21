@@ -91,15 +91,3 @@ jobs:
         path: frontend/build/reports/
         if-no-files-found: warn
         retention-days: 7
-  
-    - name: test localhost  
-      run: npm run dev &
-        |
-        if  curl -s http://localhost:9876 | grep "OK"; then
-          echo "✅ Localhost test passed" && exit 0
-        else
-          echo "❌ Localhost test failed" && exit 1
-      working-directory: frontend
-    
-    
-      
