@@ -23,7 +23,6 @@ out/
 
 # Exclude Node, Astro, and Vue (remove if not used)
 .astro
-test/
 docs/_book
 
 # OS-specific
