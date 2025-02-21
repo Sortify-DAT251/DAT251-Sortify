@@ -93,7 +93,7 @@ jobs:
         retention-days: 7
   
     - name: test localhost  
-      run: npm run build
+      run: npm run dev &
         |
         if  curl -s http://localhost:9876 | grep "OK"; then
           echo "✅ Localhost test passed" && exit 0
