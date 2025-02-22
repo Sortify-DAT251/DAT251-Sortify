@@ -1,12 +1,32 @@
 ---
-import { onMount } from "solid-js";
-import { initMap } from "../scripts/leafletmap.js";
-import "leaflet/dist/leaflet.css";
+import { onMount } from "astro/client";
+import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
+import L from "leaflet"; // Import Leaflet itself
 
 onMount(() => {
-  setTimeout(() => {
-    initMap();
-  }, 100); // Short delay to ensure DOM is ready
+  if (typeof window === "undefined") return; // Prevents SSR errors
+
+  const mapContainer = document.getElementById("map");
+  if (!mapContainer) return;
+
+  const map = L.map(mapContainer).setView([51.505, -0.09], 13);
+
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>',
+  }).addTo(map);
 });
 ---
+
+<div id="map"></div>
+
+<style>
+  #map {
+    height: 400px;
+    width: 100%;
+  }
+</style>
+
+
+
+
 
