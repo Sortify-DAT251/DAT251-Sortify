@@ -1,8 +1,10 @@
 package backend.repository
 
 import backend.model.User
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
-class UserRepository {
-
+@Repository
+interface UserRepository : JpaRepository<User, Long> {
 
 }
