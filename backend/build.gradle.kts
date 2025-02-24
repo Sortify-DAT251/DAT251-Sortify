@@ -13,7 +13,7 @@ version = "0.0.1-SNAPSHOT"
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
@@ -44,15 +44,6 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation("org.testcontainers:postgresql:1.19.3")
 }
-
-//kotlin {
-//	jvmToolchain {
-//        languageVersion.set(JavaLanguageVersion.of(23))
-//    }
-//	compilerOptions {
-//		freeCompilerArgs.addAll("-Xjsr305=strict")
-//	}
-//}
 
 allOpen {
 	annotation("jakarta.persistence.Entity")
