@@ -8,35 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import java.util.*
 
-@DataJpaTest // Uses an in-memory database for testing
+@DataJpaTest
 class UserRepositoryTest {
 
     @Autowired
-    private lateinit var userRepository: UserRepository // Injects the repository for testing
+    private lateinit var userRepository: UserRepository
 
     @Test
     fun `save should persist user and generate ID`() {
-        // Arrange
         val user = User(email = "test@example.com", password = "securepassword")
-
-        // Act
         val savedUser = userRepository.save(user)
 
-        // Assert
-        assertNotNull(savedUser.id) // ID should be generated automatically
+        assertNotNull(savedUser.id)
         assertEquals(user.email, savedUser.email)
         assertEquals(user.password, savedUser.password)
     }
 
     @Test
     fun `findById should return user if exists`() {
-        // Arrange
         val user = userRepository.save(User(email = "test@example.com", password = "securepassword"))
-
-        // Act
         val foundUser = userRepository.findById(user.id!!)
 
-        // Assert
         assertTrue(foundUser.isPresent)
         assertEquals(user.email, foundUser.get().email)
         assertEquals(user.password, foundUser.get().password)
@@ -44,26 +36,19 @@ class UserRepositoryTest {
 
     @Test
     fun `findById should return empty if user does not exist`() {
-        // Arrange: Generer en tilfeldig UUID som ikke finnes i databasen
         val nonExistentId = UUID.randomUUID()
-
-        // Act: Søk etter denne UUID-en i databasen
         val foundUser = userRepository.findById(nonExistentId)
 
-        // Assert: Sjekk at resultatet er tomt
         assertTrue(foundUser.isEmpty)
     }
 
     @Test
     fun `deleteById should remove user`() {
-        // Arrange
         val user = userRepository.save(User(email = "delete@example.com", password = "password123"))
         assertTrue(userRepository.findById(user.id!!).isPresent) // Checks that the user exists
 
-        // Act
         userRepository.deleteById(user.id!!)
 
-        // Assert
         assertFalse(userRepository.findById(user.id!!).isPresent) // Should be deleted
     }
 }

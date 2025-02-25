@@ -60,7 +60,6 @@ class UserController(private val userManager: UserManager) {
 
 }
 
-// Dto-klasser for å motta og validere request-data
 data class CreateUserRequest(
     @field:Email(message = "Ugyldig e-postadresse")
     val email: String,
