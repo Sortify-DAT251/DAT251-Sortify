@@ -67,7 +67,7 @@ class UserManagerTest {
     @Test
     fun `getUserById should return user if found`() {
         // Arrange
-        val userId = 1L
+        val userId = UUID.randomUUID()
         val expectedUser = User(id = userId, email = "found@example.com", password = "password")
         `when`(userRepository.findById(userId)).thenReturn(Optional.of(expectedUser))
 
@@ -83,7 +83,7 @@ class UserManagerTest {
     @Test
     fun `getUserById should return null if user not found`() {
         // Arrange
-        val userId = 2L
+        val userId = UUID.randomUUID()
         `when`(userRepository.findById(userId)).thenReturn(Optional.empty())
 
         // Act
@@ -97,7 +97,7 @@ class UserManagerTest {
     @Test
     fun `updateUser should update existing user and return updated user`() {
         // Arrange
-        val userId = 1L
+        val userId = UUID.randomUUID()
         val existingUser = User(id = userId, email = "old@example.com", password = "oldPassword")
         val updatedUser = User(id = userId, email = "new@example.com", password = "newPassword")
 
@@ -119,7 +119,7 @@ class UserManagerTest {
     @Test
     fun `updateUser should throw exception if user does not exist`() {
         // Arrange
-        val userId = 2L
+        val userId = UUID.randomUUID()
         val updatedUser = User(id = userId, email = "new@example.com", password = "newPassword")
         `when`(userRepository.findById(userId)).thenReturn(Optional.empty())
 
@@ -135,7 +135,7 @@ class UserManagerTest {
     @Test
     fun `deleteUser should remove user if found`() {
         // Arrange
-        val userId = 1L
+        val userId = UUID.randomUUID()
         `when`(userRepository.existsById(userId)).thenReturn(true)
 
         // Act
@@ -149,7 +149,7 @@ class UserManagerTest {
     @Test
     fun `deleteUser should throw exception if user does not exist`() {
         // Arrange
-        val userId = 2L
+        val userId = UUID.randomUUID()
         `when`(userRepository.existsById(userId)).thenReturn(false)
 
         // Act

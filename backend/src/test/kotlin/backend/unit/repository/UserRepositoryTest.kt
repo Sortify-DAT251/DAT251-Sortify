@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import java.util.*
 
 @DataJpaTest // Uses an in-memory database for testing
 class UserRepositoryTest {
@@ -43,10 +44,13 @@ class UserRepositoryTest {
 
     @Test
     fun `findById should return empty if user does not exist`() {
-        // Act
-        val foundUser = userRepository.findById(999999L) // ID that is guaranteed not to exist
+        // Arrange: Generer en tilfeldig UUID som ikke finnes i databasen
+        val nonExistentId = UUID.randomUUID()
 
-        // Assert
+        // Act: Søk etter denne UUID-en i databasen
+        val foundUser = userRepository.findById(nonExistentId)
+
+        // Assert: Sjekk at resultatet er tomt
         assertTrue(foundUser.isEmpty)
     }
 

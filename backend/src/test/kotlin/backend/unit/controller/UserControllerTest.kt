@@ -39,7 +39,7 @@ class UserControllerTest {
         val user = User(id = userId, email = "test@example.com", password = "SecurePass123")
         val requestBody = objectMapper.writeValueAsString(mapOf("email" to "test@example.com", "password" to "SecurePass123"))
 
-        whenever(userManager.createUser(any())).thenReturn(user)
+        whenever(userManager.createUser(any(), any())).thenReturn(user)
 
         mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
