@@ -1,12 +1,12 @@
 ---
-import astroLogo from "../assets/astro.svg";
+import sortifyHeader from "../assets/sortify-header.png";
 ---
 
 <div>
     <header>
         <nav>
             <a href="/">
-                <img src={astroLogo.src} alt="Astro logo" />
+                <img src={sortifyHeader.src} alt="sortify logo" width="200" />
             </a>
             <div id="links">
                 <a href="/">Home</a>
@@ -16,3 +16,11 @@ import astroLogo from "../assets/astro.svg";
         </nav>
     </header>
 </div>
+
+<style>
+    nav {
+        display: flex;
+        border: 1px solid #000000;
+        justify-content: center;
+    }
+</style>
