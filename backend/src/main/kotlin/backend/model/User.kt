@@ -9,19 +9,10 @@ import java.util.UUID
 @Entity
 @Table(name = "users")
 data class User (
-    //@Id
-
-    //@GeneratedValue(strategy = GenerationType.UUID)
-    //val id: UUID? = null,
-    //@GeneratedValue
-    //val id: UUID = UUID.randomUUID(),
-
-    //var email: String,
-    //var password: String
 
     @Id
     @GeneratedValue
-    val id: UUID? = null,
+    val id: UUID = UUID.randomUUID(),
 
     @Column(nullable = false, unique = true)
     @field:Email
@@ -31,6 +22,4 @@ data class User (
     @Column(nullable = false)
     @field:Size(min = 8)
     val password: String
-
-
 )
