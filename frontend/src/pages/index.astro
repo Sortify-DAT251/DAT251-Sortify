@@ -1,4 +1,5 @@
 ---
+import LeafletMap from "../components/map.vue";
 import Layout from "../layouts/Layout.astro";
 import Home from "../components/Home.astro";
 import Header from "../components/Header.astro";
@@ -12,5 +13,6 @@ import Main from "../components/Main.astro";
 	<Main>
 		<Header />
 		<Home />
+    <LeafletMap client:only="vue" />
 	</Main>
 </Layout>
