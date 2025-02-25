@@ -3,6 +3,7 @@ package backend.manager
 import backend.model.User
 import backend.repository.UserRepository
 import org.springframework.stereotype.Service
+import java.util.NoSuchElementException
 import java.util.UUID
 
 @Service
@@ -18,7 +19,7 @@ class UserManager (private val userRepository: UserRepository) {
     }
 
     fun updateUser(id: UUID, updatedUser: User) : User {
-        val existingUser = userRepository.findById(id).orElseThrow { RuntimeException("User not found") }
+        val existingUser = userRepository.findById(id).orElseThrow { NoSuchElementException("User not found") }
         val userToUpdate = existingUser.copy(email = updatedUser.email, password = updatedUser.password)
 
         return userRepository.save(userToUpdate)
@@ -26,7 +27,7 @@ class UserManager (private val userRepository: UserRepository) {
     
     fun deleteUser(id: UUID) {
         if (!userRepository.existsById(id)) {
-            throw RuntimeException("User not found")
+            throw NoSuchElementException("User not found")
         }
         userRepository.deleteById(id)
     }
