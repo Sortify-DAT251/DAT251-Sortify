@@ -24,12 +24,12 @@ data class User (
     val id: UUID = UUID.randomUUID(),
 
     @Column(nullable = false, unique = true)
-    @field:Email(message = "Invalid email format")
+    @field:Email
     @field:NotBlank(message = "Email cannot be blank")
     val email: String,
 
     @Column(nullable = false)
-    @field:Size(min = 8, message = "Password must be at least 8 characters long")
+    @field:Size(min = 8)
     val password: String
 
 

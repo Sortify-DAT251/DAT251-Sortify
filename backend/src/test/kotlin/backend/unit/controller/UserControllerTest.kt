@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.*
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -16,22 +18,24 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.boot.test.mock.mockito.MockBean
 import java.util.*
 
-@ExtendWith(SpringExtension::class)
+@ExtendWith(SpringExtension::class, MockitoExtension::class)
 @WebMvcTest(UserController::class)
 class UserControllerTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    private lateinit var userManager: UserManager
+    @Autowired
     private val objectMapper = ObjectMapper()
 
-    @BeforeEach
-    fun setup() {
-        userManager = mock(UserManager::class.java)
-    }
+    @MockBean
+    private lateinit var userManager: UserManager
+
 
     @Test
     fun `should create a user successfully`() {
@@ -88,7 +92,7 @@ class UserControllerTest {
         val updatedUser = User(id = userId, email = "updated@example.com", password = "NewSecurePass123")
         val requestBody = objectMapper.writeValueAsString(mapOf("email" to "updated@example.com", "password" to "NewSecurePass123"))
 
-        `when`(userManager.updateUser(eq(userId), any())).thenReturn(updatedUser)
+        whenever(userManager.updateUser(eq(userId), any<User>())).thenReturn(updatedUser)
 
         mockMvc.perform(put("/users/$userId")
             .contentType(MediaType.APPLICATION_JSON)
@@ -102,7 +106,7 @@ class UserControllerTest {
         val userId = UUID.randomUUID()
         val requestBody = objectMapper.writeValueAsString(mapOf("email" to "updated@example.com", "password" to "NewSecurePass123"))
 
-        `when`(userManager.updateUser(eq(userId), any())).thenReturn(null)
+        whenever(userManager.updateUser(eq(userId), any<User>())).thenReturn(null)
 
         mockMvc.perform(put("/users/$userId")
             .contentType(MediaType.APPLICATION_JSON)
@@ -115,8 +119,8 @@ class UserControllerTest {
         val userId = UUID.randomUUID()
 
         doNothing().`when`(userManager).deleteUser(userId)
-
         mockMvc.perform(delete("/users/$userId"))
+
             .andExpect(status().isNoContent)
     }
 

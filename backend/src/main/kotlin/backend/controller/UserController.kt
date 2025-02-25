@@ -38,7 +38,11 @@ class UserController(private val userManager: UserManager) {
         return try {
             val updatedUser = User(email = request.email, password = request.password)
             val user = userManager.updateUser(id, updatedUser)
-            ResponseEntity.ok(user)
+            if (user != null) {
+                ResponseEntity.ok(user)
+            } else {
+                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            }
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
