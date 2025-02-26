@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Import
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 
@@ -20,6 +22,8 @@ class UserRepositoryTest {
 
     @Autowired
     private lateinit var userRepository: UserRepository
+
+
 
     @Test
     @Transactional
@@ -63,5 +67,17 @@ class UserRepositoryTest {
         userRepository.deleteById(user.id!!)
 
         assertFalse(userRepository.findById(user.id!!).isPresent) // Should be deleted
+    }
+
+    @Test
+    @Transactional
+    fun `should throw exception if username is already taken (case-insensitive)`() {
+        val user1 = User(username = "TestUser", email = "test1@example.com", password = "SecurePass123")
+        userRepository.saveAndFlush(user1)
+
+        val user2 = User(username = "testuser", email = "test2@example.com", password = "SecurePass123")
+        assertThrows(DataIntegrityViolationException::class.java) {
+            userRepository.saveAndFlush(user2)
+        }
     }
 }

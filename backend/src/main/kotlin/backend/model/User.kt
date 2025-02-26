@@ -16,8 +16,14 @@ data class User (
     val id: UUID? = null,
 
     @Column(nullable = false, unique = true)
+    @field:NotBlank
+    @field:Size(min = 3, max = 20)
+    @field:Pattern(regexp = "^[a-zA-Z0-9_]*+$")
+    val username: String,
+
+    @Column(nullable = false, unique = true)
     @field:Email
-    @field:NotBlank(message = "Email cannot be blank")
+    @field:NotBlank
     val email: String,
 
     @Column(nullable = false)

@@ -41,14 +41,14 @@ class UserControllerTest {
         val user = User(id = userId, username = "testuser", email = "test@example.com", password = "SecurePass123")
         val requestBody = objectMapper.writeValueAsString(mapOf("username" to "testuser", "email" to "test@example.com", "password" to "SecurePass123"))
 
-        whenever(userManager.createUser(any(), any())).thenReturn(user)
+        whenever(userManager.createUser(any(), any(), any())).thenReturn(user)
 
         mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isCreated)
             .andExpect(jsonPath("$.id").value(userId.toString()))
-            .andExpect(jsonPath("$username").value("testuser"))
+            .andExpect(jsonPath("$.username").value("testuser"))
             .andExpect(jsonPath("$.email").value("test@example.com"))
     }
 
