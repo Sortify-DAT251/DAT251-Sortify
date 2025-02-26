@@ -3,7 +3,6 @@ package backend.unit.controller
 import backend.controller.UserController
 import backend.manager.UserManager
 import backend.model.User
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.*
@@ -18,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.boot.test.mock.mockito.MockBean
 import java.util.*
@@ -40,16 +38,17 @@ class UserControllerTest {
     @Test
     fun `should create a user successfully`() {
         val userId = UUID.randomUUID()
-        val user = User(id = userId, email = "test@example.com", password = "SecurePass123")
-        val requestBody = objectMapper.writeValueAsString(mapOf("email" to "test@example.com", "password" to "SecurePass123"))
+        val user = User(id = userId, username = "testuser", email = "test@example.com", password = "SecurePass123")
+        val requestBody = objectMapper.writeValueAsString(mapOf("username" to "testuser", "email" to "test@example.com", "password" to "SecurePass123"))
 
-        whenever(userManager.createUser(any(), any())).thenReturn(user)
+        whenever(userManager.createUser(any(), any(), any())).thenReturn(user)
 
         mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isCreated)
             .andExpect(jsonPath("$.id").value(userId.toString()))
+            .andExpect(jsonPath("$.username").value("testuser"))
             .andExpect(jsonPath("$.email").value("test@example.com"))
     }
 
@@ -66,13 +65,14 @@ class UserControllerTest {
     @Test
     fun `should retrieve user by ID`() {
         val userId = UUID.randomUUID()
-        val user = User(id = userId, email = "test@example.com", password = "SecurePass123")
+        val user = User(id = userId, username = "retrievedUser", email = "test@example.com", password = "SecurePass123")
 
         `when`(userManager.getUserById(userId)).thenReturn(user)
 
         mockMvc.perform(get("/users/$userId"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.id").value(userId.toString()))
+            .andExpect(jsonPath("$.username").value("retrievedUser"))
             .andExpect(jsonPath("$.email").value("test@example.com"))
     }
 
@@ -89,8 +89,8 @@ class UserControllerTest {
     @Test
     fun `should update user successfully`() {
         val userId = UUID.randomUUID()
-        val updatedUser = User(id = userId, email = "updated@example.com", password = "NewSecurePass123")
-        val requestBody = objectMapper.writeValueAsString(mapOf("email" to "updated@example.com", "password" to "NewSecurePass123"))
+        val updatedUser = User(id = userId, username = "updatedUser", email = "updated@example.com", password = "NewSecurePass123")
+        val requestBody = objectMapper.writeValueAsString(mapOf("username" to "updatedUser", "email" to "updated@example.com", "password" to "NewSecurePass123"))
 
         whenever(userManager.updateUser(eq(userId), any<User>())).thenReturn(updatedUser)
 
@@ -98,13 +98,14 @@ class UserControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isOk)
+            .andExpect(jsonPath("$.username").value("updatedUser"))
             .andExpect(jsonPath("$.email").value("updated@example.com"))
     }
 
     @Test
     fun `should return 404 when updating non-existent user`() {
         val userId = UUID.randomUUID()
-        val requestBody = objectMapper.writeValueAsString(mapOf("email" to "updated@example.com", "password" to "NewSecurePass123"))
+        val requestBody = objectMapper.writeValueAsString(mapOf("username" to "updatedUser", "email" to "updated@example.com", "password" to "NewSecurePass123"))
 
         whenever(userManager.updateUser(eq(userId), any<User>())).thenReturn(null)
 
@@ -120,7 +121,6 @@ class UserControllerTest {
 
         doNothing().`when`(userManager).deleteUser(userId)
         mockMvc.perform(delete("/users/$userId"))
-
             .andExpect(status().isNoContent)
     }
 

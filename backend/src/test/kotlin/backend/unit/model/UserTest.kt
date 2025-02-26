@@ -16,22 +16,39 @@ class UserTest {
 
     @Test
     fun `should generate an ID automatically as UUID`() {
-        val user = User(id = UUID.randomUUID(), email = "test@example.com", password = "SecurePass123")
+        val user = User(id = UUID.randomUUID(), username = "User1", email = "test@example.com", password = "SecurePass123")
         assertNotNull(user.id, "User ID should not be null")
         assertTrue(user.id is UUID, "User ID should be of type UUID")
     }
 
     @Test
     fun `should accept a valid email`() {
-        val user = User(id = UUID.randomUUID(), email = "valid@example.com", password = "SecurePass123")
+        val user = User(id = UUID.randomUUID(), username = "ValidUser", email = "valid@example.com", password = "SecurePass123")
         val violations = validator.validate(user)
 
         assertTrue(violations.isEmpty(), "User with valid email should pass validation")
     }
 
     @Test
+    fun `should accept a valid username`() {
+        val user = User(id = UUID.randomUUID(), username = "ValidUser_123", email = "test@example.com", password = "SecurePass123")
+        val violations = validator.validate(user)
+        assertTrue(violations.isEmpty(), "User with a valid username should pass validation")
+    }
+
+    @Test
+    fun `should reject invalid usernames`() {
+        val invalidUsernames = listOf("", "ab", "abcdefghijklmnopqrstu", "Invalid Username", "Invalid!")
+        invalidUsernames.forEach { username ->
+            val user = User(id = UUID.randomUUID(), username = username, email = "test@example.com", password = "SecurePass123")
+            val violations = validator.validate(user)
+            assertFalse(violations.isEmpty(), "Username '$username' should be invalid and fail validation")
+        }
+    }
+
+    @Test
     fun `should reject an invalid email`() {
-        val user = User(id = UUID.randomUUID(), email = "invalid-email", password = "SecurePass123")
+        val user = User(id = UUID.randomUUID(), username = "InvalidUser", email = "invalid-email", password = "SecurePass123")
         val violations = validator.validate(user)
 
         assertFalse(violations.isEmpty(), "User with invalid email should fail validation")
@@ -40,7 +57,7 @@ class UserTest {
 
     @Test
     fun `should reject password shorter than 8 characters`() {
-        val user = User(id = UUID.randomUUID(), email = "test@example.com", password = "1234567")
+        val user = User(id = UUID.randomUUID(), username = "ShortPassUser", email = "test@example.com", password = "1234567")
         val violations = validator.validate(user)
 
         assertFalse(violations.isEmpty(), "User with short password should fail validation")
@@ -49,7 +66,7 @@ class UserTest {
 
     @Test
     fun `should accept valid password`() {
-        val user = User(id = UUID.randomUUID(), email = "test@example.com", password = "SecurePass123")
+        val user = User(id = UUID.randomUUID(), username = "SecurePass", email = "test@example.com", password = "SecurePass123")
         val violations = validator.validate(user)
 
         assertTrue(violations.isEmpty(), "User with valid password should pass validation")

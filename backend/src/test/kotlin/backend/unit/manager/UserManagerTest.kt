@@ -25,16 +25,18 @@ class UserManagerTest {
 
     @Test
     fun `createUser should generate an ID and save user`(){
+        val username = "testuser"
         val email = "test@example.com"
         val password = "example123"
 
         `when`(userRepository.save(any())).thenAnswer { invocation -> invocation.arguments[0] as User }
 
-        val createdUser = userManager.createUser(email, password)
+        val createdUser = userManager.createUser(username, email, password)
         val userCaptor = ArgumentCaptor.forClass(User::class.java)
         verify(userRepository).save(userCaptor.capture())
         val savedUser = userCaptor.value
 
+        assertEquals(username, savedUser.username)
         assertEquals(email, savedUser.email)
         assertEquals(password, savedUser.password)
         assertNull(savedUser.id, "ID skal ikke være generert før lagring")
@@ -43,12 +45,13 @@ class UserManagerTest {
 
     @Test
     fun `createUser should throw exception if save fails`() {
+        val username = "erroruser"
         val email = "error@example.com"
         val password = "password123"
         `when`(userRepository.save(any())).thenThrow(RuntimeException("Database error"))
 
         val exception = assertThrows<RuntimeException> {
-            userManager.createUser(email, password)
+            userManager.createUser(username, email, password)
         }
         assertEquals("Database error", exception.message)
     }
@@ -56,7 +59,7 @@ class UserManagerTest {
     @Test
     fun `getUserById should return user if found`() {
         val userId = UUID.randomUUID()
-        val expectedUser = User(id = userId, email = "found@example.com", password = "password")
+        val expectedUser = User(id = userId, username = "foundUser", email = "found@example.com", password = "password")
         `when`(userRepository.findById(userId)).thenReturn(Optional.of(expectedUser))
 
         val result = userManager.getUserById(userId)
@@ -80,14 +83,15 @@ class UserManagerTest {
     @Test
     fun `updateUser should update existing user and return updated user`() {
         val userId = UUID.randomUUID()
-        val existingUser = User(id = userId, email = "old@example.com", password = "oldPassword")
-        val updatedUser = User(id = userId, email = "new@example.com", password = "newPassword")
+        val existingUser = User(id = userId, username = "oldUser", email = "old@example.com", password = "oldPassword")
+        val updatedUser = User(id = userId, username = "newUser", email = "new@example.com", password = "newPassword")
 
         `when`(userRepository.findById(userId)).thenReturn(Optional.of(existingUser))
         `when`(userRepository.save(any())).thenAnswer { it.arguments[0] }
 
         val result = userManager.updateUser(userId, updatedUser)
 
+        assertEquals(updatedUser.username, result.username)
         assertEquals(updatedUser.email, result.email)
         assertEquals(updatedUser.password, result.password)
         assertEquals(userId, result.id)
@@ -98,7 +102,7 @@ class UserManagerTest {
     @Test
     fun `updateUser should throw exception if user does not exist`() {
         val userId = UUID.randomUUID()
-        val updatedUser = User(id = userId, email = "new@example.com", password = "newPassword")
+        val updatedUser = User(id = userId, username = "newUser", email = "new@example.com", password = "newPassword")
         `when`(userRepository.findById(userId)).thenReturn(Optional.empty())
 
         val exception = assertThrows<NoSuchElementException> {
