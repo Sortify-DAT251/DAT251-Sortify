@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -25,10 +24,11 @@ class UserRepositoryTest {
     @Test
     @Transactional
     fun `save should persist user and generate ID`() {
-        val user = User(email = "test@example.com", password = "securepassword")
+        val user = User(username = "testUser", email = "test@example.com", password = "securepassword")
         val savedUser = userRepository.save(user)
 
         assertNotNull(savedUser.id)
+        assertEquals(user.username, savedUser.username)
         assertEquals(user.email, savedUser.email)
         assertEquals(user.password, savedUser.password)
     }
@@ -36,10 +36,11 @@ class UserRepositoryTest {
     @Test
     @Transactional
     fun `findById should return user if exists`() {
-        val user = userRepository.save(User(email = "test@example.com", password = "securepassword"))
+        val user = userRepository.save(User(username = "foundUser", email = "test@example.com", password = "securepassword"))
         val foundUser = userRepository.findById(user.id!!)
 
         assertTrue(foundUser.isPresent)
+        assertEquals(user.username, foundUser.get().username)
         assertEquals(user.email, foundUser.get().email)
         assertEquals(user.password, foundUser.get().password)
     }
@@ -56,7 +57,7 @@ class UserRepositoryTest {
     @Test
     @Transactional
     fun `deleteById should remove user`() {
-        val user = userRepository.save(User(email = "delete@example.com", password = "password123"))
+        val user = userRepository.save(User(username = "deleteUser", email = "delete@example.com", password = "password123"))
         assertTrue(userRepository.findById(user.id!!).isPresent) // Checks that the user exists
 
         userRepository.deleteById(user.id!!)

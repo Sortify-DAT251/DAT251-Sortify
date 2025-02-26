@@ -4,6 +4,7 @@ import backend.model.User
 import backend.manager.UserManager
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -63,6 +64,7 @@ class UserController(private val userManager: UserManager) {
 data class CreateUserRequest(
     @field:Email(message = "Ugyldig e-postadresse")
     val email: String,
+
     @field:Size(min = 8, message = "Passordet må være minst 8 tegn")
     val password: String
 )
