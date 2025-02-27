@@ -3,8 +3,9 @@
 .git
 .gradle/
 bin/
+build/
 !gradlew
 !gradle/
 !src/
 !*.gradle.kts
-!build/libs/  # Ensure built JARs are copied
+!build/libs/
