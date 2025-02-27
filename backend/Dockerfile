@@ -29,9 +29,11 @@ WORKDIR /app
 # Copy the built JAR file
 COPY --from=builder /app/build/libs/*.jar /app/app.jar
 
-# Copy the gradlew script for running tests
+# Copy the necessary Gradle files for running tests
 COPY --from=builder /app/gradlew /app/gradlew
 COPY --from=builder /app/gradle /app/gradle
+COPY --from=builder /app/build.gradle.kts /app/build.gradle.kts
+COPY --from=builder /app/settings.gradle.kts /app/settings.gradle.kts
 
 # Ensure permissions for Gradle wrapper
 RUN chmod +x /app/gradlew
