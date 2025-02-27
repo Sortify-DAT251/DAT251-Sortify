@@ -65,8 +65,7 @@ jobs:
     #     curl -v http://localhost:9876/actuator/health || echo "❌ Backend is not responding"
 
     - name: Run Tests in Docker
-      run: ./gradlew clean test
-      # run: docker exec sortify-backend-container ./gradlew clean test
+      run: docker exec sortify-backend-container ./gradlew clean test
 
     - name: Upload Test Result
       if: always()
