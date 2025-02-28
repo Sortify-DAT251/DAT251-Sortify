@@ -63,4 +63,23 @@ class UserRepositoryTest {
 
         assertFalse(userRepository.findById(user.id!!).isPresent) // Should be deleted
     }
+
+//    @Test
+//    @Transactional
+//    fun `Add friend to friendsList should add to both friends lists`() {
+//        val user = userRepository.save(User(email = "user@example.com", password = "password123"))
+//        val friend = userRepository.save(User(email = "friend@example.com", password = "password321"))
+//
+//        assertTrue(userRepository.findById(user.id!!).isPresent)
+//        assertTrue(userRepository.findById(friend.id!!).isPresent)
+//
+//        user.friends.add(friend)
+//
+//        val savedUser = (userRepository.findById(user.id!!).get())
+//        val savedFriend = (userRepository.findById(friend.id!!).get())
+//
+//        assertTrue(savedUser.friends.contains(friend))
+//        assertTrue(savedFriend.friends.contains(user))
+//    }
+
 }

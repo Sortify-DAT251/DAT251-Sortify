@@ -54,4 +54,38 @@ class UserTest {
 
         assertTrue(violations.isEmpty(), "User with valid password should pass validation")
     }
+
+    @Test
+    fun `should be able to find users in the friends list`() {
+        val user1 = User(id = UUID.randomUUID(), email = "test@example.com", password = "SomethingSomething")
+        val user2 = User(id = UUID.randomUUID(), email = "test@example.com", password = "SomethingSomething2")
+        val user3 = User(id = UUID.randomUUID(), email = "test@example.com", password = "SomethingSomething3")
+
+        assertTrue(user1.friends.isEmpty())
+
+        // Add friends to list.
+        user1.friends.add(user2);
+        user1.friends.add(user3);
+
+        // The list is not empty.
+        assertFalse(user1.friends.isEmpty())
+
+        // Contains both user2 and user3.
+        assertTrue(user1.friends.contains(user2))
+        assertTrue(user1.friends.contains(user3))
+
+        // First user in list is user2.
+        assertTrue(user1.friends.get(0) == user2)
+
+        // List is still not empty and contains user3, when user3 is removed.
+        user1.friends.remove(user2)
+        assertFalse(user1.friends.isEmpty())
+        assertTrue(user1.friends.contains(user3))
+
+        // Empty the list, and check that it is empty
+        user1.friends.clear()
+        assertTrue(user1.friends.isEmpty())
+
+
+    }
 }

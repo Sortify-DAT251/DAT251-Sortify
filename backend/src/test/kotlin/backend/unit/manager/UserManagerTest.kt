@@ -12,6 +12,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.whenever
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -133,5 +134,43 @@ class UserManagerTest {
         assertEquals("User not found", exception.message)
         verify(userRepository).existsById(userId)
         verify(userRepository, never()).deleteById(any())
+    }
+
+    @Test
+    fun `addFriend should add target to users friendsList and add user to targets friendsList`() {
+
+        val userId = UUID.randomUUID()
+        val friendId = UUID.randomUUID()
+        val user = User(id = userId, email = "user@example.com", password = "Password123")
+        val friend = User(id = friendId, email = "friend@example.com", password = "Password123")
+
+        // Mock repository behavior
+        whenever(userRepository.existsById(userId)).thenReturn(true)
+        whenever(userRepository.existsById(friendId)).thenReturn(true)
+        whenever(userRepository.findById(userId)).thenReturn(Optional.of(user))
+        whenever(userRepository.findById(friendId)).thenReturn(Optional.of(friend))
+        whenever(userRepository.save(any())).thenAnswer { it.arguments[0] }
+
+        userManager.addFriend(userId, friendId)
+
+        assert(user.friends.contains(friend))
+        assert(friend.friends.contains(user))
+
+        // Verify repository interactions
+        verify(userRepository).existsById(userId)
+        verify(userRepository).existsById(friendId)
+        verify(userRepository).findById(userId)
+        verify(userRepository).findById(friendId)
+        verify(userRepository, times(2)).save(any<User>())
+    }
+
+    @Test
+    fun `removeFriend should remove target from users friendsList and remove user from targets friendsList`() {
+
+    }
+
+    @Test
+    fun `DeleteUser should remove all friends from users friendsList and remove user from all friends friendsList`() {
+
     }
 }

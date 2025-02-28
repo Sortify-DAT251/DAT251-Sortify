@@ -3,8 +3,8 @@ package backend.manager
 import backend.model.User
 import backend.repository.UserRepository
 import org.springframework.stereotype.Service
-import java.util.NoSuchElementException
 import java.util.UUID
+import kotlin.NoSuchElementException
 
 @Service
 class UserManager (private val userRepository: UserRepository) {
@@ -30,5 +30,24 @@ class UserManager (private val userRepository: UserRepository) {
             throw NoSuchElementException("User not found")
         }
         userRepository.deleteById(id)
+    }
+
+    // Adds friend to users friendsList, and adds user to friends friendsList.
+    fun addFriend(userId: UUID, friendId: UUID): User {
+        if(!userRepository.existsById(userId)) {
+            throw NoSuchElementException("User not found")
+        }
+        if(!userRepository.existsById(friendId)) {
+            throw NoSuchElementException("Friend not found")
+        }
+
+        val friend = userRepository.findById(friendId).get()
+        val user = userRepository.findById(userId).get()
+
+        user.friends.add(friend)
+        friend.friends.add(user)
+
+        userRepository.save(friend)
+        return userRepository.save(user)
     }
 }
