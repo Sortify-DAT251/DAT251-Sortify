@@ -114,7 +114,9 @@ class UserManagerTest {
     @Test
     fun `deleteUser should remove user if found`() {
         val userId = UUID.randomUUID()
+        val user = User(id = userId, email = "user@example.com", password = "Password123")
         `when`(userRepository.existsById(userId)).thenReturn(true)
+        `when`(userRepository.findById(userId)).thenReturn(Optional.of(user))
 
         userManager.deleteUser(userId)
 
@@ -136,20 +138,29 @@ class UserManagerTest {
         verify(userRepository, never()).deleteById(any())
     }
 
-    @Test
-    fun `addFriend should add target to users friendsList and add user to targets friendsList`() {
-
+    // Mock function for testing friendsLists
+    private fun mockUserandFriend(): Pair<User, User> {
         val userId = UUID.randomUUID()
         val friendId = UUID.randomUUID()
         val user = User(id = userId, email = "user@example.com", password = "Password123")
         val friend = User(id = friendId, email = "friend@example.com", password = "Password123")
 
         // Mock repository behavior
-        whenever(userRepository.existsById(userId)).thenReturn(true)
-        whenever(userRepository.existsById(friendId)).thenReturn(true)
-        whenever(userRepository.findById(userId)).thenReturn(Optional.of(user))
-        whenever(userRepository.findById(friendId)).thenReturn(Optional.of(friend))
-        whenever(userRepository.save(any())).thenAnswer { it.arguments[0] }
+        `when`(userRepository.existsById(userId)).thenReturn(true)
+        `when`(userRepository.existsById(friendId)).thenReturn(true)
+        `when`(userRepository.findById(userId)).thenReturn(Optional.of(user))
+        `when`(userRepository.findById(friendId)).thenReturn(Optional.of(friend))
+        `when`(userRepository.save(any())).thenAnswer { it.arguments[0] }
+
+        return Pair(user, friend)
+    }
+
+    @Test
+    fun `addFriend should add target to users friendsList and add user to targets friendsList`() {
+
+        val (user, friend) = mockUserandFriend()
+        val userId = user.id!!
+        val friendId = friend.id!!
 
         userManager.addFriend(userId, friendId)
 
@@ -166,11 +177,41 @@ class UserManagerTest {
 
     @Test
     fun `removeFriend should remove target from users friendsList and remove user from targets friendsList`() {
+        val (user, friend) = mockUserandFriend()
+        val userId = user.id!!
+        val friendId = friend.id!!
 
+        userManager.addFriend(userId, friendId)
+
+        assert(user.friends.contains(friend))
+        assert(friend.friends.contains(user))
+
+        userManager.removeFriend(userId, friendId)
+
+        assert(!user.friends.contains(friend))
+        assert(!friend.friends.contains(user))
+
+        // Verify repository interactions
+        verify(userRepository, times(2)).findById(userId)
+        verify(userRepository, times(2)).findById(friendId)
+        verify(userRepository, times(4)).save(any<User>())
     }
 
     @Test
-    fun `DeleteUser should remove all friends from users friendsList and remove user from all friends friendsList`() {
+    fun `deleteUser should remove all friends from users friendsList and remove user from all friends friendsList`() {
+        val (user, friend) = mockUserandFriend()
+        val userId = user.id!!
+        val friendId = friend.id!!
 
+        userManager.addFriend(userId, friendId)
+
+        assert(user.friends.contains(friend))
+        assert(friend.friends.contains(user))
+
+        // Delete friend-account
+        userManager.deleteUser(friendId)
+
+        assert(!user.friends.contains(friend))
+        assert(user.friends.isEmpty())
     }
 }
