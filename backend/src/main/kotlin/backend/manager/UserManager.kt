@@ -43,7 +43,7 @@ class UserManager (private val userRepository: UserRepository) {
 
     // Adds friend to users friendsList, and adds user to friends friendsList.
     // Returns the user object.
-    fun addFriend(userId: UUID, friendId: UUID): User {
+    fun addFriend(userId: UUID, friendId: UUID) {
         if(!userRepository.existsById(userId)) {
             throw NoSuchElementException("User not found")
         }
@@ -58,12 +58,12 @@ class UserManager (private val userRepository: UserRepository) {
         friend.friends.add(user)
 
         userRepository.save(friend)
-        return userRepository.save(user)
+        userRepository.save(user)
     }
 
     // Removes friend from users friendsList and vice versa.
     // Returns the user object.
-    fun removeFriend(userId: UUID, friendId: UUID): User {
+    fun removeFriend(userId: UUID, friendId: UUID) {
         if(!userRepository.existsById(userId)) {
             throw NoSuchElementException("User not found")
         }
@@ -78,6 +78,6 @@ class UserManager (private val userRepository: UserRepository) {
         friend.friends.remove(user)
 
         userRepository.save(friend)
-        return userRepository.save(user)
+        userRepository.save(user)
     }
 }

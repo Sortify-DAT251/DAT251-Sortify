@@ -58,6 +58,12 @@ class UserController(private val userManager: UserManager) {
         }
     }
 
+    @PostMapping("/{id}/friends")
+    fun addFriend(@PathVariable id: UUID, @RequestBody @Valid request: AddFriendRequest): ResponseEntity<User> {
+        val friend = userManager.getUserByUsername()
+        userManager.addFriend(id, friendId = )
+    }
+
 }
 
 data class CreateUserRequest(
@@ -72,4 +78,10 @@ data class UpdateUserRequest(
     val email: String,
     @field:Size(min = 8, message = "Passordet må være minst 8 tegn")
     val password: String
+)
+
+data class AddFriendRequest(
+    @field:Email(message = "Ugyldig e-postadresse")
+    val email: String,
+    val friendId: UUID
 )
