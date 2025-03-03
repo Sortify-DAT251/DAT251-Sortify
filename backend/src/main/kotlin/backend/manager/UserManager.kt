@@ -9,8 +9,8 @@ import java.util.UUID
 @Service
 class UserManager (private val userRepository: UserRepository) {
 
-    fun createUser(email: String, password: String): User {
-        val user = User(email = email, password = password)
+    fun createUser(username: String, email: String, password: String): User {
+        val user = User(username = username, email = email, password = password)
         return userRepository.save(user)
     }
 
@@ -20,7 +20,7 @@ class UserManager (private val userRepository: UserRepository) {
 
     fun updateUser(id: UUID, updatedUser: User) : User {
         val existingUser = userRepository.findById(id).orElseThrow { NoSuchElementException("User not found") }
-        val userToUpdate = existingUser.copy(email = updatedUser.email, password = updatedUser.password)
+        val userToUpdate = existingUser.copy(username = updatedUser.username, email = updatedUser.email, password = updatedUser.password)
 
         return userRepository.save(userToUpdate)
     }
