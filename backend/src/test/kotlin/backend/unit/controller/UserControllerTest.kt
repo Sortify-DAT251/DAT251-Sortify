@@ -133,4 +133,35 @@ class UserControllerTest {
         mockMvc.perform(delete("/users/$userId"))
             .andExpect(status().isNotFound)
     }
+
+    @Test
+    fun `Should return 200-OK when adding friend`() {
+        val userId = UUID.randomUUID()
+        val friendId = UUID.randomUUID()
+
+        val requestBody = objectMapper.writeValueAsString(mapOf("friendId" to friendId.toString()))
+
+        doNothing().`when`(userManager).addFriend(userId, friendId)
+
+        mockMvc.perform(post("/users/$userId/friends")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBody))
+            .andExpect(status().isOk)
+    }
+
+
+    @Test
+    fun `Should return 200-OK when removing friend`() {
+        val userId = UUID.randomUUID()
+        val friendId = UUID.randomUUID()
+
+        val requestBody = objectMapper.writeValueAsString(mapOf("friendId" to friendId.toString()))
+
+        doNothing().`when`(userManager).removeFriend(userId, friendId)
+
+        mockMvc.perform(delete("/users/$userId/friends")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBody))
+            .andExpect(status().isOk)
+    }
 }

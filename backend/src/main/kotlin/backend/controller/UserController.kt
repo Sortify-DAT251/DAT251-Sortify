@@ -60,7 +60,21 @@ class UserController(private val userManager: UserManager) {
         }
     }
 
+    @PostMapping("{id}/friends")
+    fun addFriend(@PathVariable id: UUID, @RequestBody @Valid request: FriendRequest): ResponseEntity<Void> {
+        userManager.addFriend(id, request.friendId)
+        return ResponseEntity.ok().build()
+    }
+
+    @DeleteMapping("{id}/friends")
+    fun removeFriend(@PathVariable id: UUID, @RequestBody @Valid request: FriendRequest): ResponseEntity<Void> {
+        userManager.removeFriend(id, request.friendId)
+        return ResponseEntity.ok().build()
+    }
+
+
 }
+
 
 data class UserRequest(
     @field:NotBlank
@@ -73,4 +87,9 @@ data class UserRequest(
 
     @field:Size(min = 8)
     val password: String
+)
+
+// Data class for adding and removing friends
+data class FriendRequest(
+    val friendId: UUID
 )

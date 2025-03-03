@@ -28,5 +28,13 @@ data class User (
 
     @Column(nullable = false)
     @field:Size(min = 8)
-    val password: String
+    val password: String,
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_friends",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "friend_id")]
+    )
+    val friends: MutableList<User> = mutableListOf()
 )
