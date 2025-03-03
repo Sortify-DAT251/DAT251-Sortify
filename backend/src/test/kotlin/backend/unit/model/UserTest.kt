@@ -74,9 +74,9 @@ class UserTest {
 
     @Test
     fun `should be able to find users in the friends list`() {
-        val user1 = User(id = UUID.randomUUID(), email = "test@example.com", password = "SomethingSomething")
-        val user2 = User(id = UUID.randomUUID(), email = "test@example.com", password = "SomethingSomething2")
-        val user3 = User(id = UUID.randomUUID(), email = "test@example.com", password = "SomethingSomething3")
+        val user1 = User(username = "user1", id = UUID.randomUUID(), email = "test@example.com", password = "SomethingSomething")
+        val user2 = User(username = "user2", id = UUID.randomUUID(), email = "test@example.com", password = "SomethingSomething2")
+        val user3 = User(username = "user3", id = UUID.randomUUID(), email = "test@example.com", password = "SomethingSomething3")
 
         assertTrue(user1.friends.isEmpty())
 

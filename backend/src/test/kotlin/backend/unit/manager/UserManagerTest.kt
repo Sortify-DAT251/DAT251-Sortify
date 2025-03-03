@@ -118,7 +118,7 @@ class UserManagerTest {
     @Test
     fun `deleteUser should remove user if found`() {
         val userId = UUID.randomUUID()
-        val user = User(id = userId, email = "user@example.com", password = "Password123")
+        val user = User(username = "tester", id = userId, email = "user@example.com", password = "Password123")
         `when`(userRepository.existsById(userId)).thenReturn(true)
         `when`(userRepository.findById(userId)).thenReturn(Optional.of(user))
 
@@ -146,8 +146,8 @@ class UserManagerTest {
     private fun mockUserandFriend(): Pair<User, User> {
         val userId = UUID.randomUUID()
         val friendId = UUID.randomUUID()
-        val user = User(id = userId, email = "user@example.com", password = "Password123")
-        val friend = User(id = friendId, email = "friend@example.com", password = "Password123")
+        val user = User(username = "user", id = userId, email = "user@example.com", password = "Password123")
+        val friend = User(username = "friend", id = friendId, email = "friend@example.com", password = "Password123")
 
         // Mock repository behavior
         `when`(userRepository.existsById(userId)).thenReturn(true)
