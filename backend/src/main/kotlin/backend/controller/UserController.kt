@@ -4,6 +4,8 @@ import backend.model.User
 import backend.manager.UserManager
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,9 +19,9 @@ import java.util.UUID
 class UserController(private val userManager: UserManager) {
 
     @PostMapping
-    fun createUser(@RequestBody @Valid request: CreateUserRequest): ResponseEntity<User> {
+    fun createUser(@RequestBody @Valid request: UserRequest): ResponseEntity<User> {
         return try {
-            val user = userManager.createUser(request.email, request.password)
+            val user = userManager.createUser(request.username, request.email, request.password)
             ResponseEntity.status(HttpStatus.CREATED).body(user)
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
@@ -34,9 +36,9 @@ class UserController(private val userManager: UserManager) {
     }
 
     @PutMapping("/{id}")
-    fun updateUser(@PathVariable id: UUID, @RequestBody @Valid request: UpdateUserRequest): ResponseEntity<User> {
+    fun updateUser(@PathVariable id: UUID, @RequestBody @Valid request: UserRequest): ResponseEntity<User> {
         return try {
-            val updatedUser = User(email = request.email, password = request.password)
+            val updatedUser = User(username = request.username, email = request.email, password = request.password)
             val user = userManager.updateUser(id, updatedUser)
             if (user != null) {
                 ResponseEntity.ok(user)
@@ -66,17 +68,17 @@ class UserController(private val userManager: UserManager) {
 
 }
 
-data class CreateUserRequest(
-    @field:Email(message = "Ugyldig e-postadresse")
-    val email: String,
-    @field:Size(min = 8, message = "Passordet må være minst 8 tegn")
-    val password: String
-)
 
-data class UpdateUserRequest(
-    @field:Email(message = "Ugyldig e-postadresse")
+data class UserRequest(
+    @field:NotBlank
+    @field:Size(min = 3, max = 20)
+    @field:Pattern(regexp = "^[a-zA-Z0-9_]*$")
+    val username: String,
+
+    @field:Email
     val email: String,
-    @field:Size(min = 8, message = "Passordet må være minst 8 tegn")
+
+    @field:Size(min = 8)
     val password: String
 )
 
