@@ -13,6 +13,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -23,6 +24,8 @@ class UserManagerTest {
 
     @InjectMocks
     private lateinit var userManager: UserManager
+
+    private val encoder = BCryptPasswordEncoder()
 
     @Test
     fun `createUser should generate an ID and save user`(){
@@ -39,7 +42,8 @@ class UserManagerTest {
 
         assertEquals(username, savedUser.username)
         assertEquals(email, savedUser.email)
-        assertEquals(password, savedUser.password)
+        //assertEquals(password, savedUser.password)
+        assertTrue(encoder.matches(password, savedUser.password))
         assertNull(savedUser.id, "ID skal ikke være generert før lagring")
         assertEquals(savedUser, createdUser)
     }
@@ -94,10 +98,11 @@ class UserManagerTest {
 
         assertEquals(updatedUser.username, result.username)
         assertEquals(updatedUser.email, result.email)
-        assertEquals(updatedUser.password, result.password)
+        assertTrue(encoder.matches(updatedUser.password, result.password))
         assertEquals(userId, result.id)
         verify(userRepository).findById(userId)
-        verify(userRepository).save(updatedUser)
+        verify(userRepository).save(argThat { user ->
+            encoder.matches("newPassword", user.password) })
     }
 
     @Test
@@ -217,5 +222,19 @@ class UserManagerTest {
 
         assert(!user.friends.contains(friend))
         assert(user.friends.isEmpty())
+    }
+
+    @Test
+    fun `should hash password before creating a new user`(){
+        val rawPassword = "somePassword"
+        val userId = UUID.randomUUID()
+        val user = User(id = userId, username = "user", email = "user@example.com", password = rawPassword)
+
+        `when`(userRepository.save(any(User::class.java))).thenAnswer { it.arguments[0] }
+
+        val savedUser = userManager.createUser(user.username, user.email, user.password)
+
+        assertNotEquals(rawPassword, savedUser.password)
+        assertTrue(encoder.matches(rawPassword, savedUser.password))
     }
 }

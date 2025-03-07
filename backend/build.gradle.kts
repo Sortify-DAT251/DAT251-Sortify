@@ -46,6 +46,7 @@ dependencies {
 	testImplementation("org.mockito:mockito-core:5.7.0")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation("org.testcontainers:postgresql:1.19.3")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
 kotlin {
