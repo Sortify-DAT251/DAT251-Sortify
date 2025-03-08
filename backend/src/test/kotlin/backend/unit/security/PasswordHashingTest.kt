@@ -1,4 +1,4 @@
-package backend.unit.repository
+package backend.unit.security
 
 import org.junit.jupiter.api.Test
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
