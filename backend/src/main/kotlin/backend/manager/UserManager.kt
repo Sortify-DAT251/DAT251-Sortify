@@ -2,6 +2,7 @@ package backend.manager
 
 import backend.model.User
 import backend.repository.UserRepository
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.UUID
 import kotlin.NoSuchElementException
@@ -9,8 +10,15 @@ import kotlin.NoSuchElementException
 @Service
 class UserManager (private val userRepository: UserRepository) {
 
+    // Hashes and salts the password, for safe managing
+    private val passwordEncoder = BCryptPasswordEncoder()
+
     fun createUser(username: String, email: String, password: String): User {
-        val user = User(username = username, email = email, password = password)
+
+        // Salt and hash password before storing it
+        val safePassword = passwordEncoder.encode(password)
+
+        val user = User(username = username, email = email, password = safePassword)
         return userRepository.save(user)
     }
 
@@ -20,7 +28,11 @@ class UserManager (private val userRepository: UserRepository) {
 
     fun updateUser(id: UUID, updatedUser: User) : User {
         val existingUser = userRepository.findById(id).orElseThrow { NoSuchElementException("User not found") }
-        val userToUpdate = existingUser.copy(username = updatedUser.username, email = updatedUser.email, password = updatedUser.password)
+
+        // Salt and hash password before updating it
+        val safePassword = passwordEncoder.encode(updatedUser.password)
+
+        val userToUpdate = existingUser.copy(username = updatedUser.username, email = updatedUser.email, password = safePassword)
 
         return userRepository.save(userToUpdate)
     }

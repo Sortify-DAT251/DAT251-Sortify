@@ -1,5 +1,6 @@
 package backend.unit.controller
 
+import backend.config.TestSecurityConfig
 import backend.controller.UserController
 import backend.manager.UserManager
 import backend.model.User
@@ -19,10 +20,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.context.annotation.Import
 import java.util.*
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
 @WebMvcTest(UserController::class)
+@Import(TestSecurityConfig::class)
 class UserControllerTest {
 
     @Autowired
