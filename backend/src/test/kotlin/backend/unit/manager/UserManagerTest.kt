@@ -165,6 +165,35 @@ class UserManagerTest {
     }
 
     @Test
+    fun `getAllUsers should return a list of users`() {
+        val user1 = User(
+            id = UUID.randomUUID(),
+            username = "alice123",
+            email = "alice@example.com",
+            password = encoder.encode("securepassword")
+        )
+
+        val user2 = User(
+            id = UUID.randomUUID(),
+            username = "bob456",
+            email = "bob@example.com",
+            password = encoder.encode("anotherpassword")
+        )
+
+        whenever(userRepository.findAll()).thenReturn(listOf(user1, user2))
+
+        val users = userManager.getAllUsers()
+
+        assertEquals(2, users.size)
+        assertEquals("alice123", users[0].username)
+        assertEquals("alice@example.com", users[0].email)
+        assertTrue(encoder.matches("securepassword", users[0].password))
+        assertEquals("bob456", users[1].username)
+        assertEquals("bob@example.com", users[1].email)
+        assertTrue(encoder.matches("anotherpassword", users[1].password))
+    }
+
+    @Test
     fun `addFriend should add target to users friendsList and add user to targets friendsList`() {
 
         val (user, friend) = mockUserandFriend()
