@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -19,12 +20,12 @@ import java.util.UUID
 class UserController(private val userManager: UserManager) {
 
     @PostMapping
-    fun createUser(@RequestBody @Valid request: UserRequest): ResponseEntity<User> {
+    fun createUser(@RequestBody @Valid request: UserRequest): ResponseEntity<Any> {
         return try {
             val user = userManager.createUser(request.username, request.email, request.password)
             ResponseEntity.status(HttpStatus.CREATED).body(user)
         } catch (ex: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("error" to "Username or email is already in use."))
         }
     }
 
@@ -60,6 +61,12 @@ class UserController(private val userManager: UserManager) {
         }
     }
 
+    @GetMapping
+    fun getAllUsers(): ResponseEntity<List<User>> {
+        val users = userManager.getAllUsers()
+        return ResponseEntity.ok(users)
+    }
+
     @PostMapping("{id}/friends")
     fun addFriend(@PathVariable id: UUID, @RequestBody @Valid request: FriendRequest): ResponseEntity<Void> {
         userManager.addFriend(id, request.friendId)
@@ -78,7 +85,7 @@ class UserController(private val userManager: UserManager) {
 
 data class UserRequest(
     @field:NotBlank
-    @field:Size(min = 3, max = 20)
+    @field:Size(min = 3, max = 30)
     @field:Pattern(regexp = "^[a-zA-Z0-9_]*$")
     val username: String,
 
