@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Import
+import org.springframework.test.web.servlet.get
 import java.util.*
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
@@ -135,6 +136,37 @@ class UserControllerTest {
 
         mockMvc.perform(delete("/users/$userId"))
             .andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun `getAllUsers should return HTTP 200 with users`() {
+        val user1 = User(
+            id = UUID.randomUUID(),
+            username = "alice123",
+            email = "alice@example.com",
+            password = "hashedpassword1"
+        )
+
+        val user2 = User(
+            id = UUID.randomUUID(),
+            username = "bob456",
+            email = "bob@example.com",
+            password = "hashedpassword2"
+        )
+
+        `when`(userManager.getAllUsers()).thenReturn(listOf(user1, user2))
+
+        mockMvc.get("/users")
+            .andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                jsonPath("$[0].id") { value(user1.id.toString()) }
+                jsonPath("$[0].username") { value("alice123") }
+                jsonPath("$[0].email") { value("alice@example.com") }
+                jsonPath("$[1].id") { value(user2.id.toString()) }
+                jsonPath("$[1].username") { value("bob456") }
+                jsonPath("$[1].email") { value("bob@example.com") }
+            }
     }
 
     @Test
