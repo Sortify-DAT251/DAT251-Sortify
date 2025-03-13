@@ -53,6 +53,10 @@ class UserManager (private val userRepository: UserRepository) {
         userRepository.deleteById(id)
     }
 
+    fun getAllUsers(): List<User> {
+        return userRepository.findAll()
+    }
+
     // Adds friend to users friendsList, and adds user to friends friendsList.
     // Returns the user object.
     fun addFriend(userId: UUID, friendId: UUID) {
