@@ -93,7 +93,7 @@ SELECT * FROM users;
 
 If you run into trouble with the program, here are some troubleshooting steps:
 
-**1.** Clean Gradle caches and restart the build:
+**1. Clean Gradle caches and restart the build:**
 
 ```bash
 ./gradlew --stop
