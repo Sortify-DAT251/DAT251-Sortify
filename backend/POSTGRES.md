@@ -51,3 +51,76 @@ Exit the service
 ```
 \q
 ```
+
+
+## Windows
+
+Start the postgreSQL service:
+
+
+```
+ 
+
+net start postgresql
+ 
+
+```
+
+Connect to the service
+
+```
+ 
+
+psql -U postgres -d postgres
+
+
+```
+Check what roles exists
+
+
+```
+
+\du
+
+```
+
+Create the postgres role if it doesnt exist
+
+```
+ 
+CREATE ROLE sortify WITH LOGIN SUPERUSER PASSWORD 'sortify';
+ 
+
+```
+
+Verify that the role was created
+
+```
+ 
+
+\du
+ 
+
+```
+
+Create the database: sortifydb
+
+```
+
+CREATE DATABASE sortifydb;
+
+```
+Verify it was created
+
+```
+
+\l
+
+```
+Exit the service
+
+```
+
+\q
+
+```
