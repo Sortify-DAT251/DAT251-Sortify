@@ -62,7 +62,7 @@ This will build and start both the backend and PostgreSQL containers. The backen
 
 ### 4️⃣ Test Database Connection
 
-To interact with the PostgreSQL database running in Docker, use the following command:
+To interact with the PostgreSQL database running in Docker, open another terminal while the application is running and run the following command:
 
 ```bash
 docker exec -it sortify-postgres psql -U sortify-admin -d sortify-backend-db
