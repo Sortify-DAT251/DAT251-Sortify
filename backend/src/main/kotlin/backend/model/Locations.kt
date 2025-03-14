@@ -1,9 +1,9 @@
 package backend.model
 
 import jakarta.persistence.*
-import jakarta.validation.constraints.*
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 import java.util.UUID
-
 
 
 @Entity
@@ -23,12 +23,12 @@ data class Locations(
         val address: String,
 
         @Column(nullable = false)
-        @field: NotNull
+        @field: NotBlank
         @field: Min(-90) @field: Max(90)
         val latitude: Double,
 
         @Column(nullable = false)
-        @field: NotNull
+        @field: NotBlank
         @field: Min(-180) @field: Max(180)
         val longitude: Double
 
