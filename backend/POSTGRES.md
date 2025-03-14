@@ -1,4 +1,4 @@
-# Connect to the PostgreSQL Database
+# Connect to the postgreSQL database
 
 Guide to create the sortify database locally and be able to connect with it through spring boot.
 
