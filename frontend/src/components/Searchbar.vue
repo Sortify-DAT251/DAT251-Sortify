@@ -46,15 +46,14 @@ const testItems = [
 ];
 const result = ref([]);
 
-const searchResults = () => {
+const searchResults = (itemList) => {
     const sortedResults = new Map();
     const input = searchInput.value.toLowerCase();
     let score = 1000;
-    for (let i = 0; i < testItems.length; i++) {
-        const test = testItems[i].toLowerCase();
-        // console.log("Search word:" + searchInput.value)
-        // console.log("Test word:" + testItems[i])
-        // console.log("Levenshtein distance: " + levenshtein(searchInput.value, testItems[i]))
+    for (let i = 0; i < itemList.length; i++) {
+        if (itemList[i].length < input.length-2) continue;
+        const test = itemList[i].toLowerCase();
+
         if (test === input) {
             score = 0; // Eksakt match (best mulig treff)
         } else if (test.startsWith(input)) {
@@ -64,7 +63,9 @@ const searchResults = () => {
         } else {
             score = 3 + levenshtein(input, test); // Fuzzy match
         }
-        sortedResults.set(testItems[i], score)
+    
+        sortedResults.set(itemList[i], score) 
+        
     }
     result.value = getSmallestKeys(sortedResults);
     console.log(sortedResults)
@@ -85,7 +86,7 @@ const levenshtein = (a, b) => {
 
 function getSmallestKeys(map, count = 5) {
   return [...map]
-    .sort((a, b) => a[1] - b[1] || a[0].length - b[0].length) // Sort by value (ascending)
+    .sort((a, b) => a[1] - b[1] || a[0].length - b[0].length) // Sort by value or length (ascending)
     .slice(0, count)             // Get first 'count' elements
     .map(([key]) => key);        // Extract keys
 }
@@ -93,7 +94,7 @@ function getSmallestKeys(map, count = 5) {
 
 <template>
     <div>
-        <input @keyup.enter="searchResults" type="text" v-model="searchInput" placeholder="Search..." />
+        <input @keyup="searchResults(testItems)" type="text" v-model="searchInput" placeholder="Search..." />
         <span>{{ result }}</span>
     </div>
 </template>
