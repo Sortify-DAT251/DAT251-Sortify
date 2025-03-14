@@ -12,7 +12,7 @@ import java.util.UUID
 data class User (
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO) // Changed GenerationType.IDENTITY to GenerationType.AUTO since Spring will generate UUID automatically
     val id: UUID? = null,
 
     @Column(nullable = false, unique = true)

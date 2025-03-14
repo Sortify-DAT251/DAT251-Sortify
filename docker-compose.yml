@@ -12,5 +12,23 @@ services:
     networks:
       - sortify-network
 
+  backend:
+    build:
+      context: ./backend
+    container_name: sortify-backend
+    restart: always
+    ports:
+      - "9876:9876"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://sortify-postgres:5432/sortify-backend-db
+      SPRING_DATASOURCE_USERNAME: sortify-admin
+      SPRING_DATASOURCE_PASSWORD: sortify-password
+    depends_on:
+      - postgres
+    networks:
+      - sortify-network
+
 networks:
   sortify-network:
+    driver: bridge
