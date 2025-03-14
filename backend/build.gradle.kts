@@ -33,6 +33,8 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.postgresql:postgresql")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
@@ -46,7 +48,7 @@ dependencies {
 	testImplementation("org.mockito:mockito-core:5.7.0")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation("org.testcontainers:postgresql:1.19.3")
-	implementation("org.springframework.boot:spring-boot-starter-security")
+	testImplementation("org.testcontainers:postgresql")
 }
 
 kotlin {

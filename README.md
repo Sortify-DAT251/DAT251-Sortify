@@ -89,7 +89,7 @@ SELECT * FROM users;
 
 ---
 
-### 6️⃣ Troubleshoot
+### 5️⃣ Troubleshoot
 
 If you run into trouble with the program, here are some troubleshooting steps:
 
