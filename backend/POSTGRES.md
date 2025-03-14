@@ -124,3 +124,10 @@ Exit the service
 \q
 
 ```
+
+
+### How to start everything (manually)
+
+
+
+### How to start everything (autmatically)

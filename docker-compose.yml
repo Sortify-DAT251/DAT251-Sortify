@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: sortify-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: sortify-backend-db
+      POSTGRES_USER: sortify-admin
+      POSTGRES_PASSWORD: sortify-password
+    ports:
+      - "5432:5432"
+    networks:
+      - sortify-network
+
+networks:
+  sortify-network:
