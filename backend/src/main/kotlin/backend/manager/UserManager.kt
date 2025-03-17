@@ -14,7 +14,12 @@ class UserManager (private val userRepository: UserRepository) {
     private val passwordEncoder = BCryptPasswordEncoder()
 
     fun createUser(username: String, email: String, password: String): User {
-
+        if (userRepository.existsByUsername(username)) {
+            throw IllegalArgumentException("Username already exists")
+        }
+        if (userRepository.existsByEmail(email)) {
+            throw IllegalArgumentException("Email already exists")
+        }
         // Salt and hash password before storing it
         val safePassword = passwordEncoder.encode(password)
 
@@ -95,5 +100,16 @@ class UserManager (private val userRepository: UserRepository) {
 
         userRepository.save(friend)
         userRepository.save(user)
+    }
+
+    fun loginUser(identifier: String, password: String): User {
+        val user = userRepository.findByUsername(identifier) ?: userRepository.findByEmail(identifier)
+            ?: throw NoSuchElementException("User not found")
+
+        if (!passwordEncoder.matches(password, user.password)) {
+            throw IllegalArgumentException("Wrong password")
+        }
+
+        return user
     }
 }
