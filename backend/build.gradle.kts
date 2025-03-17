@@ -51,6 +51,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation("org.testcontainers:postgresql:1.19.3")
 	testImplementation("org.testcontainers:postgresql")
+	testImplementation("org.hamcrest:hamcrest:2.2") 
 }
 
 kotlin {
