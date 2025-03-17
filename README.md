@@ -54,6 +54,7 @@ To run the backend using Docker Compose, follow these steps:
 
 ```bash
 ./gradlew clean build
+./gradlew bootJar
 ```
 
 3. Open another terminal and run the following commands from inside the **root** folder _where the docker-compose file is located_:
@@ -105,7 +106,7 @@ SELECT * FROM users;
 docker-compose up --build
 ```
 
----
+## But this should be handled by the CI pipeline.
 
 ### 5️⃣ Troubleshoot
 
