@@ -57,7 +57,9 @@ To run the backend using Docker Compose, follow these steps:
 ./gradlew bootJar
 ```
 
-3. Open another terminal and run the following commands from inside the **root** folder _where the docker-compose file is located_:
+_But this should be taken care of by the CI-pipeline..._
+
+3. Open another terminal and run the following commands from inside the **root** folder where the docker-compose file is located:
 
 ```bash
 # Build the application inside the docker container
@@ -93,20 +95,7 @@ SELECT * FROM users;
 
 **Yes!** Once you’ve started the backend with Docker Compose, you can leave the application running while you work on your feature. There’s no need to restart the backend unless you’re changing configurations or dependencies. You can continue working on your branch and test your changes without needing to restart everything.
 
-**NB!** To ensure that the changes are reflected in the running application, close it and re-run the follwing commands in the suitable directories:
-
-```bash
-# From backend-folder
-./gradlew clean build
-./gradlew bootJar
-```
-
-```bash
-# From root-folder
-docker-compose up --build
-```
-
-## But this should be handled by the CI pipeline.
+---
 
 ### 5️⃣ Troubleshoot
 
