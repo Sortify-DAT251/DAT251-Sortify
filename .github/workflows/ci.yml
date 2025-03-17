@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - '**'
+      - "**"
   pull_request:
     branches:
       - main
@@ -15,79 +15,83 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v3
+      - name: Check out code
+        uses: actions/checkout@v3
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: "17"
+          distribution: "temurin"
 
-    - name: Validate Gradle Wrapper
-      uses: gradle/wrapper-validation-action@v1
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
 
-    - name: Grant execute permissions to Gradlew
-      run: chmod +x gradlew
-      working-directory: backend
+      - name: Grant execute permissions to Gradlew
+        run: chmod +x gradlew
+        working-directory: backend
 
-    - name: Build with Gradle
-      run: ./gradlew build --no-daemon
-      working-directory: backend
+      - name: Build with Gradle
+        run: ./gradlew clean build --no-daemon
+        working-directory: backend
 
-    - name: Test with Gradle
-      run: ./gradlew test --no-daemon
-      working-directory: backend
+      - name: Build the jar file
+        run: ./gradlew bootJar
+        working-directory: backend
 
-    - name: Upload Test Result
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-result
-        path: backend/build/reports/tests/
-        if-no-files-found: warn
-        retention-days: 7
+      - name: Test with Gradle
+        run: ./gradlew test --no-daemon
+        working-directory: backend
 
-    - name: generate JaCoCo report
-      run: ./gradlew jacocoTestReport --no-daemon
-      working-directory: backend
+      - name: Upload Test Result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-result
+          path: backend/build/reports/tests/
+          if-no-files-found: warn
+          retention-days: 7
 
-    - name: Upload JaCoCo coverage
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: jacoco-report
-        path: backend/build/reports/jacoco/test/html/
-        if-no-files-found: warn
-        retention-days: 7
-    
-    - name: Build Docker image
-      run: docker build -t sortify-backend ./backend
+      - name: generate JaCoCo report
+        run: ./gradlew jacocoTestReport --no-daemon
+        working-directory: backend
+
+      - name: Upload JaCoCo coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: backend/build/reports/jacoco/test/html/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Build Docker image
+        run: docker build -t sortify-backend ./backend
   frontend:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v3
+      - name: Check out code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20.x'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20.x"
 
-    - name: Install dependencies
-      run: npm install
-      working-directory: frontend
+      - name: Install dependencies
+        run: npm install
+        working-directory: frontend
 
-    - name: Build with npm
-      run: npm run build
-      working-directory: frontend
+      - name: Build with npm
+        run: npm run build
+        working-directory: frontend
 
-    - name: Upload build artifact
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-artifact
-        path: frontend/build/reports/
-        if-no-files-found: warn
-        retention-days: 7
+      - name: Upload build artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: frontend/build/reports/
+          if-no-files-found: warn
+          retention-days: 7
