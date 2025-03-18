@@ -6,4 +6,4 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface LocationsRepository : JpaRepository<User, UUID>
+interface LocationsRepository : JpaRepository<Locations, UUID>

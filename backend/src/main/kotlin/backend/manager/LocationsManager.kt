@@ -10,9 +10,9 @@ import kotlin.NoSuchElementException
 class LocationsManager (private val LocationsRepository: LocationsRepository) {
 
 
-    fun createLocations(locationname: String, address: String, latitude: Double, longtitude:Double): User {
+    fun createLocations(locationname: String, address: String, latitude: Double, longtitude: Double): User {
 
-        val locations = Locations(locationname = locationname, address = address, latitude = latitude, longtitude = longtitude)
+        val locations = Locations(locationname = locationname, address = address, latitude = latitude, longitude = longitude)
         return LocationsRepository.save(locations)
     }
 
@@ -20,10 +20,10 @@ class LocationsManager (private val LocationsRepository: LocationsRepository) {
         return LocationsRepository.findById(id).orElse(null)
     }
 
-    fun updateLocations(id: UUID, updatedLocations: Locations) : Locations {
+    fun updateLocations(id: UUID, updatedLocations: Locations): Locations {
         val existingLocations = LocationsRepository.findById(id).orElseThrow { NoSuchElementException("Location not found") }
 
-        val LocationsToUpdate = existingLocations.copy(locationname = locationname, address = address, latitude = latitude, longtitude = longtitude)
+        val LocationsToUpdate = existingLocations.copy(locationname = locationname, address = address, latitude = latitude, longitude = longitude)
 
         return LocationsRepository.save(LocationsToUpdate)
     }
@@ -33,11 +33,13 @@ class LocationsManager (private val LocationsRepository: LocationsRepository) {
             throw NoSuchElementException("Location not found")
         }
 
-        val locations = LocationsRepository.findById(id).orElseThrow { NoSuchElementException("Location with ID: $id not found") }
+        val locations = LocationsRepository.findById(id).orElseThrow {
+            NoSuchElementException("Location with ID: $id not found") {
 
+            }
         }
-
         LocationsRepository.deleteById(id)
+
     }
 
     fun getAllLocations(): List<Locations> {

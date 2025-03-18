@@ -38,7 +38,7 @@ class LocationsController(private val LocationsManager: LocationsManager) {
     @PutMapping("/{id}")
     fun updateLocations(@PathVariable id: UUID, @RequestBody @Valid request: LocationsRequest): ResponseEntity<Locations> {
         return try {
-            val updatedLocation = Locations(locationname = locationname, address = address, latitude = latitude, longtitude = longtitude)
+            val updatedLocation = Locations(locationname = locationname, address = address, latitude = latitude, longitude = longitude)
             val location = LocationsManager.updateLocations(id, updatedLocations)
             if (location != null) {
                 ResponseEntity.ok(location)
