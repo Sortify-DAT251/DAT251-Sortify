@@ -57,6 +57,18 @@ class UserManager (private val userRepository: UserRepository) {
         return userRepository.findAll()
     }
 
+    fun updateUserLocation(id: UUID, latitude: Double, longitude: Double): User {
+        val user = userRepository.findById(id).orElseThrow { NoSuchElementException("User not found") }
+        user.latitude = latitude
+        user.longitude = longitude
+        return userRepository.save(user)
+    }
+
+    fun getUserLocation(id: UUID): Pair<Double?, Double?> {
+        val user = userRepository.findById(id).orElseThrow { NoSuchElementException("User not found") }
+        return Pair(user.latitude, user.longitude)
+    }
+
     // Adds friend to users friendsList, and adds user to friends friendsList.
     // Returns the user object.
     fun addFriend(userId: UUID, friendId: UUID) {

@@ -266,4 +266,42 @@ class UserManagerTest {
         assertNotEquals(rawPassword, savedUser.password)
         assertTrue(encoder.matches(rawPassword, savedUser.password))
     }
+
+    @Test
+    fun `updateUserLocation should update user's location and save`() {
+        val userId = UUID.randomUUID()
+        val user = User(id = userId, username = "testuser", email = "test@example.com", password = "hashedPassword")
+
+        `when`(userRepository.findById(userId)).thenReturn(Optional.of(user))
+        `when`(userRepository.save(any(User::class.java))).thenAnswer { it.arguments[0] }
+
+        val updatedUser = userManager.updateUserLocation(userId, 60.3913, 5.3221)
+
+        assertEquals(60.3913, updatedUser.latitude)
+        assertEquals(5.3221, updatedUser.longitude)
+    }
+
+    @Test
+    fun `getUserLocation should return correct coordinates`() {
+        val userId = UUID.randomUUID()
+        val user = User(id = userId, username = "testuser", email = "test@example.com", password = "hashedPassword", latitude = 60.3913, longitude = 5.3221)
+
+        `when`(userRepository.findById(userId)).thenReturn(Optional.of(user))
+
+        val (lat, lon) = userManager.getUserLocation(userId)
+
+        assertEquals(60.3913, lat)
+        assertEquals(5.3221, lon)
+    }
+
+    @Test
+    fun `getUserLocation should throw exception if user not found`() {
+        val userId = UUID.randomUUID()
+
+        `when`(userRepository.findById(userId)).thenReturn(Optional.empty())
+
+        assertThrows<NoSuchElementException> {
+            userManager.getUserLocation(userId)
+        }
+    }
 }

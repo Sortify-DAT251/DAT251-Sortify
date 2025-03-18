@@ -199,4 +199,34 @@ class UserControllerTest {
             .content(requestBody))
             .andExpect(status().isOk)
     }
+
+    @Test
+    fun `PUT updateUserLocation should return updated user`() {
+        val userId = UUID.randomUUID()
+        val updatedUser = User(id = userId, username = "testuser", email = "test@example.com", password = "hashedPassword", latitude = 60.3913, longitude = 5.3221)
+
+        `when`(userManager.updateUserLocation(eq(userId), anyDouble(), anyDouble())).thenReturn(updatedUser)
+
+        val requestBody = objectMapper.writeValueAsString(mapOf("latitude" to 60.3913, "longitude" to 5.3221))
+
+        mockMvc.perform(put("/users/$userId/location")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBody))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.latitude").value(60.3913))
+            .andExpect(jsonPath("$.longitude").value(5.3221))
+    }
+
+    @Test
+    fun `GET getUserLocation should return correct coordinates`() {
+        val userId = UUID.randomUUID()
+
+        `when`(userManager.getUserLocation(userId)).thenReturn(Pair(60.3913, 5.3221))
+
+        mockMvc.perform(get("/users/$userId/location"))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.latitude").value(60.3913))
+            .andExpect(jsonPath("$.longitude").value(5.3221))
+    }
+
 }

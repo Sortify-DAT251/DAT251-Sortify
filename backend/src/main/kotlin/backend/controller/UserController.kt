@@ -67,6 +67,18 @@ class UserController(private val userManager: UserManager) {
         return ResponseEntity.ok(users)
     }
 
+    @PutMapping("/{id}/location")
+    fun updateUserLocation(@PathVariable id: UUID, @RequestBody request: LocationRequest): ResponseEntity<User> {
+        val user = userManager.updateUserLocation(id, request.latitude, request.longitude)
+        return ResponseEntity.ok(user)
+    }
+
+    @GetMapping("/{id}/location")
+    fun getUserLocation(@PathVariable id: UUID): ResponseEntity<LocationResponse> {
+        val (latitude, longitude) = userManager.getUserLocation(id)
+        return ResponseEntity.ok(LocationResponse(latitude, longitude))
+    }
+
     @PostMapping("{id}/friends")
     fun addFriend(@PathVariable id: UUID, @RequestBody @Valid request: FriendRequest): ResponseEntity<Void> {
         userManager.addFriend(id, request.friendId)
@@ -94,6 +106,14 @@ data class UserRequest(
 
     @field:Size(min = 8)
     val password: String
+)
+
+data class LocationRequest(
+    val latitude: Double, val longitude: Double
+)
+
+data class LocationResponse(
+    val latitude: Double?, val longitude: Double?
 )
 
 // Data class for adding and removing friends
