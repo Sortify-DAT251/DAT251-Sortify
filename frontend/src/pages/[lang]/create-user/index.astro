@@ -1,0 +1,24 @@
+---
+import Layout from "../../../layouts/BaseLayout.astro";
+import CreateUserComponent from "../../../components/vue/CreateUser.vue";
+
+// Generate static paths for each language
+export async function getStaticPaths() {
+  return [
+    { params: { lang: "en" } },
+    { params: { lang: "no" } },
+  ];
+}
+
+// Get language from URL params (default to Norwegian)
+const lang = (Astro.params.lang || "no") as "no" | "en";
+
+// Set the page title based on language
+const pageTitle = lang === "en" ? "Create User" : "Lag Bruker";
+
+// Load the correct translation file dynamically
+const createUserTranslations = await import(`../../../locales/${lang}/createUser.json`);
+---
+<Layout pageTitle={pageTitle} lang={lang}>
+  <CreateUserComponent client:only="vue" lang={lang} translations={createUserTranslations} />
+</Layout>
