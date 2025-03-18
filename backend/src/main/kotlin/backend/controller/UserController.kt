@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @Validated
 class UserController(private val userManager: UserManager) {
 
@@ -78,10 +78,7 @@ class UserController(private val userManager: UserManager) {
         userManager.removeFriend(id, request.friendId)
         return ResponseEntity.ok().build()
     }
-
-
 }
-
 
 data class UserRequest(
     @field:NotBlank

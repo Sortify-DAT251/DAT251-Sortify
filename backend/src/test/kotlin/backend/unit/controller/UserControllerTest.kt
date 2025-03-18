@@ -47,7 +47,7 @@ class UserControllerTest {
 
         whenever(userManager.createUser(any(), any(), any())).thenReturn(user)
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isCreated)
@@ -60,7 +60,7 @@ class UserControllerTest {
     fun `should return 400 Bad Request for invalid user creation`() {
         val requestBody = objectMapper.writeValueAsString(mapOf("email" to "invalid-email", "password" to "123"))
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isBadRequest)
@@ -73,7 +73,7 @@ class UserControllerTest {
 
         `when`(userManager.getUserById(userId)).thenReturn(user)
 
-        mockMvc.perform(get("/users/$userId"))
+        mockMvc.perform(get("/api/users/$userId"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.id").value(userId.toString()))
             .andExpect(jsonPath("$.username").value("retrievedUser"))
@@ -86,7 +86,7 @@ class UserControllerTest {
 
         `when`(userManager.getUserById(userId)).thenReturn(null)
 
-        mockMvc.perform(get("/users/$userId"))
+        mockMvc.perform(get("/api/users/$userId"))
             .andExpect(status().isNotFound)
     }
 
@@ -98,7 +98,7 @@ class UserControllerTest {
 
         whenever(userManager.updateUser(eq(userId), any<User>())).thenReturn(updatedUser)
 
-        mockMvc.perform(put("/users/$userId")
+        mockMvc.perform(put("/api/users/$userId")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isOk)
@@ -113,7 +113,7 @@ class UserControllerTest {
 
         whenever(userManager.updateUser(eq(userId), any<User>())).thenReturn(null)
 
-        mockMvc.perform(put("/users/$userId")
+        mockMvc.perform(put("/api/users/$userId")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isNotFound)
@@ -124,7 +124,7 @@ class UserControllerTest {
         val userId = UUID.randomUUID()
 
         doNothing().`when`(userManager).deleteUser(userId)
-        mockMvc.perform(delete("/users/$userId"))
+        mockMvc.perform(delete("/api/users/$userId"))
             .andExpect(status().isNoContent)
     }
 
@@ -134,7 +134,7 @@ class UserControllerTest {
 
         doThrow(NoSuchElementException("User not found")).`when`(userManager).deleteUser(userId)
 
-        mockMvc.perform(delete("/users/$userId"))
+        mockMvc.perform(delete("/api/users/$userId"))
             .andExpect(status().isNotFound)
     }
 
@@ -156,7 +156,7 @@ class UserControllerTest {
 
         `when`(userManager.getAllUsers()).thenReturn(listOf(user1, user2))
 
-        mockMvc.get("/users")
+        mockMvc.get("/api/users")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -178,7 +178,7 @@ class UserControllerTest {
 
         doNothing().`when`(userManager).addFriend(userId, friendId)
 
-        mockMvc.perform(post("/users/$userId/friends")
+        mockMvc.perform(post("/api/users/$userId/friends")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isOk)
@@ -194,7 +194,7 @@ class UserControllerTest {
 
         doNothing().`when`(userManager).removeFriend(userId, friendId)
 
-        mockMvc.perform(delete("/users/$userId/friends")
+        mockMvc.perform(delete("/api/users/$userId/friends")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isOk)
