@@ -1,26 +1,36 @@
 <template>
   <div>
-    <h1>Create User</h1>
+    <h1>{{ translations.createUserTitle }}</h1>
     <form @submit.prevent="createUser">
-      <label for="username">Username:</label>
+      <label for="username">{{ translations.username }}</label>
       <input type="text" v-model="username" required />
-      <label for="email">Email:</label>
+      <label for="email">{{ translations.email }}</label>
       <input type="email" v-model="email" required />
-      <label for="password">Password:</label>
+      <label for="password">{{ translations.password }}</label>
       <input type="password" v-model="password" required />
-      <button type="submit">Create User</button>
+      <button type="submit">{{ translations.createUserButton }}</button>
     </form>
     <div v-if="user">
-      <h2>New User Created</h2>
+      <h2>{{ translations.newUserCreated }}</h2>
       <p><strong>ID:</strong> {{ user.id }}</p>
-      <p><strong>Username:</strong> {{ user.username }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p>
+        <strong>{{ translations.username }}:</strong> {{ user.username }}
+      </p>
+      <p>
+        <strong>{{ translations.email }}:</strong> {{ user.email }}
+      </p>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  lang: String,
+  translations: Object,
+});
 
 const username = ref("");
 const email = ref("");
