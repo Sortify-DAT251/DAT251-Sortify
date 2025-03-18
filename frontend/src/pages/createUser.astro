@@ -1,0 +1,8 @@
+---
+import Layout from "../layouts/BaseLayout.astro";
+import CreateUserComponent from "../components/vue/CreateUser.vue";
+---
+
+<Layout>
+  <CreateUserComponent client:only="vue" />
+</Layout>
