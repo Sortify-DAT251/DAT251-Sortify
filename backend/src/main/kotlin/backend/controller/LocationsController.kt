@@ -21,25 +21,31 @@ class LocationsController(private val LocationsManager: LocationsManager) {
     @PostMapping
     fun createLocations(@RequestBody @Valid request: LocationsRequest): ResponseEntity<Any> {
         return try {
-            val location = LocationsManager.createLocation(request.locationname, request.address, request.latitude, request.longtitude)
-            ResponseEntity.status(HttpStatus.CREATED).body(user)
+            val location = LocationsManager.createLocations(request.locationname, request.address, request.latitude, request.longitude)
+            ResponseEntity.status(HttpStatus.CREATED).body(location)
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("error" to "Location already exists"))
         }
     }
 
     @GetMapping("/{id}")
-    fun getLocations(@PathVariable id: UUID): ResponseEntity<Locations> {
+    fun getLocations(@PathVariable id: Long): ResponseEntity<Locations> {
         val location = LocationsManager.getLocationsById(id)
         return if ( location != null) ResponseEntity.ok(location)
         else ResponseEntity.status(HttpStatus.NOT_FOUND).build()
     }
 
     @PutMapping("/{id}")
-    fun updateLocations(@PathVariable id: UUID, @RequestBody @Valid request: LocationsRequest): ResponseEntity<Locations> {
+    fun updateLocations(@PathVariable id: Long, @RequestBody @Valid request: LocationsRequest): ResponseEntity<Locations> {
         return try {
-            val updatedLocation = Locations(locationname = locationname, address = address, latitude = latitude, longitude = longitude)
-            val location = LocationsManager.updateLocations(id, updatedLocations)
+            val updatedLocation = Locations(
+                    locationname = request.locationname,
+                    address = request.address,
+                    latitude = request.latitude,
+                    longitude = request.longitude
+            )
+            val location = LocationsManager.updateLocations(id, updatedLocation)
+
             if (location != null) {
                 ResponseEntity.ok(location)
             } else {
@@ -51,7 +57,7 @@ class LocationsController(private val LocationsManager: LocationsManager) {
     }
 
     @DeleteMapping("/{id}")
-    fun deleteLocations(@PathVariable id: UUID): ResponseEntity<Void> {
+    fun deleteLocations(@PathVariable id: Long): ResponseEntity<Void> {
         return try {
             LocationsManager.deleteLocations(id)
             ResponseEntity.noContent().build()
@@ -83,6 +89,6 @@ data class LocationsRequest(
         val latitude: Double,
 
         @field:Size(min = 1)
-        val longtitude: Double,
+        val longitude: Double
 
 )
