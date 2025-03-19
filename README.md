@@ -50,8 +50,16 @@ This will start the backend server at http://localhost:9876. You can test it via
 To run the backend using Docker Compose, follow these steps:
 
 1. ### START DOCKER DESKTOP ON YOUR LOCAL MACHINE
+2. CD into the `backend` folder and **build the jarfile**
 
-2. Run the following commands from **inside the root folder where the docker-compose file is located**:
+```bash
+./gradlew clean build
+./gradlew bootJar
+```
+
+_But this should be taken care of by the CI-pipeline..._
+
+3. Open another terminal and run the following commands from inside the **root** folder where the docker-compose file is located:
 
 ```bash
 # Build the application inside the docker container
