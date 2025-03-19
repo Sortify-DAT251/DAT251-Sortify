@@ -68,6 +68,18 @@ docker-compose up --build
 
 This will build and start both the backend and PostgreSQL containers. The backend will be available at http://localhost:9876.
 
+**_Extra_**
+**Docker Compose** can delegate the build process to **Docker Buildx Bake** for better performance. To enable this feature, you can set the `COMPOSE_BAKE` environment variable to `true`.
+
+```bash
+# Set the environment variable in the shell before running docker-compose
+export COMPOSE_BAKE=true
+docker-compose up --build
+
+# Set the environmental variable and run docker-compose as a one liner
+COMPOSE_BAKE=true docker-compose up --build
+```
+
 ### 4️⃣ Test Database Connection
 
 To interact with the PostgreSQL database running in Docker, open another terminal while the application is running and run the following command:
@@ -97,7 +109,21 @@ SELECT * FROM users;
 
 ---
 
-### 5️⃣ Troubleshoot
+### 5️⃣ Frontend
+
+Once the backend is running, open a new terminal and navigate to the frontend directory:
+
+```bash
+cd frontend
+npm install  # Install dependencies (only needed the first time)
+npm run dev  # Start the development server
+```
+
+🌍 http://localhost:4321 (Main page)
+📄 http://localhost:4321/en/create-user (User registration page - English)
+📄 http://localhost:4321/no/create-user (User registration page - Norwegian)
+
+### 6️⃣ Troubleshoot
 
 If you run into trouble with the program, here are some troubleshooting steps:
 

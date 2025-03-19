@@ -29,6 +29,16 @@ services:
     networks:
       - sortify-network
 
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #   container_name: sortify-frontend
+  #   restart: always
+  #   ports:
+  #     - "4321:4321"
+  #   networks:
+  #     - sortify-network
+
 networks:
   sortify-network:
     driver: bridge
