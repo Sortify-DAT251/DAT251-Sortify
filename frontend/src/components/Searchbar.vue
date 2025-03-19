@@ -1,5 +1,5 @@
 <script setup>
-
+import { distance } from 'fastest-levenshtein';
 import { ref } from 'vue';
 
 const searchInput = ref('');
@@ -61,7 +61,7 @@ const searchResults = (itemList) => {
         } else if (test.includes(input)) {
             score = 2; // Delvis match
         } else {
-            score = 3 + levenshtein(input, test); // Fuzzy match
+            score = 3 + distance(input, test); // Fuzzy match
         }
     
         sortedResults.set(itemList[i], score) 
@@ -70,19 +70,6 @@ const searchResults = (itemList) => {
     result.value = getSmallestKeys(sortedResults);
     console.log(sortedResults)
 }
-
-const levenshtein = (a, b) => {
-    if (a.length === 0) return b.length; // if a is empty, return length of b
-    if (b.length === 0) return a.length; // if b is empty, return length of a
-    if (a[0] === b[0]) return levenshtein(a.slice(1,a.length), b.slice(1,b.length)) // if head of a and b are eaqual, return levenshtein of tail of a and b
-    else {
-        return 1 + Math.min(
-            levenshtein(a.slice(1,a.length), b),
-            levenshtein(a, b.slice(1,b.length)),
-            levenshtein(a.slice(1,a.length), b.slice(1,b.length))
-        )
-    }
-};
 
 function getSmallestKeys(map, count = 5) {
   return [...map]
