@@ -1,6 +1,6 @@
 ---
 import Layout from "../../../layouts/BaseLayout.astro";
-import CreateUserComponent from "../../../components/vue/CreateUser.vue";
+import CreateUserComponent from "../../../components/CreateUser/CreateUser.tsx";
 
 // Generate static paths for each language
 export async function getStaticPaths() {
@@ -20,5 +20,5 @@ const pageTitle = lang === "en" ? "Create User" : "Lag Bruker";
 const createUserTranslations = await import(`../../../locales/${lang}/createUser.json`);
 ---
 <Layout pageTitle={pageTitle} lang={lang}>
-  <CreateUserComponent client:only="vue" lang={lang} translations={createUserTranslations} />
+  <CreateUserComponent client:only="react" lang={lang} translations={createUserTranslations} />
 </Layout>
