@@ -4,5 +4,6 @@
   "email": "E-post",
   "password": "Passord",
   "createUserButton": "Opprett Bruker",
-  "newUserCreated": "Ny Bruker Opprettet"
+  "newUserCreated": "Ny Bruker Opprettet",
+  "userListTitle": "Brukerliste"
 }

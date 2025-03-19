@@ -4,5 +4,6 @@
   "email": "Email",
   "password": "Password",
   "createUserButton": "Create User",
-  "newUserCreated": "New User Created"
+  "newUserCreated": "New User Created",
+  "userListTitle": "User List"
 }
