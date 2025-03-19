@@ -266,4 +266,31 @@ class UserManagerTest {
         assertNotEquals(rawPassword, savedUser.password)
         assertTrue(encoder.matches(rawPassword, savedUser.password))
     }
+
+    @Test
+    fun `loginUser should return user when logged in with username`() {
+        val rawPassword = "correctPassword"
+        val hashedPassword = encoder.encode(rawPassword)
+        val user = User( id = UUID.randomUUID(), username = "testuser", email = "test@example.com", password = hashedPassword
+        )
+
+        // Simulate that the user exists by username
+        whenever(userRepository.findByUsername("testuser")).thenReturn(user)
+
+        val loggedInUser = userManager.loginUser("testuser", rawPassword)
+        assertEquals(user, loggedInUser)
+    }
+
+    @Test
+    fun `loginUser should return user when logged in with email`() {
+        val rawPassword = "correctPassword"
+        val hashedPassword = encoder.encode(rawPassword)
+        val user = User(id = UUID.randomUUID(),  username = "testuser", email = "test@example.com", password = hashedPassword
+        )
+
+        whenever(userRepository.findByEmail("test@example.com")).thenReturn(user)
+
+        val loggedInUser = userManager.loginUser("test@example.com", rawPassword)
+        assertEquals(user, loggedInUser)
+    }
 }
