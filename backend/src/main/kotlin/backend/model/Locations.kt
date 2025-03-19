@@ -31,7 +31,11 @@ data class Locations(
         @Column(nullable = false)
         @field: NotBlank
         @field: Min(-180) @field: Max(180)
-        val longitude: Double
+        val longitude: Double,
+
+        @Column(nullable = false)
+        @field: NotBlank
+        val info: String
 
 
 )

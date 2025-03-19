@@ -21,7 +21,7 @@ class LocationsController(private val LocationsManager: LocationsManager) {
     @PostMapping
     fun createLocations(@RequestBody @Valid request: LocationsRequest): ResponseEntity<Any> {
         return try {
-            val location = LocationsManager.createLocations(request.locationname, request.address, request.latitude, request.longitude)
+            val location = LocationsManager.createLocations(request.locationname, request.address, request.latitude, request.longitude, request.info)
             ResponseEntity.status(HttpStatus.CREATED).body(location)
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("error" to "Location already exists"))
@@ -42,7 +42,8 @@ class LocationsController(private val LocationsManager: LocationsManager) {
                     locationname = request.locationname,
                     address = request.address,
                     latitude = request.latitude,
-                    longitude = request.longitude
+                    longitude = request.longitude,
+                    info = request.info
             )
             val location = LocationsManager.updateLocations(id, updatedLocation)
 
@@ -89,6 +90,9 @@ data class LocationsRequest(
         val latitude: Double,
 
         @field:Size(min = 1)
-        val longitude: Double
+        val longitude: Double,
+
+        @field:NotBlank
+        val info: String
 
 )
