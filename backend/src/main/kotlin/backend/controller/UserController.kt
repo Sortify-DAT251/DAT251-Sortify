@@ -79,6 +79,16 @@ class UserController(private val userManager: UserManager) {
         return ResponseEntity.ok().build()
     }
 
+    @PostMapping("/login")
+    fun loginUser(@RequestBody @Valid request: LoginRequest): ResponseEntity<Any> {
+        return try {
+            val user = userManager.loginUser(request.identifier, request.password)
+            ResponseEntity.ok(user)
+        } catch (ex: Exception) {
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(mapOf("error" to ex.message))
+        }
+    }
+
 
 }
 
@@ -99,4 +109,13 @@ data class UserRequest(
 // Data class for adding and removing friends
 data class FriendRequest(
     val friendId: UUID
+)
+
+data class LoginRequest(
+    @field:NotBlank
+    val identifier: String,
+
+    @field:NotBlank
+    @field:Size(min = 8)
+    val password: String
 )
