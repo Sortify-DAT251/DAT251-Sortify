@@ -1,12 +1,16 @@
 # Astro Frontend Code Explanation
 
-This Astro project is a frontend for a recycling application, featuring interactive maps and statistics. Below is a breakdown of the important components, their functions, and how they come together.
+This Astro project is a frontend for a recycling application, featuring interactive maps and statistics. Below is a 
+breakdown of the important components, their functions, and how they come together.
 
 ---
 
 ## Project Overview
 
-The frontend is built with **Astro**, a modern static site generator. It integrates different technologies like **Vue** for maps and **React** for some interactive components. The pages are made up of Astro components, which can use both Vue and React. Astro compiles everything into static HTML for performance, but allows for dynamic interactivity when needed.
+The frontend is built with **Astro**, a modern static site generator. It integrates different technologies like **Vue** 
+for maps and **React** for some interactive components. The pages are made up of Astro components, which can use both 
+Vue and React. Astro compiles everything into static HTML for performance, but allows for dynamic interactivity when 
+needed.
 
 ### Project Structure
 
@@ -42,8 +46,10 @@ my-project/
 
 ### Key Concepts:
 
-- **Astro Components**: Components like `.astro` files define both markup and layout. These components can include HTML, CSS, and JavaScript.
-- **Client-side Rendering**: Some components (like maps or interactive parts) use `client:only` to specify that they should only run in the browser (client-side), not during server-side rendering (SSR).
+- **Astro Components**: Components like `.astro` files define both markup and layout. These components can include HTML,
+- CSS, and JavaScript.
+- **Client-side Rendering**: Some components (like maps or interactive parts) use `client:only` to specify that they 
+- should only run in the browser (client-side), not during server-side rendering (SSR).
 
 ---
 
@@ -64,7 +70,8 @@ my-project/
 - **Layout**: This wraps the content with a consistent structure.
 - **Header**: A navigation bar at the top of the page, containing links like "Home" and "Statistics".
 - **Home**: A React component for the home page, dynamically rendered in the browser.
-- **LeafletMap**: A Vue component that initializes and displays the map using the Leaflet library. This runs on the client-side only.
+- **LeafletMap**: A Vue component that initializes and displays the map using the Leaflet library. This runs on the 
+- client-side only.
 
 ### 2. `src/pages/map.astro`
 
@@ -75,7 +82,8 @@ my-project/
 </Layout>
 ```
 
-- This page contains a simple title and the map. It uses the `LeafletMap` component (same as in the `index.astro` page), ensuring that the map runs client-side with Vue.
+- This page contains a simple title and the map. It uses the `LeafletMap` component (same as in the `index.astro` page),
+ensuring that the map runs client-side with Vue.
 
 ### 3. `src/pages/stats.astro`
 
@@ -107,7 +115,8 @@ my-project/
 </div>
 ```
 
-- The **Header** component defines the site’s navigation, including a logo and links for the home, statistics, and documentation.
+- The **Header** component defines the site’s navigation, including a logo and links for the home, statistics, and 
+documentation.
 
 ### 5. `src/components/LeafletMap.vue`
 
@@ -135,5 +144,6 @@ onMounted(() => {
 </template>
 ```
 
-- **LeafletMap.vue** initializes a **Leaflet map** on the client-side. It uses Vue's lifecycle hooks like `onMounted` to ensure the map is set up after the component is mounted.
+- **LeafletMap.vue** initializes a **Leaflet map** on the client-side. It uses Vue's lifecycle hooks like `onMounted` 
+to ensure the map is set up after the component is mounted.
 - The map uses OpenStreetMap and has several markers showing recycling locations.
