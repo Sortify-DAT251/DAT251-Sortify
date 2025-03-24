@@ -2,9 +2,12 @@
 
 ## 🚀 About This Project
 
-Sortify is a group project in the Dat251 subject at Western Norway University of Applied Sciences, and is developed by Mampenda, Mina, Kaja, Petter, Erik and Morten for the semester project in DAT251 - Modern Software Development Methods.
+Sortify is a group project in the Dat251 subject at Western Norway University of Applied Sciences, and is developed by 
+Erik, Kaja, Mampenda, Mina, Morten and Petter for the semester project in DAT251 - Modern Software Development Methods.
 
-Sortify is an application designed to make it easier for the user to recycle and dispose of waste. It invcludes an interactive map which displays collection points in an easy to read way. You can also compete against your friends and family to figure out who among you are better at recycling
+Sortify is an application designed to make it easier for the user to recycle and dispose of waste. It includes an 
+interactive map which displays collection points in a simple and readable. You can also compete against your friends 
+and family to figure out who among you are better at recycling.
 
 ## 🛠️ Tech Stack
 
@@ -43,7 +46,8 @@ cd DAT251-Sortify/backend
 ./gradlew bootRun
 ```
 
-This will start the backend server at http://localhost:9876. You can test it via your browser or an API client like Postman.
+This will start the backend server at http://localhost:9876. You can test it via your browser or an API client like 
+Postman.
 
 ### 3️⃣ Run the Backend with Docker Compose
 
@@ -59,17 +63,20 @@ To run the backend using Docker Compose, follow these steps:
 
 _But this should be taken care of by the CI-pipeline..._
 
-3. Open another terminal and run the following commands from inside the **root** folder where the docker-compose file is located:
+3. Open another terminal and run the following commands from inside the **root** folder where the docker-compose file is
+located:
 
 ```bash
 # Build the application inside the docker container
 docker-compose up --build
 ```
 
-This will build and start both the backend and PostgreSQL containers. The backend will be available at http://localhost:9876.
+This will build and start both the backend and PostgreSQL containers. The backend will be available at 
+http://localhost:9876.
 
 **_Extra_**
-**Docker Compose** can delegate the build process to **Docker Buildx Bake** for better performance. To enable this feature, you can set the `COMPOSE_BAKE` environment variable to `true`.
+**Docker Compose** can delegate the build process to **Docker Buildx Bake** for better performance. To enable this 
+feature, you can set the `COMPOSE_BAKE` environment variable to `true`.
 
 ```bash
 # Set the environment variable in the shell before running docker-compose
@@ -82,13 +89,15 @@ COMPOSE_BAKE=true docker-compose up --build
 
 ### 4️⃣ Test Database Connection
 
-To interact with the PostgreSQL database running in Docker, open another terminal while the application is running and run the following command:
+To interact with the PostgreSQL database running in Docker, open another terminal while the application is running and 
+run the following command:
 
 ```bash
 docker exec -it sortify-postgres psql -U sortify-admin -d sortify-backend-db
 ```
 
-This will open a PostgreSQL shell connected to your sortify-backend-db. Here’s an example of interacting with the database:
+This will open a PostgreSQL shell connected to your sortify-backend-db. Here’s an example of interacting with the 
+database:
 
 ```bash
 # List tables
@@ -105,7 +114,9 @@ SELECT * FROM users;
 
 #### Can I leave the app running while working on my feature?
 
-**Yes!** Once you’ve started the backend with Docker Compose, you can leave the application running while you work on your feature. There’s no need to restart the backend unless you’re changing configurations or dependencies. You can continue working on your branch and test your changes without needing to restart everything.
+**Yes!** Once you’ve started the backend with Docker Compose, you can leave the application running while you work on 
+your feature. There’s no need to restart the backend unless you’re changing configurations or dependencies. You can 
+continue working on your branch and test your changes without needing to restart everything.
 
 ---
 
@@ -131,8 +142,8 @@ If you run into trouble with the program, here are some troubleshooting steps:
 
 ```bash
 ./gradlew --stop
- rm -rf ~/.gradle/caches
-  rm -rf .gradle
+rm -rf ~/.gradle/caches
+rm -rf .gradle
 ./gradlew clean build --stacktrace
 ./gradlew bootJar
 ./gradlew bootRun
@@ -140,11 +151,12 @@ If you run into trouble with the program, here are some troubleshooting steps:
 
 **2. Try closing and re-opening the IDE.**
 
-**3. If you're using `VSCode`, try uninstalling "Kotlin by fwcd" and only use "Kotling Language by mathiasfrohlich"**
+**3. If you're using `VSCode`, try uninstalling "Kotlin by fwcd" and only use "Kotlin Language by mathiasfrohlich"**
 
 **4. Common Docker Troubleshooting:**
 
-Connect the backend to the same network when running it locally: If you’re running Docker locally and encounter network issues, try this:
+Connect the backend to the same network when running it locally: If you’re running Docker locally and encounter network 
+issues, try this:
 
 ```bash
 docker network connect sortify-network sortify-backend
@@ -162,7 +174,8 @@ Delete unused volumes:
 docker volume prune
 ```
 
-This will prompt you to confirm the removal of all unused volumes. Make sure you review what volumes are listed before confirming.
+This will prompt you to confirm the removal of all unused volumes. Make sure you review what volumes are listed before 
+confirming.
 
 **If you're still having troubles, ask chat..**
 

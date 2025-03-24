@@ -1,31 +1,26 @@
 ---
 import "../styles/global.css";
 import Header from "../components/Global/Header/Header.tsx";
+import HeadComponent from "../components/Global/Head/Head.astro";
+import enBaseLayout from "../locales/en/baseLayout.json";
+import noBaseLayout from "../locales/no/baseLayout.json";
 
 interface LayoutProps {
   lang: "en" | "no";
   pageTitle: string;
 }
 
-// Get language from URL params (default to Norwegian)
-// const lang = (Astro.params.lang || "no") as "no" | "en";
-
 // Props from the parent
 const { pageTitle, lang } = Astro.props as LayoutProps;
 
-// Load the correct translation file dynamically
-const baseLayoutTranslations = await import(`../locales/${lang}/baseLayout.json`);
+// Select the appropriate translation based on the `lang` prop
+const baseLayoutTranslations = lang === "en" ? enBaseLayout : noBaseLayout;
 ---
 
-
-<html lang={lang}>
-  <head>
-    <title>Sortify - {pageTitle}</title>
-  </head>
-  <body>
-    <Header lang={lang} translations={baseLayoutTranslations} />
-    <div class="main-content"> 
-      <slot />
-    </div>
-  </body>
-</html>
+<HeadComponent title={`Sortify - ${pageTitle}`} lang={lang} />
+<body>
+  <Header lang={lang} translations={baseLayoutTranslations} />
+  <div class="main-content">
+    <slot />
+  </div>
+</body>

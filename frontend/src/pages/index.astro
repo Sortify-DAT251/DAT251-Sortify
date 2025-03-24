@@ -1,8 +1,7 @@
 ---
 import Layout from "../layouts/BaseLayout.astro";
-import Home from "../components/Global/Home/Home.astro";
 import Main from "../components/Global/Main.astro";
-import LeafletMap from "../components/map.vue";
+import LeafletMap from "../components/Map/map.vue";
 
 // Generate static paths for each language
 export async function getStaticPaths() {
@@ -12,16 +11,21 @@ export async function getStaticPaths() {
   ];
 }
 
-// Get language from URL params (default to English)
-const lang = (Astro.params.lang || "en") as "no" | "en";
+// Get language from URL params (default to Norwegian)
+const lang = (Astro.params.lang || "no") as "en" | "no";
 
-// Set the page title based on language
+// Set the page title based on languagæe
 const pageTitle = lang === "en" ? "Home" : "Hjem";
 ---
 
 <Layout lang={lang} pageTitle={pageTitle}>
   <Main>
-    <Home client:only="react" lang={lang} />
     <LeafletMap client:only="vue" />
   </Main>
 </Layout>
+
+<!--
+---
+Astro.redirect("/no");
+---
+-->
