@@ -35,6 +35,7 @@ async function fetchLocations() {
     locations.forEach((location) => {
       L.marker([location.latitude, location.longitude])
           .addTo(map)
+
           .bindPopup(`<b>${location.locationname, location.address}</b><br>${location.info}`);
     });
   } catch (error) {
