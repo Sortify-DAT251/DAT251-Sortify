@@ -27,12 +27,12 @@ async function fetchLocations() {
     const response = await fetch("http://localhost:9876/locations");
     if (!response.ok) throw new Error("Failed to fetch locations");
     const locations = await response.json();
-
+s
     locations.forEach((location) => {
       L.marker([location.latitude, location.longitude])
           .addTo(map)
 
-          .bindPopup(`<b>${location.locationname, location.address}</b><br>${location.info}`);
+          .bindPopup(`<b>${location.name, location.address}</b><br>${location.info}`);
     });
   } catch (error) {
     console.error("Error fetching locations:", error);
