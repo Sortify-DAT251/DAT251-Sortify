@@ -3,8 +3,6 @@ import { onMounted } from "vue";
 import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
 import L from "leaflet"; // Import Leaflet itself
 
-
-
 onMounted(() => {
   if (typeof window === "undefined") return; // Prevents SSR errors
   let map = L.map("map").setView([60.39, 5.32], 11);
@@ -16,14 +14,12 @@ onMounted(() => {
 
   fetchLocations();
 
-
   map.on('popupopen', function (e){
     document.getElementById('popuplink').addEventListener('click', function (event){
       event.preventDefault();
       window.open(this.href, '_blank');
     })
   })
-
 });
 
 async function fetchLocations() {
@@ -31,11 +27,12 @@ async function fetchLocations() {
     const response = await fetch("http://localhost:9876/locations");
     if (!response.ok) throw new Error("Failed to fetch locations");
     const locations = await response.json();
-
+s
     locations.forEach((location) => {
       L.marker([location.latitude, location.longitude])
           .addTo(map)
-          .bindPopup(`<b>${location.locationname, location.address}</b><br>${location.info}`);
+
+          .bindPopup(`<b>${location.name, location.address}</b><br>${location.info}`);
     });
   } catch (error) {
     console.error("Error fetching locations:", error);
@@ -46,15 +43,10 @@ async function fetchLocations() {
 
 <template>
   <div id="map"></div>
-</template> 
+</template>
 <style>
-  #map {
-    height: 400px;
-    width: 500px
-  }
+#map {
+  height: 400px;
+  width: 500px
+}
 </style>
-
-
-
-
-

@@ -10,9 +10,9 @@ import kotlin.NoSuchElementException
 class LocationsManager (private val LocationsRepository: LocationsRepository) {
 
 
-    fun createLocations(locationname: String, address: String, latitude: Double, longitude: Double, info: String): Locations {
+    fun createLocations(name: String, address: String, latitude: Double, longitude: Double, info: String): Locations {
 
-        val locations = Locations(locationname = locationname, address = address, latitude = latitude, longitude = longitude, info = info)
+        val locations = Locations(name = name, address = address, latitude = latitude, longitude = longitude, info = info)
         return LocationsRepository.save(locations)
     }
 
@@ -25,7 +25,7 @@ class LocationsManager (private val LocationsRepository: LocationsRepository) {
 
         val LocationsToUpdate = existingLocations.copy(
                 id = existingLocations.id,
-                locationname = updatedLocations.locationname,
+                name = updatedLocations.name,
                 address = updatedLocations.address,
                 latitude = updatedLocations.latitude,
                 longitude = updatedLocations.longitude,

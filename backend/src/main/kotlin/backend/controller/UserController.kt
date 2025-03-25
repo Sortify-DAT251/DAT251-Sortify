@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @Validated
 class UserController(private val userManager: UserManager) {
 
@@ -88,10 +88,7 @@ class UserController(private val userManager: UserManager) {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(mapOf("error" to ex.message))
         }
     }
-
-
 }
-
 
 data class UserRequest(
     @field:NotBlank

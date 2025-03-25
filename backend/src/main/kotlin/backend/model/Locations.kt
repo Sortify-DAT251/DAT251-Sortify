@@ -17,7 +17,7 @@ data class Locations(
 
         @Column(nullable = false)
         @field: NotBlank
-        val locationname: String,
+        val name: String,
 
         @Column(nullable = false, unique = true)
         @field: NotBlank
