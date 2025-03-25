@@ -13,6 +13,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -23,6 +24,8 @@ class UserManagerTest {
 
     @InjectMocks
     private lateinit var userManager: UserManager
+
+    private val encoder = BCryptPasswordEncoder()
 
     @Test
     fun `createUser should generate an ID and save user`(){
@@ -39,7 +42,8 @@ class UserManagerTest {
 
         assertEquals(username, savedUser.username)
         assertEquals(email, savedUser.email)
-        assertEquals(password, savedUser.password)
+        //assertEquals(password, savedUser.password)
+        assertTrue(encoder.matches(password, savedUser.password))
         assertNull(savedUser.id, "ID skal ikke være generert før lagring")
         assertEquals(savedUser, createdUser)
     }
@@ -94,10 +98,11 @@ class UserManagerTest {
 
         assertEquals(updatedUser.username, result.username)
         assertEquals(updatedUser.email, result.email)
-        assertEquals(updatedUser.password, result.password)
+        assertTrue(encoder.matches(updatedUser.password, result.password))
         assertEquals(userId, result.id)
         verify(userRepository).findById(userId)
-        verify(userRepository).save(updatedUser)
+        verify(userRepository).save(argThat { user ->
+            encoder.matches("newPassword", user.password) })
     }
 
     @Test
@@ -160,6 +165,35 @@ class UserManagerTest {
     }
 
     @Test
+    fun `getAllUsers should return a list of users`() {
+        val user1 = User(
+            id = UUID.randomUUID(),
+            username = "alice123",
+            email = "alice@example.com",
+            password = encoder.encode("securepassword")
+        )
+
+        val user2 = User(
+            id = UUID.randomUUID(),
+            username = "bob456",
+            email = "bob@example.com",
+            password = encoder.encode("anotherpassword")
+        )
+
+        whenever(userRepository.findAll()).thenReturn(listOf(user1, user2))
+
+        val users = userManager.getAllUsers()
+
+        assertEquals(2, users.size)
+        assertEquals("alice123", users[0].username)
+        assertEquals("alice@example.com", users[0].email)
+        assertTrue(encoder.matches("securepassword", users[0].password))
+        assertEquals("bob456", users[1].username)
+        assertEquals("bob@example.com", users[1].email)
+        assertTrue(encoder.matches("anotherpassword", users[1].password))
+    }
+
+    @Test
     fun `addFriend should add target to users friendsList and add user to targets friendsList`() {
 
         val (user, friend) = mockUserandFriend()
@@ -217,5 +251,46 @@ class UserManagerTest {
 
         assert(!user.friends.contains(friend))
         assert(user.friends.isEmpty())
+    }
+
+    @Test
+    fun `should hash password before creating a new user`(){
+        val rawPassword = "somePassword"
+        val userId = UUID.randomUUID()
+        val user = User(id = userId, username = "user", email = "user@example.com", password = rawPassword)
+
+        `when`(userRepository.save(any(User::class.java))).thenAnswer { it.arguments[0] }
+
+        val savedUser = userManager.createUser(user.username, user.email, user.password)
+
+        assertNotEquals(rawPassword, savedUser.password)
+        assertTrue(encoder.matches(rawPassword, savedUser.password))
+    }
+
+    @Test
+    fun `loginUser should return user when logged in with username`() {
+        val rawPassword = "correctPassword"
+        val hashedPassword = encoder.encode(rawPassword)
+        val user = User( id = UUID.randomUUID(), username = "testuser", email = "test@example.com", password = hashedPassword
+        )
+
+        // Simulate that the user exists by username
+        whenever(userRepository.findByUsername("testuser")).thenReturn(user)
+
+        val loggedInUser = userManager.loginUser("testuser", rawPassword)
+        assertEquals(user, loggedInUser)
+    }
+
+    @Test
+    fun `loginUser should return user when logged in with email`() {
+        val rawPassword = "correctPassword"
+        val hashedPassword = encoder.encode(rawPassword)
+        val user = User(id = UUID.randomUUID(),  username = "testuser", email = "test@example.com", password = hashedPassword
+        )
+
+        whenever(userRepository.findByEmail("test@example.com")).thenReturn(user)
+
+        val loggedInUser = userManager.loginUser("test@example.com", rawPassword)
+        assertEquals(user, loggedInUser)
     }
 }

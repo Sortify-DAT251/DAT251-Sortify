@@ -12,12 +12,12 @@ import java.util.UUID
 data class User (
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO) // Changed GenerationType.IDENTITY to GenerationType.AUTO since Spring will generate UUID automatically
     val id: UUID? = null,
 
     @Column(nullable = false, unique = true)
     @field:NotBlank
-    @field:Size(min = 3, max = 20)
+    @field:Size(min = 3, max = 30)
     @field:Pattern(regexp = "^[a-zA-Z0-9_]*+$")
     val username: String,
 

@@ -38,7 +38,7 @@ class UserTest {
 
     @Test
     fun `should reject invalid usernames`() {
-        val invalidUsernames = listOf("", "ab", "abcdefghijklmnopqrstu", "Invalid Username", "Invalid!")
+        val invalidUsernames = listOf("", "ab", "abcdefghijklmnopqrstulkjujhhfhhfgd", "Invalid Username", "Invalid!")
         invalidUsernames.forEach { username ->
             val user = User(id = UUID.randomUUID(), username = username, email = "test@example.com", password = "SecurePass123")
             val violations = validator.validate(user)
