@@ -211,7 +211,7 @@ class UserControllerTest {
 
         whenever(userManager.loginUser(eq("loginUser"), eq("SomeHashedPassword"))).thenReturn(user)
 
-        mockMvc.post("/users/login") {
+        mockMvc.post("/api/users/login") {
             contentType = MediaType.APPLICATION_JSON
             content = requestBody
         }.andExpect {
@@ -229,7 +229,7 @@ class UserControllerTest {
 
         whenever(userManager.loginUser(eq("loginUser"), eq("WrongPassword"))).thenThrow(RuntimeException(errorMessage))
 
-        mockMvc.post("/users/login") {
+        mockMvc.post("/api/users/login") {
             contentType = MediaType.APPLICATION_JSON
             content = requestBody
         }.andExpect {
