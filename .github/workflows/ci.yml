@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -67,6 +67,7 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t sortify-backend ./backend
+
   frontend:
     runs-on: ubuntu-latest
 

@@ -1,18 +1,31 @@
 ---
-import LeafletMap from "../components/map.vue";
-import Layout from "../layouts/Layout.astro";
-import Home from "../components/Home.astro";
-import Header from "../components/Header.astro";
-import Main from "../components/Main.astro";
+import Layout from "../layouts/BaseLayout.astro";
+import Main from "../components/Global/Main.astro";
+import LeafletMap from "../components/Map/map.vue";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Generate static paths for each language
+export async function getStaticPaths() {
+  return [
+    { params: { lang: "en" } },
+    { params: { lang: "no" } },
+  ];
+}
+
+// Get language from URL params (default to Norwegian)
+const lang = (Astro.params.lang || "no") as "en" | "no";
+
+// Set the page title based on languagæe
+const pageTitle = lang === "en" ? "Home" : "Hjem";
 ---
 
-<Layout>
-	<Main>
-		<Header />
-		<Home />
+<Layout lang={lang} pageTitle={pageTitle}>
+  <Main>
     <LeafletMap client:only="vue" />
-	</Main>
+  </Main>
 </Layout>
+
+<!--
+---
+Astro.redirect("/no");
+---
+-->
