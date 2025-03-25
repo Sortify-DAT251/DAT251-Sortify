@@ -1,7 +1,6 @@
 <script setup>
 import { distance } from 'fastest-levenshtein';
 import { onBeforeMount, ref } from 'vue';
-import axios from 'axios';
 
 const wasteItems = ref([])
 const searchInput = ref('');
@@ -37,7 +36,6 @@ const testItems = [
 
   "Gressklipp", "Løv", "Kvister", "Greiner", "Jord",
   "Planter", "Blomster", "Ugress", "Busker", "Hageavfall",
-
 
   "Stearinlys", "Tannbørste", "Q-tips", "Bomullspads",
   "Engangshanske", "Bleie", "Bind", "Tampong", "Snus", "Sigarettsneip",
@@ -83,8 +81,8 @@ function getSmallestKeys(map, count = 5) {
 async function getWasteNames(){
 
     try {
-        const response = await axios.get("http://localhost:9876/waste/");
-        wasteItems.value = response.data;
+        const response = await fetch("http://localhost:9876/waste/");
+        wasteItems.value = response.json();
     }
     catch(error){
         console.log("Error fetching waste database!")
@@ -101,7 +99,7 @@ onBeforeMount(() => {
 
 <template>
     <div>
-        <input @keyup="searchResults(testItems)" type="text" v-model="searchInput" placeholder="Search..." class="rounded-xl"/>
+        <input @keyup="searchResults(testItems)" type="text" v-model="searchInput" placeholder="Search..." />
         <span>{{ result }}</span>
     </div>
 </template>

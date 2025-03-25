@@ -30,6 +30,8 @@ export default function Header({ lang, translations }: HeaderProps) {
               className={styles.logoImage}
             />
           </a>
+          {/* Searchbar */}
+          // Searchbar component goes here
           {/* Navigation Links */}
           <div className={styles.links}>
             <a href={`/${currentLang}/`} className={styles.button}>
