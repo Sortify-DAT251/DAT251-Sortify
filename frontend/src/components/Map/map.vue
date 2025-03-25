@@ -3,8 +3,6 @@ import { onMounted } from "vue";
 import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
 import L from "leaflet"; // Import Leaflet itself
 
-
-
 onMounted(() => {
   if (typeof window === "undefined") return; // Prevents SSR errors
   let map = L.map("map").setView([60.39, 5.32], 11);
@@ -22,7 +20,6 @@ onMounted(() => {
       window.open(this.href, '_blank');
     })
   })
-
 });
 
 async function fetchLocations() {

@@ -88,10 +88,7 @@ class UserController(private val userManager: UserManager) {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(mapOf("error" to ex.message))
         }
     }
-
-
 }
-
 
 data class UserRequest(
     @field:NotBlank
