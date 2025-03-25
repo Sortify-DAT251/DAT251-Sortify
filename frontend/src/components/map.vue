@@ -36,7 +36,7 @@ async function fetchLocations() {
       L.marker([location.latitude, location.longitude])
           .addTo(map)
 
-          .bindPopup(`<b>${location.locationname, location.address}</b><br>${location.info}`);
+          .bindPopup(`<b>${location.name, location.address}</b><br>${location.info}`);
     });
   } catch (error) {
     console.error("Error fetching locations:", error);
