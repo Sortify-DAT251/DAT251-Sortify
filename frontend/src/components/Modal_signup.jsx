@@ -93,8 +93,6 @@ export default function SignupModal() {
                         </Grid>
                     </Grid>
 
-
-
                     {/* Sign-In Button */}
                     <Button
                         variant="contained"
