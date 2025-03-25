@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 import java.util.*
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
@@ -198,5 +199,42 @@ class UserControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `Should login user successfully`() {
+        val userId = UUID.randomUUID()
+        val user = User(id = userId, username = "loginUser", email = "login@example.com", password = "SomeHashedPassword")
+        val requestBody = objectMapper.writeValueAsString(
+            mapOf("identifier" to "loginUser", "password" to "SomeHashedPassword")
+        )
+
+        whenever(userManager.loginUser(eq("loginUser"), eq("SomeHashedPassword"))).thenReturn(user)
+
+        mockMvc.post("/users/login") {
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.id") { value(userId.toString()) }
+            jsonPath("$.username") { value("loginUser") }
+            jsonPath("$.email") { value("login@example.com") }
+        }
+    }
+
+    @Test
+    fun `Should login user failure`() {
+        val requestBody = objectMapper.writeValueAsString(mapOf("identifier" to "loginUser", "password" to "WrongPassword"))
+        val errorMessage = "Invalid credentials"
+
+        whenever(userManager.loginUser(eq("loginUser"), eq("WrongPassword"))).thenThrow(RuntimeException(errorMessage))
+
+        mockMvc.post("/users/login") {
+            contentType = MediaType.APPLICATION_JSON
+            content = requestBody
+        }.andExpect {
+            status { isUnauthorized() }
+            jsonPath("$.error") { value(errorMessage) }
+        }
     }
 }
