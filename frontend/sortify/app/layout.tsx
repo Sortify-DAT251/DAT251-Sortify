@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Header from "./component/header"
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import Footer from "./component/footer";
@@ -9,6 +10,9 @@ import Footer from "./component/footer";
 =======
 import Header from "./component/header";
 >>>>>>> 867eead (merged into sub-erik)
+=======
+import Header from "./component/header"
+>>>>>>> 78395e6 (search inside header)
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
