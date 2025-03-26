@@ -7,16 +7,10 @@ body {
   font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
-<<<<<<< HEAD
   align-items: center;
   text-align: center;
   background-color: #CFD1CC;
   justify-content: space-between;
-=======
-  justify-content: center;
-  align-items: center;
-  text-align: center;
->>>>>>> 79f7d6e (global.css)
 }
 
 .main-content {
