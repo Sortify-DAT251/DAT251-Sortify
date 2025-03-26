@@ -1,7 +1,7 @@
 package backend.controller
 
-import backend.model.Locations
-import backend.manager.LocationsManager
+import backend.model.Location
+import backend.manager.LocationManager
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*
 import java.util.UUID
 @CrossOrigin(origins = ["http://localhost:5173"])
 @RestController
-@RequestMapping("/locations")
+@RequestMapping("/api/location")
 @Validated
-class LocationsController(private val LocationsManager: LocationsManager) {
+class LocationController(private val LocationManager: LocationManager) {
 
     @PostMapping
-    fun createLocations(@RequestBody @Valid request: LocationsRequest): ResponseEntity<Any> {
+    fun createLocation(@RequestBody @Valid request: LocationRequest): ResponseEntity<Any> {
         return try {
-            val location = LocationsManager.createLocations(request.name, request.address, request.latitude, request.longitude, request.info)
+            val location = LocationManager.createLocation(request.name, request.address, request.latitude, request.longitude, request.info)
             ResponseEntity.status(HttpStatus.CREATED).body(location)
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("error" to "Location already exists"))
@@ -29,23 +29,23 @@ class LocationsController(private val LocationsManager: LocationsManager) {
     }
 
     @GetMapping("/{id}")
-    fun getLocations(@PathVariable id: Long): ResponseEntity<Locations> {
-        val location = LocationsManager.getLocationsById(id)
+    fun getLocation(@PathVariable id: Long): ResponseEntity<Location> {
+        val location = LocationManager.getLocationById(id)
         return if ( location != null) ResponseEntity.ok(location)
         else ResponseEntity.status(HttpStatus.NOT_FOUND).build()
     }
 
     @PutMapping("/{id}")
-    fun updateLocations(@PathVariable id: Long, @RequestBody @Valid request: LocationsRequest): ResponseEntity<Locations> {
+    fun updateLocation(@PathVariable id: Long, @RequestBody @Valid request: LocationRequest): ResponseEntity<Location> {
         return try {
-            val updatedLocation = Locations(
+            val updatedLocation = Location(
                     name = request.name,
                     address = request.address,
                     latitude = request.latitude,
                     longitude = request.longitude,
                     info = request.info
             )
-            val location = LocationsManager.updateLocations(id, updatedLocation)
+            val location = LocationManager.updateLocation(id, updatedLocation)
 
             if (location != null) {
                 ResponseEntity.ok(location)
@@ -58,9 +58,9 @@ class LocationsController(private val LocationsManager: LocationsManager) {
     }
 
     @DeleteMapping("/{id}")
-    fun deleteLocations(@PathVariable id: Long): ResponseEntity<Void> {
+    fun deleteLocation(@PathVariable id: Long): ResponseEntity<Void> {
         return try {
-            LocationsManager.deleteLocations(id)
+            LocationManager.deleteLocation(id)
             ResponseEntity.noContent().build()
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
@@ -68,16 +68,16 @@ class LocationsController(private val LocationsManager: LocationsManager) {
     }
 
     @GetMapping
-    fun getAllLocations(): ResponseEntity<List<Locations>> {
-        val locations = LocationsManager.getAllLocations()
-        return ResponseEntity.ok(locations)
+    fun getAllLocation(): ResponseEntity<List<Location>> {
+        val Location = LocationManager.getAllLocation()
+        return ResponseEntity.ok(Location)
     }
 
 
 }
 
 
-data class LocationsRequest(
+data class LocationRequest(
         @field:NotBlank
         @field:Size(min = 3, max = 30)
         @field:Pattern(regexp = "^[a-zA-Z0-9_]*$")

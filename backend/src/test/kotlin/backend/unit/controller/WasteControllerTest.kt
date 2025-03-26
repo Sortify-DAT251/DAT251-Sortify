@@ -47,7 +47,7 @@ class WasteControllerTest {
         whenever(wasteManager.createWaste(any(), any())).thenReturn(waste)
 
         mockMvc.perform(
-            post("/waste")
+            post("/api/waste")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isCreated)
@@ -60,7 +60,7 @@ class WasteControllerTest {
     fun `should return 400 Bad Request for invalid waste creation`() {
         val requestBody = objectMapper.writeValueAsString(mapOf("type" to "", "info" to ""))
 
-        mockMvc.perform(post("/waste")
+        mockMvc.perform(post("/api/waste")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBody))
             .andExpect(status().isBadRequest)
@@ -73,7 +73,7 @@ class WasteControllerTest {
 
         `when`(wasteManager.getWasteById(wasteId)).thenReturn(waste)
 
-        mockMvc.perform(get("/waste/$wasteId"))
+        mockMvc.perform(get("/api/waste/$wasteId"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.id").value(wasteId.toString()))
             .andExpect(jsonPath("$.type").value("Tekstil"))
@@ -86,7 +86,7 @@ class WasteControllerTest {
 
         `when`(wasteManager.getWasteById(wasteId)).thenReturn(null)
 
-        mockMvc.perform(get("/waste/$wasteId"))
+        mockMvc.perform(get("/api/waste/$wasteId"))
             .andExpect(status().isNotFound)
     }
 
@@ -95,7 +95,7 @@ class WasteControllerTest {
         val wasteId = UUID.randomUUID()
 
         doNothing().`when`(wasteManager).deleteWaste(wasteId)
-        mockMvc.perform(delete("/waste/$wasteId"))
+        mockMvc.perform(delete("/api/waste/$wasteId"))
             .andExpect(status().isNoContent)
     }
 
@@ -105,7 +105,7 @@ class WasteControllerTest {
 
         doThrow(NoSuchElementException("Waste not found")).`when`(wasteManager).deleteWaste(wasteId)
 
-        mockMvc.perform(delete("/waste/$wasteId"))
+        mockMvc.perform(delete("/api/waste/$wasteId"))
             .andExpect(status().isNotFound)
     }
 
@@ -125,7 +125,7 @@ class WasteControllerTest {
 
         `when`(wasteManager.getAllWaste()).thenReturn(listOf(waste1, waste2))
 
-        mockMvc.get("/waste")
+        mockMvc.get("/api/waste")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }

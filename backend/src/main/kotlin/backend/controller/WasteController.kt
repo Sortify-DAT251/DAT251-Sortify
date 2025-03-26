@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/waste")
+@RequestMapping("/api/waste")
 @Validated
 class WasteController(private val wasteManager: WasteManager) {
 

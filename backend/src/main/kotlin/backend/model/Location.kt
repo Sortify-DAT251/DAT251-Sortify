@@ -6,10 +6,9 @@ import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import java.util.UUID
 
-
 @Entity
 @Table(name = "locations")
-data class Locations(
+data class Location(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +35,4 @@ data class Locations(
         @Column(nullable = false)
         @field: NotBlank
         val info: String
-
-
 )
