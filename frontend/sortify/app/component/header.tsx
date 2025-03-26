@@ -1,4 +1,5 @@
 import styles from "../component/header.module.css";
+import Searcbar from "./searchbar";
 
 export default function Header() {
     return (
@@ -14,6 +15,9 @@ export default function Header() {
                             className={styles.logoImage}
                         />
                     </a>
+
+                    <Searcbar/>
+
                     {/* Navigation Links */}
                     <div className={styles.links}>
                         <a href="/en/" className={styles.button}>

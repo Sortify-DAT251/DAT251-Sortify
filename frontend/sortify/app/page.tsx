@@ -1,7 +1,9 @@
 'use client';
 
 import dynamic from "next/dynamic";
-const Map = dynamic(() => import("../app/component/map"), {ssr: false});
+
+const Map = dynamic(() => import("./component/map"), {ssr: false});
+
 
 export default function Page(){
     return(
@@ -12,3 +14,4 @@ export default function Page(){
     </main>
     );
 }
+
