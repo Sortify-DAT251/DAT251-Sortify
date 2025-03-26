@@ -17,9 +17,7 @@ export default function Header() {
                             className={styles.logoImage}
                         />
                     </a>
-
-                    <Searcbar />
-
+                    <Searcbar/>
                     {/* Navigation Links */}
                     <div className={styles.items}>
                         <span >
