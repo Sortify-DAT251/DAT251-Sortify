@@ -9,13 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@emotion/cache": "^11.14.0",
+=======
+<<<<<<< HEAD
+
+>>>>>>> a597d34 (merged)
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.0",
     "@mui/material": "^7.0.0",
+<<<<<<< HEAD
     "@mui/material-nextjs": "^7.0.0",
     "fastest-levenshtein": "^1.0.16",
+=======
+
+=======
+>>>>>>> 8dcd077 (merged)
+>>>>>>> a597d34 (merged)
     "leaflet": "^1.9.4",
     "next": "15.2.4",
     "react": "^19.0.0",
@@ -24,10 +35,18 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+<<<<<<< HEAD
     "@types/node": "20.17.28",
     "@types/react": "19.0.12",
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
     "typescript": "5.8.2"
+=======
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+>>>>>>> 8dcd077 (merged)
   }
 }
