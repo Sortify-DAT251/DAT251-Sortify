@@ -1,6 +1,8 @@
-"use client"
+"use client";
 import { distance } from "fastest-levenshtein"
-import {useState } from "react"
+import { useState, useRef } from "react"
+import { InputAdornment, OutlinedInput, Popper, Paper, List, ListItem, ClickAwayListener } from "@mui/material"
+import SearchIcon from "@mui/icons-material/Search"
 
 
 
@@ -47,15 +49,19 @@ export default function Searcbar(){
     "Barnevogn", "TV", "Høyttaler"
   ];
     const [queryResult, setQueryResult] = useState<string[]>([])
+    const [open, setOpen] = useState(false);
+    const anchorRef = useRef(null);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newQuery = event.target.value;
         setQuery(newQuery);
+        setOpen(true);
         setQueryResult(searchResults(query))
         console.log("Query updated:", newQuery);
     };
 
     function searchResults(query: String): string[]{
+        if (query.length === 0) return [];
         const sortedResults = new Map();
         const input = query.toLowerCase();
         let score = 1000;
@@ -89,9 +95,29 @@ export default function Searcbar(){
 
     return (
         <div>
-            <input type="text" value={query} placeholder="Søk..." onChange={handleChange}/>
-            <button>Søk</button>
-            <p>{queryResult}</p>
+            <OutlinedInput 
+                type="text" 
+                value={query} 
+                placeholder="Søk..." 
+                fullWidth
+                onChange={handleChange}
+                onBlur={() => setTimeout(()=> setOpen(false), 200)}
+                inputRef={anchorRef}
+                startAdornment = {<InputAdornment position="start"><SearchIcon/></InputAdornment>} 
+            />
+            <Popper open={open} anchorEl={anchorRef.current} placement="bottom-start" sx={{zIndex: 1000}}>
+                <ClickAwayListener onClickAway={() => setOpen(false)}>
+                <Paper>
+                    <List>
+                        {queryResult.map((item) => (
+                            <ListItem key={item}>
+                                {item}
+                            </ListItem>
+                        ))}
+                    </List>
+                </Paper>
+                </ClickAwayListener>
+            </Popper>
         </div>
     )
 }
