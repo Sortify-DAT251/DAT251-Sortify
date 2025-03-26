@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+<<<<<<< HEAD
 import Header from "./component/header"
+=======
+import Header from "./component/header";
+import Searcbar from "./component/searchbar";
+>>>>>>> bb68a3a (merged into sub-erik)
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,8 +32,16 @@ export default function RootLayout({
     <html lang="en">
     <head>
     </head>
+<<<<<<< HEAD
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Header />
+=======
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Header />
+        <Searcbar/>
+>>>>>>> bb68a3a (merged into sub-erik)
         {children}
       </body>
     </html>
