@@ -1,7 +1,11 @@
 .headerContainer {
     width: 100%;
-    background-color: #fff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #EEEFED;
+    padding: 20px 20px; /* Padding for space inside */
+    border-bottom: 2px solid #545454; /* Green line at the bottom */
+    box-sizing: border-box; /* Ensures padding and borders don't cause overflow */
+    margin: 0 auto; /* Centers the header within the screen */
+    overflow: hidden; /* Prevents any overflow due to rounded corners */
 }
 
 .header {
@@ -33,13 +37,81 @@
     gap: 20px;
 }
 
+/* Styling for the menu button */
 .button {
+    display: inline-block;
+    background-color: #4CAF50; /* Green background for the button */
+    color: white;
+    padding: 12px 24px;
+    margin: 8px 0; /* Add some vertical space between items */
+    border-radius: 30px; /* Rounded edges */
     text-decoration: none;
-    font-size: 1.2rem;
-    color: #333;
-    transition: color 0.2s ease-in-out;
+    font-weight: 600; /* Slightly bold for emphasis */
+    text-transform: uppercase; /* Make text uppercase for a clean look */
+    font-size: 14px;
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    cursor: pointer;
+    box-sizing: border-box; /* Prevent padding overflow */
 }
 
+/* Hover effect for the button */
 .button:hover {
-    color: #4f7e52;
+    background-color: #45a049; /* Darker green on hover */
+    transform: translateY(-3px); /* Slight upward movement on hover */
+    box-shadow: 0px 6px 20px rgba(0, 123, 255, 0.2); /* Subtle shadow effect */
+}
+
+/* Styling for the dropdown items */
+.menuItem {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #333; /* Dark text color */
+    transition: background-color 0.2s, color 0.2s; /* Smooth color change */
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #EEEFED; /* Light background */
+}
+
+/* Hover effect for dropdown items */
+.menuItem:hover {
+    background-color: #4CAF50; /* Green background on hover */
+    color: white; /* White text on hover */
+}
+
+/* Dropdown menu container */
+.dropdownMenu {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 100%; /* Positions the dropdown directly below the button */
+    left: 0;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    min-width: 160px;
+    z-index: 2000; /* Ensure the dropdown appears above the header */
+    margin-top: 10px; /* Space between the button and dropdown */
+    max-height: 300px; /* Max height of the dropdown */
+    overflow-y: auto; /* Adds a scrollbar if items overflow */
+}
+
+/* Show dropdown when clicked */
+.dropdownMenu.show {
+    display: block; /* Show the dropdown */
+}
+
+/* Styling for the menu wrapper (for positioning) */
+.menuWrapper {
+    position: relative; /* Ensures the dropdown is positioned relative to the button */
+}
+
+/* Add an arrow to indicate the dropdown */
+.menuWrapper::after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #ffffff; /* White arrow pointing downwards */
 }

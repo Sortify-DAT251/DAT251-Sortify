@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./component/header"
+import Footer from "./component/footer";
 
 
 const geistSans = Geist({
@@ -33,8 +34,7 @@ export default function RootLayout({
         <Header />
         {children}
         <div id="map"></div>
-
-      <Header />
+        <Footer />
 
 
 

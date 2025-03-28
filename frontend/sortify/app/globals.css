@@ -7,9 +7,10 @@ body {
   font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
+  background-color: #CFD1CC;
+  justify-content: space-between;
 }
 
 .main-content {
@@ -21,3 +22,13 @@ body {
   flex-direction: column;
   text-align: center;
 }
+
+#map {
+  border-radius: 15px;      /* Rounded corners */
+  margin-top: 20px;         /* Space between content and map */
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px #545454;
+}
+
+
