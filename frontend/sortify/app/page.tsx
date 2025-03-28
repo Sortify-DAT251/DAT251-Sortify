@@ -9,7 +9,7 @@ export default function Page(){
     return(
     <main>
         <h1>Recycling Map</h1>
-        <Map></Map>
+        <Map/>
 
     </main>
     );
