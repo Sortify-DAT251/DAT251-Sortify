@@ -1,4 +1,5 @@
 'use client'
+import styles from "../component/header.module.css";
 import React, { useState } from "react";
 import { Modal, Box, Typography, Button, Grid, TextField } from "@mui/material";
 
@@ -44,7 +45,7 @@ export default function SignupModal() {
     return (
         <div>
             <a
-                className="button"
+                className={styles.button}
                 onClick={handleOpen}
             >
                 Sign Up / In

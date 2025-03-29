@@ -21,8 +21,8 @@ export default function Header() {
                     <Searcbar />
 
                     {/* Navigation Links */}
-                    <div className={styles.links}>
-                        <span className={styles.button}>
+                    <div className={styles.items}>
+                        <span >
                             <SignupModal/>
                         </span>
 

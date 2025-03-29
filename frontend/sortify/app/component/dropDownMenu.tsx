@@ -1,31 +1,57 @@
 'use client'
-import React, { useState } from 'react';
-import styles from './header.module.css'; // Import the CSS module styles
+import styles from "../component/header.module.css";
+import React, { useState } from "react";
+import { Menu, MenuItem, IconButton } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu"; // Hamburger icon
 
-export default function DropdownMenu() {
-    const [isOpen, setIsOpen] = useState(false);
+const DropdownMenu = () => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
 
-    const toggleMenu = () => {
-        setIsOpen(!isOpen); // Toggle the menu visibility
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
     };
 
     return (
-        <div className={styles.menuWrapper}>
-            {/* The button that toggles the dropdown */}
-            <a
-                href="#"
-                className={styles.button}
-                onClick={toggleMenu} // Toggle the dropdown menu on click
+        <div>
+            {/* Hamburger Menu Button */}
+            <IconButton
+                onClick={handleClick}
+                sx={{
+                    width: 40,
+                    height: 40,
+                    border: "2px solid black",
+                    borderRadius: 1,
+                    backgroundColor: "#4CAF50"
+                }}
             >
-                Menu
-            </a>
+                <MenuIcon sx={{ color: "black" }} />
+            </IconButton>
 
-            {/* Dropdown menu items */}
-            <div className={`${styles.dropdownMenu} ${isOpen ? styles.show : ''}`}>
-                <a href="/en/" className={styles.menuItem}>Home</a>
-                <a href="/en/stats" className={styles.menuItem}>Stats</a>
-                <a href="https://docs.astro.build/en/develop-and-build/" className={styles.menuItem}>Documentation</a>
-            </div>
+            {/* Dropdown Menu */}
+            <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                transformOrigin={{ vertical: "top", horizontal: "left" }}
+            >
+                <MenuItem component="a" href="/en/" className={styles.menuItem} onClick={handleClose}>
+                    Home
+                </MenuItem>
+                <MenuItem component="a" href="/en/stats" className={styles.menuItem} onClick={handleClose}>
+                    Stats
+                </MenuItem>
+                <MenuItem component="a" href="https://docs.astro.build/en/develop-and-build/" className={styles.menuItem} onClick={handleClose}>
+                    Documentation
+                </MenuItem>
+            </Menu>
         </div>
     );
-}
+};
+
+export default DropdownMenu;
