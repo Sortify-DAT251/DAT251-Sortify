@@ -12,7 +12,7 @@ export default function Header() {
                     <a href="/en/" className={styles.logo}>
                         <img
                             src="/sortify-header.png"
-                            alt="sortify logo"
+                            alt="sortify logo header version"
                             width="200"
                             className={styles.logoImage}
                         />
