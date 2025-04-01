@@ -5,6 +5,19 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useEffect, useState } from "react";
 
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: markerIcon2x.src ?? markerIcon2x,
+    iconUrl: markerIcon.src ?? markerIcon,
+    shadowUrl: markerShadow.src ?? markerShadow,
+});
+
+
 export default function Map() {
     useEffect(() => {
         if (typeof window === 'undefined') return; // Prevent SSR issues
@@ -49,7 +62,12 @@ async function fetchLocations(map) {
         const locations = await response.json();
 
         locations.forEach((location) => {
-            L.marker([location.latitude, location.longitude])
+            L.circleMarker([location.latitude, location.longitude], {
+                radius: 8, // base size
+                color: 'blue',
+                fillColor: '#3f51b5',
+                fillOpacity: 0.8,
+            })
                 .addTo(map)
                 .bindPopup(
                     `<b>${location.name}, ${location.address}</b><br>${location.info}`
