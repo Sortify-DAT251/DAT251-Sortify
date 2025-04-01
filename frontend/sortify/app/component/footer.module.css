@@ -1,0 +1,25 @@
+.footerContainer {
+    width: 100%;
+    background-color: #EEEFED;
+    padding: 100px 100px; /* Adjust padding for a taller footer */
+    border-top: 2px solid #545454; /* Black line at the top */
+    text-align: center;
+    box-sizing: border-box; /* Ensure padding and borders don't cause overflow */
+    overflow: hidden; /* Prevent corners from overflowing the container */
+    margin: 0 auto; /* Ensures footer stays within the bounds of the screen */
+}
+
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%; /* Ensures it takes the full height of the container */
+    text-align: center;
+}
+
+.footerText {
+    color: #45a049; /* Green text */
+    font-size: 18px; /* Adjust font size */
+    font-weight: bold;
+}

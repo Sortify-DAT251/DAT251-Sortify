@@ -1,5 +1,7 @@
 import styles from "../component/header.module.css";
 import Searcbar from "./searchbar";
+import SignupModal from "@/app/component/signup";
+import DropdownMenu from "@/app/component/dropDownMenu"; // Import the DropdownMenu component
 
 export default function Header() {
     return (
@@ -10,28 +12,21 @@ export default function Header() {
                     <a href="/en/" className={styles.logo}>
                         <img
                             src="/sortify-header.png"
-                            alt="sortify logo"
+                            alt="sortify logo header version"
                             width="200"
                             className={styles.logoImage}
                         />
                     </a>
 
-                    <Searcbar/>
+                    <Searcbar />
 
                     {/* Navigation Links */}
-                    <div className={styles.links}>
-                        <a href="/en/" className={styles.button}>
-                            Home
-                        </a>
-                        <a href="/en/stats" className={styles.button}>
-                            Stats
-                        </a>
-                        <a
-                            href="https://docs.astro.build/en/develop-and-build/"
-                            className={styles.button}
-                        >
-                            Documentation
-                        </a>
+                    <div className={styles.items}>
+                        <span >
+                            <SignupModal/>
+                        </span>
+
+                        <DropdownMenu/>
                     </div>
                 </nav>
             </header>
