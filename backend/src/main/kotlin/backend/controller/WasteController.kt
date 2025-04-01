@@ -61,7 +61,7 @@ class WasteController(private val wasteManager: WasteManager) {
         }
     }
 
-    @GetMapping
+    @GetMapping("/")
     fun getAllWaste(): ResponseEntity<List<Waste>> {
         val waste = wasteManager.getAllWaste()
         return ResponseEntity.ok(waste)
