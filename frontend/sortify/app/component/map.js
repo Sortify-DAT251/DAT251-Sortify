@@ -19,8 +19,20 @@ L.Icon.Default.mergeOptions({
 
 
 export default function Map() {
+    const [userLocation, setUserLocation] = useState(null);
+
     useEffect(() => {
         if (typeof window === 'undefined') return; // Prevent SSR issues
+
+        navigator.geolocation.getCurrentPosition((position) => {
+            const locationData = {
+                lat: position.coords.latitude,
+                lon: position.coords.longitude
+            };
+            setUserLocation(locationData);
+        }, (error) => {
+            console.error("Error getting location", error.message);
+        });
 
         const map = L.map('map').setView([60.39, 5.32], 11);
 
@@ -30,7 +42,14 @@ export default function Map() {
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(map);
 
-        fetchLocations(map);
+        if (userLocation) {
+            L.marker([userLocation.lat, userLocation.lon], 13)
+                .addTo(map)
+                .bindPopup("You are here!")
+                .openPopup();
+
+            map.setView([userLocation.lat, userLocation.lon], 13)
+        }
 
         map.on('popupopen', () => {
             const link = document.getElementById('popuplink');
@@ -45,7 +64,7 @@ export default function Map() {
         return () => {
             map.remove();
         };
-    }, []);
+    }, [userLocation]);
 
     return (
         <div
@@ -54,6 +73,7 @@ export default function Map() {
         />
     );
 }
+
 
 async function fetchLocations(map) {
     try {
