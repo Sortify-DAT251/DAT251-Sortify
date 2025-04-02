@@ -9,8 +9,8 @@ import kotlin.NoSuchElementException
 @Service
 class WasteManager(private val wasteRepository: WasteRepository) {
 
-    fun createWaste(type: String, info: String): Waste {
-        val waste = Waste(type = type, info = info)
+    fun createWaste(name: String, type: String, info: String): Waste {
+        val waste = Waste(name = name, type = type, info = info)
         return wasteRepository.save(waste)
     }
 

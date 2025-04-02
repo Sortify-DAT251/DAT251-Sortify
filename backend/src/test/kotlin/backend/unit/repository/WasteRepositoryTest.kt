@@ -29,7 +29,7 @@ class WasteRepositoryTest {
     @Test
     @Transactional
     fun `save should persist waste and generate ID`() {
-        val waste = Waste(type = "Plast", info = "Plast er...")
+        val waste = Waste(name = "Plast", type = "Plast", info = "Plast er...")
         val savedWaste = wasteRepository.save(waste)
 
         assertNotNull(savedWaste.id)
@@ -40,7 +40,7 @@ class WasteRepositoryTest {
     @Test
     @Transactional
     fun `findById should return waste if it exists`() {
-        val waste = wasteRepository.save(Waste(type = "Plast", info = "Plast er..."))
+        val waste = wasteRepository.save(Waste(name = "Plast", type = "Plast", info = "Plast er..."))
         val foundWaste = wasteRepository.findById(waste.id!!)
 
         assertTrue(foundWaste.isPresent)
@@ -60,7 +60,7 @@ class WasteRepositoryTest {
     @Test
     @Transactional
     fun `deleteById should remove waste`() {
-        val waste = wasteRepository.save(Waste(type = "Plast", info = "Plast er..."))
+        val waste = wasteRepository.save(Waste(name = "Plast",type = "Plast", info = "Plast er..."))
         assertTrue(wasteRepository.findById(waste.id!!).isPresent)
 
         wasteRepository.deleteById(waste.id!!)
