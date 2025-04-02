@@ -69,7 +69,7 @@ export default function Map() {
 
         setMarker(newMarker);
 
-        map.setView([userLocation.lat, userLocation.lon], 15);
+        map.setView([userLocation.lat, userLocation.lon], 17);
     }, [userLocation, map]);
 
     return (
