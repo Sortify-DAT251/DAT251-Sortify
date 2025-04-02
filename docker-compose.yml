@@ -7,6 +7,10 @@ services:
       POSTGRES_DB: sortify-backend-db
       POSTGRES_USER: sortify-admin
       POSTGRES_PASSWORD: sortify-password
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "sortify-admin", "-d", "sortify-backend-db"]
+      interval: 5s
+      retries: 5
     ports:
       - "5432:5432"
     networks:
@@ -26,7 +30,8 @@ services:
       SPRING_DATASOURCE_USERNAME: sortify-admin
       SPRING_DATASOURCE_PASSWORD: sortify-password
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - sortify-network
 
