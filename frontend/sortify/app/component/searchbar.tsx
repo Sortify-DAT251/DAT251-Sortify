@@ -14,9 +14,10 @@ export default function Searcbar(){
         const getWasteItems = async () =>{
             const response = await fetch("http://localhost:9876/api/waste");
             
-            const data: string[] = await response.json();
-            console.log("data:",data)
-            setWasteItems(data);
+            const data: { name: string }[] = await response.json();
+            const items = data.map(obj => obj.name)
+            console.log("data:",items)
+            setWasteItems(items);
             
         };
         getWasteItems();
