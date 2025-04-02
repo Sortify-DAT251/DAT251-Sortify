@@ -22,7 +22,30 @@ export default function Map() {
     useEffect(() => {
         if (typeof window === 'undefined') return; // Prevent SSR issues
 
-        const map = L.map('map').setView([60.39, 5.32], 11);
+        const map = L.map('map');
+
+        // Try to use geolocation
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                map.setView([latitude, longitude], 9); // zoom level can be adjusted
+                L.circleMarker([latitude, longitude], {
+                    radius: 8, // base size
+                    color: 'red',
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.8,
+                })
+                    .addTo(map)
+                    .bindPopup("You are here")
+                    .openPopup();
+            },
+            () => {
+                // If permission denied or error, default to Bergen
+                map.setView([50.39, 5.32], 11);
+
+
+            }
+        );
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
