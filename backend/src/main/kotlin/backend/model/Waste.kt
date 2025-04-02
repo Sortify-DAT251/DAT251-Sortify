@@ -15,9 +15,10 @@ data class Waste (
     @field:NotBlank
     val name: String,
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = false)
     @field:NotBlank
     val type: String,
+
 
     @field:NotBlank
     val info: String,

@@ -15,6 +15,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     container_name: sortify-backend
     restart: always
     ports:
@@ -29,15 +30,17 @@ services:
     networks:
       - sortify-network
 
-  frontend:
-    build:
-      context: ./frontend/sortify
-    container_name: sortify-frontend
-    restart: always
-    ports:
-      - "3000:3000"
-    networks:
-      - sortify-network
+  # frontend:
+  #   build:
+  #     context: ./frontend/sortify
+  #   container_name: sortify-frontend
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=production
+  #   networks:
+  #     - sortify-network
 
 networks:
   sortify-network:

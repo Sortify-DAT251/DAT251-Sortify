@@ -30,16 +30,18 @@ class WasteManagerTest {
     @Test
     fun `createWaste should create an id and save the waste`() {
 
+        val name = "T-skjorte"
         val type = "Tekstil"
         val info = "Tekstiler er..."
 
         `when`(wasteRepository.save(any())).thenAnswer { invocation -> invocation.arguments[0] as Waste }
 
-        val createdWaste = wasteManager.createWaste(type, info)
+        val createdWaste = wasteManager.createWaste(name, type, info)
         val wasteCaptor = ArgumentCaptor.forClass(Waste::class.java)
         verify(wasteRepository).save(wasteCaptor.capture())
         val savedWaste = wasteCaptor.value
 
+        assertEquals(name, savedWaste.name)
         assertEquals(type, savedWaste.type)
         assertEquals(info, savedWaste.info)
         assertNull(savedWaste.id, "ID should not be generated before saving")
@@ -48,13 +50,14 @@ class WasteManagerTest {
 
     @Test
     fun `createWaste should throw exception if save fails`() {
+        val name = "T-skjorte"
         val type = "Tekstil"
         val info = "Tekstiler er..."
 
         `when`(wasteRepository.save(any())).thenThrow(RuntimeException("Database error"))
 
         val exception = org.junit.jupiter.api.assertThrows<RuntimeException> {
-            wasteManager.createWaste(type, info)
+            wasteManager.createWaste(name, type, info)
         }
         Assertions.assertEquals("Database error", exception.message)
     }
@@ -62,7 +65,7 @@ class WasteManagerTest {
     @Test
     fun `getWasteById should return waste if found`() {
         val wasteId = UUID.randomUUID()
-        val expectedWaste = Waste(id = wasteId, type = "Papir", info ="Papir er...")
+        val expectedWaste = Waste(id = wasteId, name = "Avis", type = "Papir", info ="Papir er...")
         `when`(wasteRepository.findById(wasteId)).thenReturn(Optional.of(expectedWaste))
 
         val result = wasteManager.getWasteById(wasteId)
@@ -86,14 +89,15 @@ class WasteManagerTest {
     @Test
     fun `updateWaste should update existing waste and return updated waste`() {
         val wasteId = UUID.randomUUID()
-        val existingWaste = Waste(id = wasteId, type = "oldType", info = "old info...")
-        val updatedWaste = Waste(id = wasteId, type = "newType", info = "new info...")
+        val existingWaste = Waste(id = wasteId, name = "oldName", type = "oldType", info = "old info...")
+        val updatedWaste = Waste(id = wasteId, name = "newName", type = "newType", info = "new info...")
 
         `when`(wasteRepository.findById(wasteId)).thenReturn(Optional.of(existingWaste))
         `when`(wasteRepository.save(any())).thenAnswer { it.arguments[0] }
 
         val result = wasteManager.updateWaste(wasteId, updatedWaste)
 
+        assertEquals(updatedWaste.name, result.name)
         assertEquals(updatedWaste.type, result.type)
         assertEquals(updatedWaste.info, result.info)
         assertEquals(wasteId, result.id)
@@ -103,7 +107,7 @@ class WasteManagerTest {
     @Test
     fun `updateWaste should throw exception if waste does not exist`() {
         val wasteId = UUID.randomUUID()
-        val updatedWaste = Waste(id = wasteId, type = "Plastic", info = "Recyclable plastic waste")
+        val updatedWaste = Waste(id = wasteId, name = "Plastic bag", type = "Plastic", info = "Recyclable plastic waste")
         `when`(wasteRepository.findById(wasteId)).thenReturn(Optional.empty())
 
         val exception = assertThrows<NoSuchElementException> {
@@ -118,7 +122,7 @@ class WasteManagerTest {
     @Test
     fun `deleteWaste should remove waste if found`() {
         val wasteId = UUID.randomUUID()
-        val waste = Waste(id = wasteId, type = "Glass", info = "Glass bottles and jars")
+        val waste = Waste(id = wasteId, name = "Glass jar", type = "Glass", info = "Glass bottles and jars")
         `when`(wasteRepository.existsById(wasteId)).thenReturn(true)
         `when`(wasteRepository.findById(wasteId)).thenReturn(Optional.of(waste))
 
