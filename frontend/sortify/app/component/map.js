@@ -17,59 +17,65 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow.src ?? markerShadow,
 });
 
-
 export default function Map() {
     const [userLocation, setUserLocation] = useState(null);
+    const [map, setMap] = useState(null);
+    const [marker, setMarker] = useState(null);
 
     useEffect(() => {
         if (typeof window === 'undefined') return; // Prevent SSR issues
 
-        navigator.geolocation.getCurrentPosition((position) => {
-            const locationData = {
-                lat: position.coords.latitude,
-                lon: position.coords.longitude
-            };
-            setUserLocation(locationData);
-        }, (error) => {
-            console.error("Error getting location", error.message);
-        });
-
-        const map = L.map('map').setView([60.39, 5.32], 11);
+        // Initialize map only once
+        const initialMap = L.map('map').setView([60.39, 5.32], 11);
+        setMap(initialMap);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution:
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }).addTo(map);
-
-        if (userLocation) {
-            L.marker([userLocation.lat, userLocation.lon], 13)
-                .addTo(map)
-                .bindPopup("You are here!")
-                .openPopup();
-
-            map.setView([userLocation.lat, userLocation.lon], 13)
-        }
-
-        map.on('popupopen', () => {
-            const link = document.getElementById('popuplink');
-            if (link) {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.open(link.href, '_blank');
-                });
-            }
-        });
+        }).addTo(initialMap);
 
         return () => {
-            map.remove();
+            initialMap.remove(); // Cleanup on unmount
         };
-    }, [userLocation]);
+    }, []);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const locationData = {
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude
+                };
+                setUserLocation(locationData);
+            },
+            (error) => {
+                console.error("Error getting location:", error.message);
+            }
+        );
+    }, []);
+
+    useEffect(() => {
+        if (!map || !userLocation) return;
+
+        if (marker) {
+            map.removeLayer(marker);
+        }
+
+        const newMarker = L.marker([userLocation.lat, userLocation.lon])
+            .addTo(map)
+            .bindPopup("You are here!")
+            .openPopup();
+
+        setMarker(newMarker);
+
+        map.setView([userLocation.lat, userLocation.lon], 15);
+    }, [userLocation, map]);
 
     return (
         <div
             id="map"
-            style={{ height: '400px', width: '500px' }}
+            style={{ height: '500px', width: '800px' }}
         />
     );
 }
