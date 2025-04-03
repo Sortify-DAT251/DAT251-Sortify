@@ -17,66 +17,69 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow.src ?? markerShadow,
 });
 
-
 export default function Map() {
+    const [userLocation, setUserLocation] = useState(null);
+    const [map, setMap] = useState(null);
+    const [marker, setMarker] = useState(null);
+
     useEffect(() => {
         if (typeof window === 'undefined') return; // Prevent SSR issues
 
-        const map = L.map('map');
-
-        // Try to use geolocation
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                map.setView([latitude, longitude], 9); // zoom level can be adjusted
-                L.circleMarker([latitude, longitude], {
-                    radius: 8, // base size
-                    color: 'red',
-                    fillColor: '#FF0000',
-                    fillOpacity: 0.8,
-                })
-                    .addTo(map)
-                    .bindPopup("You are here")
-                    .openPopup();
-            },
-            () => {
-                // If permission denied or error, default to Bergen
-                map.setView([50.39, 5.32], 11);
-
-
-            }
-        );
+        // Initialize map only once
+        const initialMap = L.map('map').setView([60.39, 5.32], 11);
+        setMap(initialMap);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution:
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }).addTo(map);
-
-        fetchLocations(map);
-
-        map.on('popupopen', () => {
-            const link = document.getElementById('popuplink');
-            if (link) {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.open(link.href, '_blank');
-                });
-            }
-        });
+        }).addTo(initialMap);
 
         return () => {
-            map.remove();
+            initialMap.remove(); // Cleanup on unmount
         };
     }, []);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const locationData = {
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude
+                };
+                setUserLocation(locationData);
+            },
+            (error) => {
+                console.error("Error getting location:", error.message);
+            }
+        );
+    }, []);
+
+    useEffect(() => {
+        if (!map || !userLocation) return;
+
+        if (marker) {
+            map.removeLayer(marker);
+        }
+
+        const newMarker = L.marker([userLocation.lat, userLocation.lon])
+            .addTo(map)
+            .bindPopup("You are here!")
+            .openPopup();
+
+        setMarker(newMarker);
+
+        map.setView([userLocation.lat, userLocation.lon], 17);
+    }, [userLocation, map]);
 
     return (
         <div
             id="map"
-            style={{ height: '400px', width: '500px' }}
+            style={{ height: '500px', width: '800px' }}
         />
     );
 }
+
 
 async function fetchLocations(map) {
     try {
