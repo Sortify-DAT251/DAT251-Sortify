@@ -83,9 +83,10 @@ export default function Map() {
 
 async function fetchLocations(map) {
     try {
-        const response = await fetch('http://localhost:9876/locations');
+        const response = await fetch('http://localhost:9876/api/locations');
         if (!response.ok) throw new Error('Failed to fetch locations');
         const locations = await response.json();
+        console.log("locations:", locations)
 
         locations.forEach((location) => {
             L.circleMarker([location.latitude, location.longitude], {

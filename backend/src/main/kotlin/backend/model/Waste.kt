@@ -12,9 +12,13 @@ data class Waste (
     @GeneratedValue
     val id: UUID? = null,
 
-    @Column(nullable = false, unique = true)
+    @field:NotBlank
+    val name: String,
+
+    @Column(nullable = false, unique = false)
     @field:NotBlank
     val type: String,
+
 
     @field:NotBlank
     val info: String,

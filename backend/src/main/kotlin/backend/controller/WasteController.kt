@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/waste")
+@RequestMapping("/api/waste")
 @Validated
 class WasteController(private val wasteManager: WasteManager) {
 
     @PostMapping
     fun createWaste(@RequestBody @Valid request: WasteRequest): ResponseEntity<Any> {
         return try {
-            val waste = wasteManager.createWaste(request.type, request.info)
+            val waste = wasteManager.createWaste(request.name, request.type, request.info)
             ResponseEntity.status(HttpStatus.CREATED).body(waste)
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("error" to "Username or email is already in use."))
@@ -39,7 +39,7 @@ class WasteController(private val wasteManager: WasteManager) {
     @PutMapping("/{id}")
     fun updateWaste(@PathVariable id: UUID, @RequestBody @Valid request: WasteRequest): ResponseEntity<Waste> {
         return try {
-            val updatedWaste = Waste(type = request.type, info = request.info)
+            val updatedWaste = Waste(name = request.name, type = request.type, info = request.info)
             val waste = wasteManager.updateWaste(id, updatedWaste)
             if (waste != null) {
                 ResponseEntity.ok(waste)
@@ -69,6 +69,9 @@ class WasteController(private val wasteManager: WasteManager) {
 }
 
 data class WasteRequest(
+    @field:NotBlank
+    val name: String,
+
     @field:NotBlank
     val type: String,
 
