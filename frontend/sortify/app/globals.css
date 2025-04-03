@@ -25,7 +25,8 @@ body {
 
 #map {
   border-radius: 15px;      /* Rounded corners */
-  margin-top: 20px;         /* Space between content and map */
+  margin-top: 20px;
+  margin-bottom: 40px;
   box-sizing: border-box;
   overflow: hidden;
   box-shadow: 0 0 0 2px #545454;

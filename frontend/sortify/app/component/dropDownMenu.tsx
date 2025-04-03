@@ -24,12 +24,15 @@ const DropdownMenu = () => {
                 sx={{
                     width: 40,
                     height: 40,
-                    border: "2px solid black",
+                    border: "2px solid #0B540D",
                     borderRadius: 1,
-                    backgroundColor: "#4CAF50"
+                    backgroundColor: "#87C75C",
+                    "&:hover": {
+                        backgroundColor: "#6CA047", // Darker green on hover
+                    },
                 }}
             >
-                <MenuIcon sx={{ color: "black" }} />
+                <MenuIcon sx={{ color: "#0B540D" }} />
             </IconButton>
 
             {/* Dropdown Menu */}

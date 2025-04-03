@@ -7,10 +7,10 @@ export default function Footer() {
             <div className={styles.footer}>
                 <a href="/en/" className={styles.logo}>
                     <img
-                        src="/sortify-footer.png"
+                        src="/sortify-logo-footer.png"
                         alt="sortify logo footer version"
-                        width="200"
-                        className={styles.logoImage}
+                        width={"250"}
+                        className={styles.logoImageFooter}
                     />
                 </a>
                 <p className={styles.footerText}>

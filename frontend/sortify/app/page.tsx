@@ -8,7 +8,6 @@ export default function Page(){
     <main>
         <h1>Recycling Map</h1>
         <Map/>
-
     </main>
     );
 }

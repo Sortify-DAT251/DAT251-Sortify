@@ -10,7 +10,7 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 500,
     bgcolor: '#87C75C',
-    border: '2px solid #000',
+    border: '2px solid #0B540D',
     borderRadius: '8px',
     boxShadow: 24,
     p: 4,
@@ -61,7 +61,10 @@ export default function SignupModal() {
                         id='modal-modal-title'
                         variant='h6'
                         component='h2'
-                        sx={{ marginBottom: 2 }}
+                        sx={{
+                            marginBottom: 2,
+                            fontWeight: 600,
+                        }}
                     >
                         {isSignup ? 'Create an account' : 'Log in to your account'}
                     </Typography>
@@ -80,13 +83,14 @@ export default function SignupModal() {
                                         InputProps={{
                                             style: {
                                                 backgroundColor: '#ffffff',
-                                                border: '2px solid green',
+                                                border: '2px solid #0B540D',
                                                 borderRadius: '8px',
                                             },
                                         }}
                                         InputLabelProps={{
                                             style: {
-                                                color: 'darkgreen',
+                                                color: '#0B540D',
+                                                fontWeight: 600,
                                             },
                                         }}
                                     />
@@ -103,13 +107,14 @@ export default function SignupModal() {
                                         InputProps={{
                                             style: {
                                                 backgroundColor: '#ffffff',
-                                                border: '2px solid green',
+                                                border: '2px solid #0B540D',
                                                 borderRadius: '8px',
                                             },
                                         }}
                                         InputLabelProps={{
                                             style: {
-                                                color: 'darkgreen',
+                                                color: '#0B540D',
+                                                fontWeight: 600,
                                             },
                                         }}
                                     />
@@ -127,13 +132,14 @@ export default function SignupModal() {
                                     InputProps={{
                                         style: {
                                             backgroundColor: '#ffffff',
-                                            border: '2px solid green',
+                                            border: '2px solid #0B540D',
                                             borderRadius: '8px',
                                         },
                                     }}
                                     InputLabelProps={{
                                         style: {
-                                            color: 'darkgreen',
+                                            color: '#0B540D',
+                                            fontWeight: 600,
                                         },
                                     }}
                                 />
@@ -153,13 +159,14 @@ export default function SignupModal() {
                                 InputProps={{
                                     style: {
                                         backgroundColor: '#ffffff',
-                                        border: '2px solid green',
+                                        border: '2px solid #0B540D',
                                         borderRadius: '8px',
                                     },
                                 }}
                                 InputLabelProps={{
                                     style: {
-                                        color: 'darkgreen',
+                                        color: '#0B540D',
+                                        fontWeight: 600,
                                     },
                                 }}
                             />
@@ -170,12 +177,13 @@ export default function SignupModal() {
                         variant='contained'
                         sx={{
                             backgroundColor: '#ffffff',
-                            color: 'black',
-                            border: '2px solid black',
+                            color: '#0B540D',
+                            border: '2px solid #0B540D',
                             marginTop: 2,
+                            fontWeight: 600,
                             '&:hover': {
-                                backgroundColor: '#87C75C',
-                                borderColor: '#000000',
+                                backgroundColor: '#6CA047',
+                                borderColor: '#0B540D',
                                 boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                             },
                         }}
@@ -185,9 +193,12 @@ export default function SignupModal() {
 
                     <Button
                         variant='text'
-                        color='secondary'
                         fullWidth
-                        sx={{ marginTop: 2 }}
+                        sx={{
+                            marginTop: 2,
+                            color: '#0B540D',
+                            fontWeight: 600,
+                        }}
                         onClick={handleToggleForm}
                     >
                         {isSignup ? 'Already have an account?' : "Don't have an account?"}

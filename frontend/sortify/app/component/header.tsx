@@ -9,18 +9,22 @@ export default function Header() {
             <header className={styles.header}>
                 <nav className={styles.nav}>
                     {/* Logo */}
-                    <a href="/en/" className={styles.logo}>
-                        <img
-                            src="/sortify-header.png"
-                            alt="sortify logo header version"
-                            width="200"
-                            className={styles.logoImage}
-                        />
-                    </a>
-                    <Searcbar/>
+                    <div>
+                        <a href="/en/" className={styles.logo}>
+                            <img
+                                src="/sortify-logo-header.png"
+                                alt="sortify logo header version"
+                                style={{height: "100px", width: "100px"}}
+                                className={styles.logoImageHeader}
+                            />
+                        </a>
+                    </div>
+                    <div className={styles.searchbar}>
+                        <Searcbar/>
+                    </div>
                     {/* Navigation Links */}
                     <div className={styles.items}>
-                        <span >
+                        <span>
                             <SignupModal/>
                         </span>
 

@@ -122,7 +122,20 @@ export default function Searcbar(){
                 onChange={handleChange}
                 onBlur={() => setTimeout(()=> setOpen(false), 200)}
                 inputRef={anchorRef}
-                startAdornment = {<InputAdornment position="start"><SearchIcon/></InputAdornment>} 
+                startAdornment = {<InputAdornment position="start"><SearchIcon/></InputAdornment>}
+                sx={{
+                    width: 300,
+                    height: 45,
+                    border: "2px solid #0B540D",
+                    borderRadius: 5,
+                    backgroundColor: "#F5F5F5",
+                    "&:hover": {
+                        backgroundColor: "#E0E0E0",
+                    },
+                    "& .MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                    },
+                }}
             />
             <Popper open={open} anchorEl={anchorRef.current} placement="bottom-start" sx={{zIndex: 1000}}>
                 <ClickAwayListener onClickAway={() => setOpen(false)}>
