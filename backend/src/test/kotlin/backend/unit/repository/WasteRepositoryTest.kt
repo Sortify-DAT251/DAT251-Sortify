@@ -1,6 +1,5 @@
 package backend.unit.repository
 
-import backend.config.PostGresTestConfig
 import backend.model.Waste
 import backend.repository.WasteRepository
 import jakarta.transaction.Transactional
@@ -8,6 +7,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -18,8 +18,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-@SpringBootTest
-@Import(PostGresTestConfig::class)  // Import PostgreSQL TestContainer Config
+@DataJpaTest
 @ExtendWith(SpringExtension::class)
 class WasteRepositoryTest {
 
