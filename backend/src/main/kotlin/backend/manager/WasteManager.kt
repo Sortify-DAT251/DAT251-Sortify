@@ -9,8 +9,8 @@ import kotlin.NoSuchElementException
 @Service
 class WasteManager(private val wasteRepository: WasteRepository) {
 
-    fun createWaste(type: String, info: String): Waste {
-        val waste = Waste(type = type, info = info)
+    fun createWaste(name: String, type: String, info: String): Waste {
+        val waste = Waste(name = name, type = type, info = info)
         return wasteRepository.save(waste)
     }
 
@@ -20,7 +20,7 @@ class WasteManager(private val wasteRepository: WasteRepository) {
 
     fun updateWaste(id: UUID, updatedWaste: Waste): Waste {
         val existingWaste = wasteRepository.findById(id).orElseThrow { NoSuchElementException("Waste not found") }
-        val wasteToUpdate = existingWaste.copy(type = updatedWaste.type, info = updatedWaste.info)
+        val wasteToUpdate = existingWaste.copy(name = updatedWaste.name, type = updatedWaste.type, info = updatedWaste.info)
 
         return wasteRepository.save(wasteToUpdate)
     }
