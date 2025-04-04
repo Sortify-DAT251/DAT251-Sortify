@@ -25,7 +25,7 @@ Check what roles exists
 Create the postgres role if it doesnt exist
 
 ```
-CREATE ROLE postgres WITH LOGIN SUPERUSER PASSWORD 'password';
+CREATE ROLE sortifyadmin WITH LOGIN SUPERUSER PASSWORD 'sortifypassword';
 ```
 
 Verify that the role was created
