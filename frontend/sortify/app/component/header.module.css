@@ -21,14 +21,16 @@
     position: relative;
 }
 
-.nav div {
+.nav {
     flex: 1;
     display: flex;
     align-items: center;
 }
 
 .searchbar {
+    display: flex;
     justify-content: center;
+    flex: 1;
 }
 
 .logo {
@@ -44,9 +46,8 @@
 
 .items {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 50px;
+    justify-content: space-between;
+    flex-basis: 40%;
 }
 
 /* Styling for the menu button */
