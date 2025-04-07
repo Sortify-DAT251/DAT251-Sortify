@@ -7,6 +7,10 @@ services:
       POSTGRES_DB: sortify-backend-db
       POSTGRES_USER: sortify-admin
       POSTGRES_PASSWORD: sortify-password
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "sortify-admin", "-d", "sortify-backend-db"]
+      interval: 5s
+      retries: 5
     ports:
       - "5432:5432"
     networks:
@@ -15,6 +19,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     container_name: sortify-backend
     restart: always
     ports:
@@ -25,17 +30,20 @@ services:
       SPRING_DATASOURCE_USERNAME: sortify-admin
       SPRING_DATASOURCE_PASSWORD: sortify-password
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - sortify-network
 
   # frontend:
   #   build:
-  #     context: ./frontend
+  #     context: ./frontend/sortify
   #   container_name: sortify-frontend
   #   restart: always
   #   ports:
-  #     - "4321:4321"
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=production
   #   networks:
   #     - sortify-network
 

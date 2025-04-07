@@ -12,14 +12,14 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
-@CrossOrigin(origins = ["http://localhost:5173"])
+// @CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
-@RequestMapping("/api/location")
+@RequestMapping("/api/locations")
 @Validated
-class LocationController(private val LocationManager: LocationManager) {
+class LocationsController(private val LocationManager: LocationManager) {
 
     @PostMapping
-    fun createLocation(@RequestBody @Valid request: LocationRequest): ResponseEntity<Any> {
+    fun createLocations(@RequestBody @Valid request: LocationsRequest): ResponseEntity<Any> {
         return try {
             val location = LocationManager.createLocation(request.name, request.address, request.latitude, request.longitude, request.info)
             ResponseEntity.status(HttpStatus.CREATED).body(location)
@@ -29,14 +29,14 @@ class LocationController(private val LocationManager: LocationManager) {
     }
 
     @GetMapping("/{id}")
-    fun getLocation(@PathVariable id: Long): ResponseEntity<Location> {
+    fun getLocations(@PathVariable id: Long): ResponseEntity<Location> {
         val location = LocationManager.getLocationById(id)
         return if ( location != null) ResponseEntity.ok(location)
         else ResponseEntity.status(HttpStatus.NOT_FOUND).build()
     }
 
     @PutMapping("/{id}")
-    fun updateLocation(@PathVariable id: Long, @RequestBody @Valid request: LocationRequest): ResponseEntity<Location> {
+    fun updateLocations(@PathVariable id: Long, @RequestBody @Valid request: LocationsRequest): ResponseEntity<Location> {
         return try {
             val updatedLocation = Location(
                     name = request.name,
@@ -58,7 +58,7 @@ class LocationController(private val LocationManager: LocationManager) {
     }
 
     @DeleteMapping("/{id}")
-    fun deleteLocation(@PathVariable id: Long): ResponseEntity<Void> {
+    fun deleteLocations(@PathVariable id: Long): ResponseEntity<Void> {
         return try {
             LocationManager.deleteLocation(id)
             ResponseEntity.noContent().build()
@@ -68,16 +68,16 @@ class LocationController(private val LocationManager: LocationManager) {
     }
 
     @GetMapping
-    fun getAllLocation(): ResponseEntity<List<Location>> {
-        val Location = LocationManager.getAllLocation()
-        return ResponseEntity.ok(Location)
+    fun getAllLocations(): ResponseEntity<List<Location>> {
+        val locations = LocationManager.getAllLocation()
+        return ResponseEntity.ok(locations)
     }
 
 
 }
 
 
-data class LocationRequest(
+data class LocationsRequest(
         @field:NotBlank
         @field:Size(min = 3, max = 30)
         @field:Pattern(regexp = "^[a-zA-Z0-9_]*$")
