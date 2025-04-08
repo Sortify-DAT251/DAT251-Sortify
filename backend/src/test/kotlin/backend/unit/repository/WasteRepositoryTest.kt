@@ -17,9 +17,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
-
+import org.springframework.test.context.ActiveProfiles
 @DataJpaTest
 @ExtendWith(SpringExtension::class)
+@ActiveProfiles("test")
 class WasteRepositoryTest {
 
     @Autowired

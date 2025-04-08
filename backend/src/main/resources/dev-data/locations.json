@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Rema 1000 Klokke",
+    "address": "Klokkeveien 1",
+    "info": "Grocery store",
+    "longitude": 5.32,
+    "latitude": 60.39
+  },
+  {
+    "name": "Bunnpris Åsane",
+    "address": "Åsaneveien 12",
+    "info": "Convenience store",
+    "longitude": 5.35,
+    "latitude": 60.40
+  }
+]

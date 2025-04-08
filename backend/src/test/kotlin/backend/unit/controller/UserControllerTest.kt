@@ -24,10 +24,12 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import java.util.*
+import org.springframework.test.context.ActiveProfiles
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
 @WebMvcTest(UserController::class)
 @Import(TestSecurityConfig::class)
+@ActiveProfiles("test")
 class UserControllerTest {
 
     @Autowired

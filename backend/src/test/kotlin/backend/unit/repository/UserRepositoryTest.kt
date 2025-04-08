@@ -12,10 +12,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
-
+import org.springframework.test.context.ActiveProfiles
 
 @DataJpaTest
 @ExtendWith(SpringExtension::class)
+@ActiveProfiles("test")
 class UserRepositoryTest {
 
     @Autowired

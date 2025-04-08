@@ -5,7 +5,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
-
+import org.springframework.test.context.ActiveProfiles
+@ActiveProfiles("test")
 class PasswordHashingTest {
 
     private val encoder = BCryptPasswordEncoder()
