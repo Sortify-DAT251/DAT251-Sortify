@@ -68,6 +68,7 @@ export default function Map() {
             .openPopup();
 
         setMarker(newMarker);
+        fetchLocations(map);
 
         map.setView([userLocation.lat, userLocation.lon], 17);
     }, [userLocation, map]);
