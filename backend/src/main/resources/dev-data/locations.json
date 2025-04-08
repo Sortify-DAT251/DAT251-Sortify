@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Rema 1000 Kjøkkelvik",
+    "address": "Nedbergeveien 7, 5178 Loddefjord",
+    "info": "Papp, plast, metall, klær",
+    "latitude": 60.38189752745541,
+    "longitude": 5.229424785747146
+  },
+  {
+    "name": "Miljøstasjon",
+    "address": "Stongafjellsvegen 40, 5300 Kleppestø",
+    "info": "Papp, Plast, Metall og glass, Klær",
+    "latitude": 60.40479325217316,
+    "longitude": 5.210399197390439
+  },
+  {
+    "name": "BIR gjenvinningsstasjon Møllendalsveien",
+    "address": "Møllendalsveien 31, 5009 Bergen",
+    "info": "https://bir.no/%c3%a5pningstider-i-miljoeparkene/bergen-moellendalsveien-31/",
+    "latitude": 60.380319044019664,
+    "longitude": 5.344163263190439
+  },
+  {
+    "name": "BIR Åsane",
+    "address": "Salhusvegen 49, 5131 Bergen",
+    "info": "https://bir.no/",
+    "latitude": 60.49010764488316,
+    "longitude": 5.317018048776933
+  }
+]

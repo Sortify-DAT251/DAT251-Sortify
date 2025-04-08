@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
-
+import org.springframework.test.context.ActiveProfiles
+@ActiveProfiles("test")
 class UserTest {
 
     private  var validator: Validator = Validation.buildDefaultValidatorFactory().validator

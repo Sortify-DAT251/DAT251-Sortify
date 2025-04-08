@@ -17,8 +17,9 @@ import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import java.util.*
-
+import org.springframework.test.context.ActiveProfiles
 @ExtendWith(MockitoExtension::class)
+@ActiveProfiles("test")
 class WasteManagerTest {
 
     @Mock

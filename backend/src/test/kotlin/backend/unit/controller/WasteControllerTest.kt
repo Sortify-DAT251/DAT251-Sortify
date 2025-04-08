@@ -23,10 +23,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
+import org.springframework.test.context.ActiveProfiles
 
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
 @WebMvcTest(WasteController::class)
 @Import(TestSecurityConfig::class)
+@ActiveProfiles("test")
 class WasteControllerTest {
 
     @Autowired

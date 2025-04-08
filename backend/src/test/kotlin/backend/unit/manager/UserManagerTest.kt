@@ -15,8 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.whenever
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.util.*
-
+import org.springframework.test.context.ActiveProfiles
 @ExtendWith(MockitoExtension::class)
+@ActiveProfiles("test")
 class UserManagerTest {
 
     @Mock
