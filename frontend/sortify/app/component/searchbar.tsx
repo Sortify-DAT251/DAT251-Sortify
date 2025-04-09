@@ -3,6 +3,7 @@ import { distance } from "fastest-levenshtein"
 import { useState, useRef , useEffect} from "react"
 import { InputAdornment, OutlinedInput, Popper, Paper, List, ListItem, ClickAwayListener } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
+import styles from "../styling/searchbar.module.css"
 
 
 
@@ -12,12 +13,12 @@ export default function Searcbar(){
 
     useEffect(() => {
         const getWasteItems = async () =>{
-            const response = await fetch("http://localhost:9876/api/waste");
+            //const response = await fetch("http://localhost:9876/api/waste");
             
-            const data: { name: string }[] = await response.json();
-            const items = data.map(obj => obj.name)
-            console.log("data:",items)
-            setWasteItems(items);
+            //const data: { name: string }[] = await response.json();
+            //const items = data.map(obj => obj.name)
+            //console.log("data:",items)
+           // setWasteItems(items);
             
         };
         getWasteItems();
@@ -122,20 +123,8 @@ export default function Searcbar(){
                 onChange={handleChange}
                 onBlur={() => setTimeout(()=> setOpen(false), 200)}
                 inputRef={anchorRef}
+                className={styles.searchbarContainer}
                 startAdornment = {<InputAdornment position="start"><SearchIcon/></InputAdornment>}
-                sx={{
-                    width: 300,
-                    height: 45,
-                    border: "2px solid #0B540D",
-                    borderRadius: 5,
-                    backgroundColor: "#F5F5F5",
-                    "&:hover": {
-                        backgroundColor: "#E0E0E0",
-                    },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                        border: "none",
-                    },
-                }}
             />
             <Popper open={open} anchorEl={anchorRef.current} placement="bottom-start" sx={{zIndex: 1000}}>
                 <ClickAwayListener onClickAway={() => setOpen(false)}>

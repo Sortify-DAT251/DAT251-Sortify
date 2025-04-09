@@ -9,7 +9,7 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background-color: #CFD1CC;
+  background-color: #3E4739;
   justify-content: space-between;
 }
 
@@ -29,7 +29,7 @@ body {
   margin-bottom: 40px;
   box-sizing: border-box;
   overflow: hidden;
-  box-shadow: 0 0 0 2px #545454;
+  box-shadow: 0 0 0 10px #D9996B;
 }
 
 

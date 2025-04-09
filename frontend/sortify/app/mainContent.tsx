@@ -1,12 +1,13 @@
 'use client';
 
 import dynamic from "next/dynamic";
+import styles from './styling/mainContent.module.css';
 const Map = dynamic(() => import("./component/map"), {ssr: false});
 
-export default function Page(){
+export default function MainContent(){
     return(
     <main>
-        <h1>Recycling Map</h1>
+        <h1 className={styles.title}>Recycling map</h1>
         <Map/>
     </main>
     );

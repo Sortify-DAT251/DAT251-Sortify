@@ -1,0 +1,67 @@
+.dropdownMenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: black;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    min-width: 160px;
+    z-index: 2000;
+    margin-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dropdownMenu.show {
+    display: block;
+}
+
+.menuItem {
+    padding: 12px 16px;
+    font-size: 16px;
+    color: #0B540D;
+    background-color: #4CAF50;
+    transition: background-color 0.2s, color 0.2s;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+}
+
+.menuItem:hover {
+    background-color: pink;
+    color: #0B540D;
+    font-weight: bold;
+}
+
+.menuWrapper {
+    position: relative;
+}
+
+.menuWrapper::after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #4CAF50;
+}
+
+.hamburgerButton {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #0B540D;
+    border-radius: 4px;
+    background-color: #87C75C;
+    cursor: pointer;
+}
+
+.hamburgerButton:hover {
+    background-color: #6CA047;
+}
+
+.menuIcon {
+    color: #0B540D;
+}

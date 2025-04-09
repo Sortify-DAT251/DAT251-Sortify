@@ -1,14 +1,14 @@
 'use client'
-import styles from "../component/header.module.css";
+import styles from "../styling/dropDownMenu.module.css";
 import React, { useState } from "react";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu"; // Hamburger icon
 
 const DropdownMenu = () => {
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const open = Boolean(anchorEl);
 
-    const handleClick = (event) => {
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -21,16 +21,7 @@ const DropdownMenu = () => {
             {/* Hamburger Menu Button */}
             <IconButton
                 onClick={handleClick}
-                sx={{
-                    width: 40,
-                    height: 40,
-                    border: "2px solid #0B540D",
-                    borderRadius: 1,
-                    backgroundColor: "#87C75C",
-                    "&:hover": {
-                        backgroundColor: "#6CA047", // Darker green on hover
-                    },
-                }}
+                className={styles.hamburgerButton}
             >
                 <MenuIcon sx={{ color: "#0B540D" }} />
             </IconButton>

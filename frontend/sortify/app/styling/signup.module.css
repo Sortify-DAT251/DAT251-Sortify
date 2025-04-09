@@ -1,0 +1,67 @@
+.signupButton {
+    display: inline-block;
+    background-color: #87C75C;
+    color: #0B540D;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 2px solid #0B540D;
+}
+
+.signupButton:hover {
+    background-color: #6CA047;
+}
+
+.modalBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: #87C75C;
+    border: 2px solid #0B540D;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formField .MuiFilledInput-root {
+    background-color: #ffffff;
+    border: 2px solid #0B540D;
+    border-radius: 8px;
+}
+
+.formField .MuiInputLabel-root {
+    color: #0B540D;
+    font-weight: 600;
+}
+
+.actionButton {
+    background-color: #ffffff !important;
+    color: #0B540D !important;
+    border: 2px solid #0B540D;
+    margin-top: 16px;
+    font-weight: 600;
+}
+
+.actionButton:hover {
+    background-color: #6CA047 !important;
+    border-color: #0B540D !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.toggleButton {
+    margin-top: 16px !important;
+    color: #0B540D !important;
+    font-weight: 600 !important;
+}
