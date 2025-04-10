@@ -9,7 +9,7 @@ export default function Header() {
             <header className={styles.header}>
                 <nav className={styles.nav}>
                     {/* Logo */}
-                    <div className={styles.nav}>
+                    <div className={styles.logoWrapper}>
                         <a href="/en/" className={styles.logo}>
                             <img
                                 src="/sortify-logo-header.png"
@@ -18,21 +18,14 @@ export default function Header() {
                             />
                         </a>
                     </div>
-                    <div className={styles.nav}>
-                        <div className={styles.searchbar}>
-                            <Searcbar />
-                        </div>
+                    <div className={styles.searchWrapper}>
+                        <Searcbar />
                     </div>
 
                     {/* Navigation Links */}
-                    <div className={styles.nav}>
-                        <div className={styles.items}>
-                            <span>
-                                <SignupModal />
-                            </span>
-
-                            <DropdownMenu />
-                        </div>
+                    <div className={styles.items}>
+                        <SignupModal />
+                        <DropdownMenu />
                     </div>
                 </nav>
             </header>

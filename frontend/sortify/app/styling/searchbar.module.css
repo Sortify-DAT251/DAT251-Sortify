@@ -2,17 +2,28 @@
     display: flex;
     justify-content: center;
     flex: 1;
+    min-width: 200px;
+    max-width: 500px;
+    width: 100%;
 }
 
 .searchbarContainer {
-    width: 300px;
-    height: 45px;
-    border: 2px solid #0B540D;
-    border-radius: 5px;
+    width: 100%;
+    max-width: 500px;
+    height: 50px;
+    border: 2px dashed red;
     background-color: #F5F5F5;
     transition: background-color 0.3s ease;
 }
 
 .searchbarContainer:hover {
     background-color: #E0E0E0;
+}
+
+.searchbarWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
 }

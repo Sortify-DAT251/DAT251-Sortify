@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -75,7 +75,6 @@ export default function Map() {
     return (
         <div
             id="map"
-            style={{ height: '500px', width: '800px' }}
         />
     );
 }

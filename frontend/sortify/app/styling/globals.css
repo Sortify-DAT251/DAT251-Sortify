@@ -24,7 +24,10 @@ body {
 }
 
 #map {
-  border-radius: 15px;      /* Rounded corners */
+  width: 100%;
+  max-width: 1000px;
+  height: 60vh; /* 60% av høyden på vinduet */
+  border-radius: 15px;
   margin-top: 20px;
   margin-bottom: 40px;
   box-sizing: border-box;

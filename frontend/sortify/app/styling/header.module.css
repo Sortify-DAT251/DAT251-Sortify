@@ -1,37 +1,31 @@
 .headerContainer {
     width: 100%;
     background-color: #DBBC99;
-    border-bottom: 2px solid #D9996B; /* Green line at the bottom */
-    box-sizing: border-box; /* Ensures padding and borders don't cause overflow */
-    margin: 0 auto; /* Centers the header within the screen */
-    overflow: hidden; /* Prevents any overflow due to rounded corners */
+    border-bottom: 2px solid #D9996B;
+    box-sizing: border-box;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 16px 32px;
 }
 
 .nav {
     display: flex;
-    justify-content: center;
-    width: 100%;
-    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    /*flex: 1;*/
 }
 
-.nav {
-    flex: 1;
+.logoWrapper {
     display: flex;
     align-items: center;
 }
 
-
-
 .logo {
-    margin-top: auto;
-    margin-bottom: auto;
     padding: 5px;
 }
 
@@ -40,10 +34,18 @@
     margin-left: 30px;
 }
 
+.searchWrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 250px;
+}
+
 .items {
     display: flex;
-    justify-content: space-between;
-    flex-basis: 40%;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
 }
 
 

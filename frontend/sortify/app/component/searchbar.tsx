@@ -114,7 +114,7 @@ export default function Searcbar(){
 
 
     return (
-        <div>
+        <div className={styles.searchbarWrapper}>
             <OutlinedInput 
                 type="text" 
                 value={query} 
@@ -123,8 +123,11 @@ export default function Searcbar(){
                 onChange={handleChange}
                 onBlur={() => setTimeout(()=> setOpen(false), 200)}
                 inputRef={anchorRef}
-                className={styles.searchbarContainer}
                 startAdornment = {<InputAdornment position="start"><SearchIcon/></InputAdornment>}
+                className={styles.searchbarContainer}
+                sx={{
+                    borderRadius: '55px',
+                }}
             />
             <Popper open={open} anchorEl={anchorRef.current} placement="bottom-start" sx={{zIndex: 1000}}>
                 <ClickAwayListener onClickAway={() => setOpen(false)}>
