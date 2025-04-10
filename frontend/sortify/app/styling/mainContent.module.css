@@ -1,7 +1,7 @@
 .mainContent {
     width: 100%;
     max-width: 1200px;
-    padding: 20px;
+    padding: 60px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -11,6 +11,5 @@
 
 .title {
     color: #D7D1C8;
-    font-size: clamp(24px, 4vw, 48px);
-    margin-top: 20px;
+    font-size: clamp(18px, 3vw, 36px);
 }

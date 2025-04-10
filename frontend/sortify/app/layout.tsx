@@ -5,6 +5,7 @@ import Header from "./component/header"
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import Footer from "./component/footer";
 import MainContent from "../app/mainContent";
+import styles from "./styling/layout.module.css"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,12 +32,16 @@ export default function RootLayout({
     <head>
     </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <AppRouterCacheProvider>
+      <AppRouterCacheProvider>
+        <div className={styles.pageWrapper}>
           <Header/>
-          <MainContent/>
+          <main className={styles.mainWrapper}>
+            <MainContent/>
+          </main>
           <Footer/>
-        </AppRouterCacheProvider>
+          </div>
+      </AppRouterCacheProvider>
       </body>
     </html>
-  );
+);
 }

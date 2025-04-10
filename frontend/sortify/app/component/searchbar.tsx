@@ -126,7 +126,7 @@ export default function Searcbar(){
                 startAdornment = {<InputAdornment position="start"><SearchIcon/></InputAdornment>}
                 className={styles.searchbarContainer}
                 sx={{
-                    borderRadius: '55px',
+                    borderRadius: '40px',
                 }}
             />
             <Popper open={open} anchorEl={anchorRef.current} placement="bottom-start" sx={{zIndex: 1000}}>

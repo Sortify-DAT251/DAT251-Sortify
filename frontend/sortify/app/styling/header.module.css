@@ -1,14 +1,15 @@
 .headerContainer {
     width: 100%;
     background-color: #DBBC99;
-    border-bottom: 2px solid #D9996B;
+    border-bottom: 3px solid #D9996B;
     box-sizing: border-box;
     margin: 0 auto;
-    overflow: hidden;
 }
 
 .header {
-    padding: 16px 32px;
+    padding: 10px 32px;
+    display: flex;
+    align-items: center; /* Midtstill vertikalt */
 }
 
 .nav {
@@ -17,6 +18,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
+    width: 100%;
     /*flex: 1;*/
 }
 
@@ -38,6 +40,7 @@
     flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
     min-width: 250px;
 }
 
