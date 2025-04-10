@@ -21,6 +21,8 @@ export default function Map() {
     const [userLocation, setUserLocation] = useState(null);
     const [map, setMap] = useState(null);
     const [marker, setMarker] = useState(null);
+    const [locations, setLocations] = useState([]);
+    const [nearestLocation, setNearestLocation] = useState([])
 
     useEffect(() => {
         if (typeof window === 'undefined') return; // Prevent SSR issues
@@ -82,14 +84,33 @@ export default function Map() {
 }
 
 
-async function fetchLocations(map) {
+async function fetchLocations(map, userLocation) {
     try {
         const response = await fetch('http://localhost:9876/api/locations');
         if (!response.ok) throw new Error('Failed to fetch locations');
-        const locations = await response.json();
-        console.log("locations:", locations)
+        const allLocations = await response.json();
+        console.log("All locations:", allLocations);
 
-        locations.forEach((location) => {
+        setLocations(allLocations);
+
+        if (allLocations.length > 0) {
+            const nearest = allLocations[0]; // First locations is the nearest one.
+            setNearestLocation(nearest);
+
+            const routeCoords = [
+                [userLocation.lat, userLocation.lon],
+                [nearest.lat, nearest.lon]
+            ];
+
+            L.polyline(routeCoords, {color: 'blue', weight: 3}).addTo(map);
+
+            L.marker([nearest.latitude, nearest.longitude])
+                .addTo(map)
+                .bindPopup(`${nearest.name}, ${nearest.address}`)
+                .openPopup();
+        }
+
+        allLocations.forEach((location) => {
             L.circleMarker([location.latitude, location.longitude], {
                 radius: 8, // base size
                 color: 'blue',
