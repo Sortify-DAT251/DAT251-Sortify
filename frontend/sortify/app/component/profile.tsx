@@ -43,7 +43,7 @@ interface ProfileFieldProps {
     type?: string;
 }
 
-function ProfileField({ label, placeholder = "Endre her", value, onChange, type = "text" }: ProfileFieldProps) {
+function ProfileField({ label, placeholder = "Change here", value, onChange, type = "text" }: ProfileFieldProps) {
     return (
         <Grid item>
             <Typography sx={{ fontWeight: 600, marginBottom: 0.5 }}>{label} -</Typography>
@@ -63,7 +63,7 @@ function ProfileField({ label, placeholder = "Endre her", value, onChange, type 
 
 export default function ProfileForm() {
     // Dummy userId - bytt ut med reell id når autentisering er implementert
-    const userId = "a62da4bb-94d3-4516-93f1-777edcc75bfe"
+    const userId = "90a013dc-1376-412a-aa9f-7ab0546650e8"
     const API_BASE_URL = "http://localhost:9876/api"
 
     // Samlet state for profildata (dummy-data)
@@ -141,9 +141,25 @@ export default function ProfileForm() {
             lastName: editedData.lastName.trim() !== '' ? editedData.lastName : profileData.lastName,
             password: editedData.password.trim() !== '' ? editedData.password : profileData.password,
         };
-        setProfileData(updatedProfile);
-        console.log("Endringer lagret:", updatedProfile);
-        handleClose();
+
+        fetch(`${API_BASE_URL}/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedProfile)
+        }).then((response) => {
+            if(!response.ok) {
+                throw new Error('Failed to update user data.');
+            }
+            return response.json();
+        }).then((updatedUser) => {
+            setProfileData(updatedUser);
+            console.log('User updated successfully:', updatedUser);
+            setIsEditing(false)
+        }).catch((error) => {
+            console.error('Error updating user:', error);
+        });
     };
 
     if (!isLoggedIn) {
@@ -172,12 +188,12 @@ export default function ProfileForm() {
                         variant="h6"
                         sx={{ fontWeight: 600, marginBottom: 2, textAlign: 'center' }}
                     >
-                        Your Profile
+                        {isEditing ? 'Edit Your Profile' : 'Your Profile'}
                     </Typography>
 
                     {!isEditing ? (
                         // VISNINGSMODUS
-                        <Box sx={{ width: '100%', textAlign: 'left' }}>
+                        <Box sx={{ width: '100%', textAlign: 'center' }}>
                             <Typography sx={{ marginBottom: 1 }}>
                                 <strong>Username:</strong> {profileData.username}
                             </Typography>
@@ -202,6 +218,7 @@ export default function ProfileForm() {
                                         borderColor: '#0B540D',
                                         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                                     },
+                                    marginTop: 3,
                                 }}
                                 onClick={handleEdit}
                             >
@@ -218,7 +235,6 @@ export default function ProfileForm() {
                         >
                             <ProfileField
                                 label="Username"
-                                placeholder="Change here"
                                 value={editedData.username}
                                 onChange={(newVal) =>
                                     setEditedData((prev) => ({ ...prev, username: newVal }))
@@ -226,7 +242,6 @@ export default function ProfileForm() {
                             />
                             <ProfileField
                                 label="E-mail"
-                                placeholder="Change here"
                                 value={editedData.email}
                                 onChange={(newVal) =>
                                     setEditedData((prev) => ({ ...prev, email: newVal }))
@@ -234,7 +249,6 @@ export default function ProfileForm() {
                             />
                             <ProfileField
                                 label="First name"
-                                placeholder="Change here"
                                 value={editedData.firstName}
                                 onChange={(newVal) =>
                                     setEditedData((prev) => ({ ...prev, firstName: newVal }))
@@ -242,7 +256,6 @@ export default function ProfileForm() {
                             />
                             <ProfileField
                                 label="Sure name"
-                                placeholder="Change here"
                                 value={editedData.lastName}
                                 onChange={(newVal) =>
                                     setEditedData((prev) => ({ ...prev, lastName: newVal }))
@@ -251,7 +264,6 @@ export default function ProfileForm() {
                             <ProfileField
                                 label="Password"
                                 type="password"
-                                placeholder="Change here"
                                 value={editedData.password}
                                 onChange={(newVal) =>
                                     setEditedData((prev) => ({ ...prev, password: newVal }))
