@@ -22,7 +22,24 @@ class UserRepositoryTest {
     @Autowired
     private lateinit var userRepository: UserRepository
 
+    @Test
+    @Transactional
+    fun `save should persist user with firstName and lastName`() {
+        val user = User(
+            username = "testUser",
+            email = "test@example.com",
+            password = "securepassword",
+            firstName = "John",
+            lastName = "Doe"
+        )
+        val savedUser = userRepository.save(user)
 
+        assertNotNull(savedUser.id)
+        assertEquals(user.username, savedUser.username)
+        assertEquals(user.email, savedUser.email)
+        assertEquals("John", savedUser.firstName)
+        assertEquals("Doe", savedUser.lastName)
+    }
 
     @Test
     @Transactional

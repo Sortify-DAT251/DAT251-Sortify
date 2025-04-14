@@ -33,16 +33,20 @@ class UserManagerTest {
         val username = "testuser"
         val email = "test@example.com"
         val password = "example123"
+        val firstName = "FirstName"
+        val lastName = "LastName"
 
         `when`(userRepository.save(any())).thenAnswer { invocation -> invocation.arguments[0] as User }
 
-        val createdUser = userManager.createUser(username, email, password)
+        val createdUser = userManager.createUser(username, email, password, firstName, lastName)
         val userCaptor = ArgumentCaptor.forClass(User::class.java)
         verify(userRepository).save(userCaptor.capture())
         val savedUser = userCaptor.value
 
         assertEquals(username, savedUser.username)
         assertEquals(email, savedUser.email)
+        assertEquals(firstName, savedUser.firstName)
+        assertEquals(lastName, savedUser.lastName)
         //assertEquals(password, savedUser.password)
         assertTrue(encoder.matches(password, savedUser.password))
         assertNull(savedUser.id, "ID skal ikke være generert før lagring")
@@ -89,8 +93,22 @@ class UserManagerTest {
     @Test
     fun `updateUser should update existing user and return updated user`() {
         val userId = UUID.randomUUID()
-        val existingUser = User(id = userId, username = "oldUser", email = "old@example.com", password = "oldPassword")
-        val updatedUser = User(id = userId, username = "newUser", email = "new@example.com", password = "newPassword")
+        val existingUser = User(
+            id = userId,
+            username = "oldUser",
+            email = "old@example.com",
+            password = "oldPassword",
+            firstName = null,
+            lastName = null,
+        )
+        val updatedUser = User(
+            id = userId,
+            username = "newUser",
+            email = "new@example.com",
+            password = "newPassword",
+            firstName = "NewFirst",
+            lastName = "NewLast",
+        )
 
         `when`(userRepository.findById(userId)).thenReturn(Optional.of(existingUser))
         `when`(userRepository.save(any())).thenAnswer { it.arguments[0] }
@@ -99,6 +117,8 @@ class UserManagerTest {
 
         assertEquals(updatedUser.username, result.username)
         assertEquals(updatedUser.email, result.email)
+        assertEquals(updatedUser.firstName, result.firstName)
+        assertEquals(updatedUser.lastName, result.lastName)
         assertTrue(encoder.matches(updatedUser.password, result.password))
         assertEquals(userId, result.id)
         verify(userRepository).findById(userId)

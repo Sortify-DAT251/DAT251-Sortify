@@ -13,7 +13,7 @@ class UserManager (private val userRepository: UserRepository) {
     // Hashes and salts the password, for safe managing
     private val passwordEncoder = BCryptPasswordEncoder()
 
-    fun createUser(username: String, email: String, password: String): User {
+    fun createUser(username: String, email: String, password: String, firstName: String? = null, lastName: String? = null): User {
         if (userRepository.existsByUsername(username)) {
             throw IllegalArgumentException("Username already exists")
         }
@@ -23,7 +23,12 @@ class UserManager (private val userRepository: UserRepository) {
         // Salt and hash password before storing it
         val safePassword = passwordEncoder.encode(password)
 
-        val user = User(username = username, email = email, password = safePassword)
+        val user = User(
+            username = username,
+            email = email,
+            password = safePassword,
+            firstName = firstName,
+            lastName = lastName)
         return userRepository.save(user)
     }
 
@@ -37,7 +42,12 @@ class UserManager (private val userRepository: UserRepository) {
         // Salt and hash password before updating it
         val safePassword = passwordEncoder.encode(updatedUser.password)
 
-        val userToUpdate = existingUser.copy(username = updatedUser.username, email = updatedUser.email, password = safePassword)
+        val userToUpdate = existingUser.copy(
+            username = updatedUser.username,
+            email = updatedUser.email,
+            password = safePassword,
+            firstName = updatedUser.firstName,
+            lastName = updatedUser.lastName)
 
         return userRepository.save(userToUpdate)
     }

@@ -22,7 +22,13 @@ class UserController(private val userManager: UserManager) {
     @PostMapping
     fun createUser(@RequestBody @Valid request: UserRequest): ResponseEntity<Any> {
         return try {
-            val user = userManager.createUser(request.username, request.email, request.password)
+            val user = userManager.createUser(
+                request.username,
+                request.email,
+                request.password,
+                request.firstName,
+                request.lastName)
+
             ResponseEntity.status(HttpStatus.CREATED).body(user)
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("error" to "Username or email is already in use."))
@@ -39,13 +45,15 @@ class UserController(private val userManager: UserManager) {
     @PutMapping("/{id}")
     fun updateUser(@PathVariable id: UUID, @RequestBody @Valid request: UserRequest): ResponseEntity<User> {
         return try {
-            val updatedUser = User(username = request.username, email = request.email, password = request.password)
+            val updatedUser = User(
+                username = request.username,
+                email = request.email,
+                password = request.password,
+                firstName = request.firstName,
+                lastName = request.lastName)
+
             val user = userManager.updateUser(id, updatedUser)
-            if (user != null) {
-                ResponseEntity.ok(user)
-            } else {
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-            }
+            ResponseEntity.ok(user)
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
@@ -100,7 +108,10 @@ data class UserRequest(
     val email: String,
 
     @field:Size(min = 8)
-    val password: String
+    val password: String,
+
+    val firstName: String? = null,
+    val lastName: String? = null
 )
 
 // Data class for adding and removing friends

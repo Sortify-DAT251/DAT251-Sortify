@@ -45,10 +45,25 @@ class UserControllerTest {
     @Test
     fun `should create a user successfully`() {
         val userId = UUID.randomUUID()
-        val user = User(id = userId, username = "testuser", email = "test@example.com", password = "SecurePass123")
-        val requestBody = objectMapper.writeValueAsString(mapOf("username" to "testuser", "email" to "test@example.com", "password" to "SecurePass123"))
+        val user = User(
+            id = userId,
+            username = "testuser",
+            email = "test@example.com",
+            password = "SecurePass123",
+            firstName = "TestFirst",
+            lastName = "TestLast"
+        )
+        val requestBody = objectMapper.writeValueAsString(
+            mapOf(
+                "username" to "testuser",
+                "email" to "test@example.com",
+                "password" to "SecurePass123",
+                "firstName" to "TestFirst",
+                "lastName" to "TestLast"
+            )
+        )
 
-        whenever(userManager.createUser(any(), any(), any())).thenReturn(user)
+        whenever(userManager.createUser(any(), any(), any(), any(), any())).thenReturn(user)
 
         mockMvc.perform(post("/api/users")
             .contentType(MediaType.APPLICATION_JSON)
@@ -57,6 +72,8 @@ class UserControllerTest {
             .andExpect(jsonPath("$.id").value(userId.toString()))
             .andExpect(jsonPath("$.username").value("testuser"))
             .andExpect(jsonPath("$.email").value("test@example.com"))
+            .andExpect(jsonPath("$.firstName").value("TestFirst"))
+            .andExpect(jsonPath("$.lastName").value("TestLast"))
     }
 
     @Test
@@ -96,8 +113,23 @@ class UserControllerTest {
     @Test
     fun `should update user successfully`() {
         val userId = UUID.randomUUID()
-        val updatedUser = User(id = userId, username = "updatedUser", email = "updated@example.com", password = "NewSecurePass123")
-        val requestBody = objectMapper.writeValueAsString(mapOf("username" to "updatedUser", "email" to "updated@example.com", "password" to "NewSecurePass123"))
+        val updatedUser = User(
+            id = userId,
+            username = "updatedUser",
+            email = "updated@example.com",
+            password = "NewSecurePass123",
+            firstName = "UpdatedFirst",
+            lastName = "UpdatedLast"
+        )
+        val requestBody = objectMapper.writeValueAsString(
+            mapOf(
+                "username" to "updatedUser",
+                "email" to "updated@example.com",
+                "password" to "NewSecurePass123",
+                "firstName" to "UpdatedFirst",
+                "lastName" to "UpdatedLast"
+            )
+        )
 
         whenever(userManager.updateUser(eq(userId), any<User>())).thenReturn(updatedUser)
 
@@ -107,14 +139,22 @@ class UserControllerTest {
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.username").value("updatedUser"))
             .andExpect(jsonPath("$.email").value("updated@example.com"))
+            .andExpect(jsonPath("$.firstName").value("UpdatedFirst"))
+            .andExpect(jsonPath("$.lastName").value("UpdatedLast"))
     }
 
     @Test
     fun `should return 404 when updating non-existent user`() {
         val userId = UUID.randomUUID()
-        val requestBody = objectMapper.writeValueAsString(mapOf("username" to "updatedUser", "email" to "updated@example.com", "password" to "NewSecurePass123"))
+        val requestBody = objectMapper.writeValueAsString(
+            mapOf(
+                "username" to "updatedUser",
+                "email" to "updated@example.com",
+                "password" to "NewSecurePass123"
+            )
+        )
 
-        whenever(userManager.updateUser(eq(userId), any<User>())).thenReturn(null)
+        whenever(userManager.updateUser(eq(userId), any<User>())).thenThrow(NoSuchElementException("User not found"))
 
         mockMvc.perform(put("/api/users/$userId")
             .contentType(MediaType.APPLICATION_JSON)

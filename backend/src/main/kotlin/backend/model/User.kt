@@ -30,6 +30,12 @@ data class User (
     @field:Size(min = 8)
     val password: String,
 
+    @Column(nullable = true)
+    val firstName: String? = null,
+
+    @Column(nullable = true)
+    val lastName: String? = null,
+
     @ManyToMany
     @JoinTable(
         name = "user_friends",
