@@ -1,7 +1,9 @@
 import styles from "../component/header.module.css";
 import Searcbar from "./searchbar";
 import SignupModal from "@/app/component/signup";
-import DropdownMenu from "@/app/component/dropDownMenu"; // Import the DropdownMenu component
+import DropdownMenu from "@/app/component/dropDownMenu";
+import ProfileModal from "@/app/component/profile";
+import ProfileForm from "@/app/component/profile";
 
 export default function Header() {
     return (
@@ -30,6 +32,9 @@ export default function Header() {
                         <div className={styles.items}>
                         <span>
                             <SignupModal/>
+                        </span>
+                        <span>
+                            <ProfileForm/>
                         </span>
 
                             <DropdownMenu/>
