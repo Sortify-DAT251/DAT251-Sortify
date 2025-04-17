@@ -2,6 +2,7 @@ package backend.controller
 
 import backend.model.Location
 import backend.manager.LocationManager
+import backend.service.LocationService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
@@ -16,7 +17,8 @@ import java.util.UUID
 @RestController
 @RequestMapping("/api/locations")
 @Validated
-class LocationsController(private val LocationManager: LocationManager) {
+class LocationsController(private val LocationManager: LocationManager,
+                          private val locationService: LocationService) {
 
     @PostMapping
     fun createLocations(@RequestBody @Valid request: LocationsRequest): ResponseEntity<Any> {
@@ -73,6 +75,15 @@ class LocationsController(private val LocationManager: LocationManager) {
         return ResponseEntity.ok(locations)
     }
 
+    @GetMapping("/sorted")
+    fun getAllLocationsSorted(
+        @RequestParam lat: Double,
+        @RequestParam lon: Double
+    ): ResponseEntity<List<LocationDto>> {
+        val locationsWithDistance = locationService.getDistanceFromUser(lat, lon)
+        val locationDtos = locationsWithDistance.map { (location, _) -> LocationDto.fromEntity(location) }
+        return ResponseEntity.ok(locationDtos)
+    }
 
 }
 
@@ -96,3 +107,27 @@ data class LocationsRequest(
         val info: String
 
 )
+
+// LocationDto for returning location data to the client
+data class LocationDto(
+    val id: Long,
+    val name: String,
+    val address: String,
+    val latitude: Double,
+    val longitude: Double,
+    val info: String
+) {
+    companion object {
+        // Convert Location entity to LocationDto
+        fun fromEntity(location: Location): LocationDto {
+            return LocationDto(
+                id = location.id!!,  // Assuming id will not be null
+                name = location.name,
+                address = location.address,
+                latitude = location.latitude,
+                longitude = location.longitude,
+                info = location.info
+            )
+        }
+    }
+}
