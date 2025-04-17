@@ -20,9 +20,13 @@ export default function Map() {
     // Store references to map and marker instances
     const mapRef = useRef(null);
     const markerRef = useRef(null);
+
     const [userLocation, setUserLocation] = useState(null);
     const [locations, setLocations] = useState([]);
     const [nearestLocation, setNearestLocation] = useState(null);
+
+    const routeLayerRef = useRef(null);
+    const [routeVisible, setRouteVisible] = useState(false);
 
     // Initialize map only once on component mount
     useEffect(() => {
@@ -55,14 +59,56 @@ export default function Map() {
     // When both map and location are available, update the map view
     useEffect(() => {
         if (!mapRef.current || !userLocation) return;
-
         updateUserMarker(mapRef.current, userLocation);
         fetchAndDisplayLocations(mapRef.current, userLocation, setLocations, setNearestLocation);
-
     }, [userLocation]);
 
+    // Functionality to toggle the route on or off
+    const toggleRoute = async () => {
+        if (!mapRef.current || !userLocation || !nearestLocation) return;
+
+        const map = mapRef.current;
+
+        if (routeVisible && routeLayerRef.current) {
+            map.removeLayer(routeLayerRef.current);
+            routeLayerRef.current = null;
+            setRouteVisible(false);
+        } else {
+            try {
+                const start = `${userLocation.lon},${userLocation.lat}`;
+                const end = `${nearestLocation.longitude},${nearestLocation.latitude}`;
+                const routeRes = await fetch(`/api/route?start=${start}&end=${end}`);
+                const routeData = await routeRes.json();
+
+                if (routeData.routes?.length) {
+                    const geoJSON = routeData.routes[0].geometry;
+                    const routeLine = L.geoJSON(geoJSON, {
+                        style: { color: 'blue', weight: 4 },
+                    }).addTo(map);
+
+                    routeLayerRef.current = routeLine;
+                    setRouteVisible(true);
+                    map.fitBounds(routeLine.getBounds());
+                }
+            } catch (err) {
+                console.error("Error drawing route:", err);
+            }
+        }
+    };
+
+    // Map component
+    // Button for toggling the route on or off
     return (
-        <div id="map" style={{ height: '500px', width: '800px' }} />
+        <>
+            <div id="map" style={{ height: '500px', width: '800px' }} />
+            <button
+                onClick={toggleRoute}
+                disabled={!nearestLocation}
+                style={{ marginTop: '10px' }}
+            >
+                {routeVisible ? "Hide Route" : "Show Route to Nearest Location"}
+            </button>
+        </>
     );
 }
 
@@ -101,7 +147,6 @@ async function fetchAndDisplayLocations(map, userLocation, setLocations, setNear
         setNearestLocation(nearest);
 
         addLocationMarkers(map, allLocations);
-        await drawRoute(map, userLocation, nearest);
         showNearestMarker(map, nearest);
     } catch (err) {
         console.error("Error fetching locations:", err);
@@ -122,29 +167,6 @@ function addLocationMarkers(map, locations) {
             .addTo(map)
             .bindPopup(`<b>${loc.name}, ${loc.address}</b><br>${loc.info}`);
     });
-}
-
-/**
- * Draws a route between the user's location and the nearest location
- */
-async function drawRoute(map, from, to) {
-    try {
-        const start = `${from.lon},${from.lat}`;
-        const end = `${to.longitude},${to.latitude}`;
-        const routeRes = await fetch(`/api/route?start=${start}&end=${end}`);
-        const routeData = await routeRes.json();
-
-        if (routeData.routes?.length) {
-            const geoJSON = routeData.routes[0].geometry;
-            const routeLine = L.geoJSON(geoJSON, {
-                style: { color: 'blue', weight: 4 },
-            }).addTo(map);
-
-            map.fitBounds(routeLine.getBounds());
-        }
-    } catch (err) {
-        console.error("Error drawing route:", err);
-    }
 }
 
 /**
