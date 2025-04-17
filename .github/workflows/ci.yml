@@ -82,11 +82,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: frontend
+        working-directory: frontend/sortify
 
       - name: Build with npm
         run: npm run build
-        working-directory: frontend
+        working-directory: frontend/sortify
 
       - name: Upload build artifact
         if: always()
