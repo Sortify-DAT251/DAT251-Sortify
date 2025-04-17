@@ -17,18 +17,18 @@
     "@mui/material-nextjs": "^7.0.0",
     "fastest-levenshtein": "^1.0.16",
     "leaflet": "^1.9.4",
-    "next": "15.2.4",
+    "next": "^15.3.1-canary.12",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.4",
-    "@types/node": "20.17.28",
-    "@types/react": "19.0.12",
+    "@types/node": "^20.17.28",
+    "@types/react": "^19.0.12",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
     "tailwindcss": "^4.1.4",
-    "typescript": "5.8.2"
+    "typescript": "^5.8.2"
   }
 }

@@ -1,7 +1,7 @@
 import styles from "./header.module.css";
 import Searchbar from "../searchbar";
 import SignupModal from "@/app/component/signup/signup";
-import DropdownMenu from "@/app/component/dropDownMenu";
+import DropdownMenu from "@/app/component/dropDownMeny/dropDownMenu";
 
 export default function Header() {
     return (
@@ -14,7 +14,7 @@ export default function Header() {
                             <img
                                 src="/sortify-logo-header.png"
                                 alt="sortify logo header version"
-                                style={{height: "100px", width: "100px"}}
+                                style={{height: "75px", width: "75px"}}
                                 className={styles.logoImageHeader}
                             />
                         </a>
@@ -31,7 +31,6 @@ export default function Header() {
                         <span>
                             <SignupModal/>
                         </span>
-
                             <DropdownMenu/>
                         </div>
                     </div>

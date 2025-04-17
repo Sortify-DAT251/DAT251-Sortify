@@ -16,7 +16,7 @@ body {
 body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Space out the header, main content, and footer */
+  justify-content: space-between;
 }
 
 .main-content {
@@ -31,8 +31,8 @@ body {
 }
 
 #map {
-  border-radius: 15px;      /* Rounded corners */
-  max-height: 350px;
+  border-radius: 15px;
+  max-height: 400px;
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 0 0 2px #545454; /* Shadow effect */
