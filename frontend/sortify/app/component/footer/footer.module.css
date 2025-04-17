@@ -5,7 +5,7 @@
     text-align: center;
     box-sizing: border-box; /* Ensure padding and borders don't cause overflow */
     overflow: hidden; /* Prevent corners from overflowing the container */
-    margin: 0 auto; /* Ensures footer stays within the bounds of the screen */
+    /*margin: 0 auto; !* Ensures footer stays within the bounds of the screen *!*/
 }
 
 .logoImageFooter {

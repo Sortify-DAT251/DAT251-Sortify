@@ -177,6 +177,6 @@ docker volume prune
 This will prompt you to confirm the removal of all unused volumes. Make sure you review what volumes are listed before 
 confirming.
 
-**If you're still having troubles, ask chat..**
+**If you're still having troubles, ask chat.**
 
 Numbers: 0️⃣ 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣

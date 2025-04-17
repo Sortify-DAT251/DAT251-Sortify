@@ -1,5 +1,5 @@
 'use client'
-import styles from "../component/header.module.css";
+import styles from "./header/header.module.css";
 import React, { useState } from "react";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu"; // Hamburger icon

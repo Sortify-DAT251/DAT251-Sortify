@@ -1,5 +1,5 @@
 'use client'
-import styles from "../component/header.module.css";
+import styles from "./header/header.module.css";
 import React, { useState } from "react";
 import { Modal, Box, Typography, Button, Grid, TextField } from "@mui/material";
 

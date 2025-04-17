@@ -1,0 +1,45 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;  /* Ensure full viewport width */
+  height: 100vh; /* Ensure full viewport height */
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #CFD1CC;
+  justify-content: space-between;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Space out the header, main content, and footer */
+}
+
+.main-content {
+  flex: 1; /* This ensures the main content takes up available space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  margin: 2%;
+}
+
+#map {
+  border-radius: 15px;      /* Rounded corners */
+  max-height: 350px;
+  width: 100%;
+
+/*  margin-top: 20px;*/
+/*  margin-bottom: 40px;*/
+/*  box-sizing: border-box;*/
+/*  overflow: hidden;*/
+/*  box-shadow: 0 0 0 2px #545454;*/
+}
+
+

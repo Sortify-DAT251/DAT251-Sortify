@@ -1,11 +1,11 @@
-import styles from "../component/footer.module.css";
+import styles from "./footer.module.css";
 import React from 'react';
 
 export default function Footer() {
     return (
         <div className={styles.footerContainer}>
             <div className={styles.footer}>
-                <a href="/" className={styles.logo}>
+                <a href="/frontend/sortify/public" className={styles.logo}>
                     <img
                         src="/sortify-logo-footer.png"
                         alt="sortify logo footer version"
