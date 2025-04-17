@@ -68,7 +68,7 @@ jobs:
       - name: Build Docker image
         run: docker build -t sortify-backend ./backend
 
-  frontend/sortify:
+  frontend:
     runs-on: ubuntu-latest
 
     steps:
