@@ -1,0 +1,64 @@
+/* Modal Styles */
+.modalContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: #87C75C;
+    border: 2px solid #0B540D;
+    border-radius: 8px;
+    box-shadow: 24px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Typography styles */
+.modalTitle {
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+/* Button Styles */
+.buttonPrimary {
+    background-color: #ffffff;
+    color: #0B540D;
+    border: 2px solid #0B540D;
+    margin-top: 16px;
+    font-weight: 600;
+}
+
+.buttonPrimary:hover {
+    background-color: #6CA047;
+    border-color: #0B540D;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.buttonSecondary {
+    margin-top: 16px;
+    color: #0B540D;
+    font-weight: 600;
+}
+
+.buttonSecondary:hover {
+    cursor: pointer;
+}
+
+/* Grid Styles */
+.inputField {
+    background-color: #ffffff;
+    border: 2px solid #0B540D;
+    border-radius: 8px;
+}
+
+.inputLabel {
+    color: #0B540D;
+    font-weight: 600;
+}
+
+.inputContainer {
+    margin-bottom: 16px;
+}

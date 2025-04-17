@@ -1,6 +1,6 @@
 import styles from "./header.module.css";
 import Searchbar from "../searchbar";
-import SignupModal from "@/app/component/signup";
+import SignupModal from "@/app/component/signup/signup";
 import DropdownMenu from "@/app/component/dropDownMenu";
 
 export default function Header() {
