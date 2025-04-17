@@ -10,7 +10,7 @@ export default function Header() {
                 <nav className={styles.nav}>
                     {/* Logo */}
                     <div className={styles.nav}>
-                        <a href="/en/" className={styles.logo}>
+                        <a href="/" className={styles.logo}>
                             <img
                                 src="/sortify-logo-header.png"
                                 alt="sortify logo header version"

@@ -5,7 +5,7 @@ export default function Footer() {
     return (
         <div className={styles.footerContainer}>
             <div className={styles.footer}>
-                <a href="/en/" className={styles.logo}>
+                <a href="/" className={styles.logo}>
                     <img
                         src="/sortify-logo-footer.png"
                         alt="sortify logo footer version"
