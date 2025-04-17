@@ -27,7 +27,8 @@
     "@types/node": "20.17.28",
     "@types/react": "19.0.12",
     "@types/react-dom": "^19",
-    "tailwindcss": "^4",
+    "autoprefixer": "^10.4.21",
+    "tailwindcss": "^4.1.4",
     "typescript": "5.8.2"
   }
 }
