@@ -1,9 +1,8 @@
-"use client"; // Ensure this component runs only on the client
+"use client";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
-import { useEffect, useState } from "react";
+import "leaflet/dist/leaflet.css";
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -18,111 +17,142 @@ L.Icon.Default.mergeOptions({
 });
 
 export default function Map() {
+    // Store references to map and marker instances
+    const mapRef = useRef(null);
+    const markerRef = useRef(null);
     const [userLocation, setUserLocation] = useState(null);
-    const [map, setMap] = useState(null);
-    const [marker, setMarker] = useState(null);
     const [locations, setLocations] = useState([]);
-    const [nearestLocation, setNearestLocation] = useState([])
+    const [nearestLocation, setNearestLocation] = useState(null);
 
+    // Initialize map only once on component mount
     useEffect(() => {
-        if (typeof window === 'undefined') return; // Prevent SSR issues
+        if (typeof window === 'undefined') return;
 
-        // Initialize map only once
-        const initialMap = L.map('map').setView([60.39, 5.32], 11);
-        setMap(initialMap);
+        const map = L.map('map').setView([60.39, 5.32], 11);
+        mapRef.current = map;
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution:
-                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }).addTo(initialMap);
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        }).addTo(map);
 
-        return () => {
-            initialMap.remove(); // Cleanup on unmount
-        };
+        return () => map.remove();
     }, []);
 
+    // Fetch user's geolocation when component mounts
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                const locationData = {
+                setUserLocation({
                     lat: position.coords.latitude,
-                    lon: position.coords.longitude
-                };
-                setUserLocation(locationData);
+                    lon: position.coords.longitude,
+                });
             },
-            (error) => {
-                console.error("Error getting location:", error.message);
-            }
+            (error) => console.error("Error getting location:", error.message)
         );
     }, []);
 
+    // When both map and location are available, update the map view
     useEffect(() => {
-        if (!map || !userLocation) return;
+        if (!mapRef.current || !userLocation) return;
 
-        if (marker) {
-            map.removeLayer(marker);
-        }
+        updateUserMarker(mapRef.current, userLocation);
+        fetchAndDisplayLocations(mapRef.current, userLocation, setLocations, setNearestLocation);
 
-        const newMarker = L.marker([userLocation.lat, userLocation.lon])
-            .addTo(map)
-            .bindPopup("You are here!")
-            .openPopup();
-
-        setMarker(newMarker);
-        fetchLocations(map);
-
-        map.setView([userLocation.lat, userLocation.lon], 17);
-    }, [userLocation, map]);
+    }, [userLocation]);
 
     return (
-        <div
-            id="map"
-            style={{ height: '500px', width: '800px' }}
-        />
+        <div id="map" style={{ height: '500px', width: '800px' }} />
     );
 }
 
+/**
+ * Places a marker at the user's location and centers the map
+ */
+function updateUserMarker(map, location) {
+    if (map._userMarker) {
+        map.removeLayer(map._userMarker);
+    }
 
-async function fetchLocations(map, userLocation) {
+    const marker = L.marker([location.lat, location.lon])
+        .addTo(map)
+        .bindPopup("You are here!")
+        .openPopup();
+
+    map._userMarker = marker;
+    map.setView([location.lat, location.lon], 17);
+}
+
+/**
+ * Fetches nearby locations from the backend,
+ * highlights the nearest, and displays all with markers.
+ */
+async function fetchAndDisplayLocations(map, userLocation, setLocations, setNearestLocation) {
     try {
-        const response = await fetch('http://localhost:9876/api/locations');
-        if (!response.ok) throw new Error('Failed to fetch locations');
-        const allLocations = await response.json();
-        console.log("All locations:", allLocations);
+        const res = await fetch(`http://localhost:9876/api/locations/sorted?lat=${userLocation.lat}&lon=${userLocation.lon}`);
+        if (!res.ok) throw new Error("Failed to fetch locations");
 
+        const allLocations = await res.json();
         setLocations(allLocations);
 
-        if (allLocations.length > 0) {
-            const nearest = allLocations[0]; // First locations is the nearest one.
-            setNearestLocation(nearest);
+        if (!allLocations.length) return;
 
-            const routeCoords = [
-                [userLocation.lat, userLocation.lon],
-                [nearest.lat, nearest.lon]
-            ];
+        const nearest = allLocations[0];
+        setNearestLocation(nearest);
 
-            L.polyline(routeCoords, {color: 'blue', weight: 3}).addTo(map);
-
-            L.marker([nearest.latitude, nearest.longitude])
-                .addTo(map)
-                .bindPopup(`${nearest.name}, ${nearest.address}`)
-                .openPopup();
-        }
-
-        allLocations.forEach((location) => {
-            L.circleMarker([location.latitude, location.longitude], {
-                radius: 8, // base size
-                color: 'blue',
-                fillColor: '#3f51b5',
-                fillOpacity: 0.8,
-            })
-                .addTo(map)
-                .bindPopup(
-                    `<b>${location.name}, ${location.address}</b><br>${location.info}`
-                );
-        });
-    } catch (error) {
-        console.error('Error fetching locations:', error);
+        addLocationMarkers(map, allLocations);
+        await drawRoute(map, userLocation, nearest);
+        showNearestMarker(map, nearest);
+    } catch (err) {
+        console.error("Error fetching locations:", err);
     }
+}
+
+/**
+ * Adds circular markers for all nearby locations
+ */
+function addLocationMarkers(map, locations) {
+    locations.forEach((loc) => {
+        L.circleMarker([loc.latitude, loc.longitude], {
+            radius: 8,
+            color: 'blue',
+            fillColor: '#3f51b5',
+            fillOpacity: 0.8,
+        })
+            .addTo(map)
+            .bindPopup(`<b>${loc.name}, ${loc.address}</b><br>${loc.info}`);
+    });
+}
+
+/**
+ * Draws a route between the user's location and the nearest location
+ */
+async function drawRoute(map, from, to) {
+    try {
+        const start = `${from.lon},${from.lat}`;
+        const end = `${to.longitude},${to.latitude}`;
+        const routeRes = await fetch(`/api/route?start=${start}&end=${end}`);
+        const routeData = await routeRes.json();
+
+        if (routeData.routes?.length) {
+            const geoJSON = routeData.routes[0].geometry;
+            const routeLine = L.geoJSON(geoJSON, {
+                style: { color: 'blue', weight: 4 },
+            }).addTo(map);
+
+            map.fitBounds(routeLine.getBounds());
+        }
+    } catch (err) {
+        console.error("Error drawing route:", err);
+    }
+}
+
+/**
+ * Highlights the nearest location with a popup marker
+ */
+function showNearestMarker(map, location) {
+    L.marker([location.latitude, location.longitude])
+        .addTo(map)
+        .bindPopup(`${location.name}, ${location.address}`)
+        .openPopup();
 }
