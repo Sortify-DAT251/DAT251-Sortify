@@ -34,12 +34,9 @@ body {
   border-radius: 15px;      /* Rounded corners */
   max-height: 350px;
   width: 100%;
-
-/*  margin-top: 20px;*/
-/*  margin-bottom: 40px;*/
-/*  box-sizing: border-box;*/
-/*  overflow: hidden;*/
-/*  box-shadow: 0 0 0 2px #545454;*/
+  box-sizing: border-box;
+  box-shadow: 0 0 0 2px #545454; /* Shadow effect */
+  margin: 0 auto; /* Centers the map within the screen */
 }
 
 
