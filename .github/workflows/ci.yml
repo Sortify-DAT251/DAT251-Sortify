@@ -11,7 +11,7 @@ on:
       - main
 
 jobs:
-  build:
+  backend:
     runs-on: ubuntu-latest
 
     steps:
@@ -81,12 +81,12 @@ jobs:
           node-version: "20.x"
 
       - name: Install dependencies
-        run: npm install
-        working-directory: frontend
+        run: npm install --include=optional
+        working-directory: frontend/sortify
 
       - name: Build with npm
         run: npm run build
-        working-directory: frontend
+        working-directory: frontend/sortify
 
       - name: Upload build artifact
         if: always()

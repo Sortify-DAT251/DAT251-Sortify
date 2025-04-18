@@ -1,7 +1,7 @@
-import styles from "../component/header.module.css";
-import Searcbar from "./searchbar";
-import SignupModal from "@/app/component/signup";
-import DropdownMenu from "@/app/component/dropDownMenu"; // Import the DropdownMenu component
+import styles from "./header.module.css";
+import Searchbar from "../searchbar";
+import SignupModal from "@/app/component/signup/signup";
+import DropdownMenu from "@/app/component/dropDownMeny/dropDownMenu";
 
 export default function Header() {
     return (
@@ -10,18 +10,18 @@ export default function Header() {
                 <nav className={styles.nav}>
                     {/* Logo */}
                     <div className={styles.nav}>
-                        <a href="/" className={styles.logo}>
+                        <a href="/frontend/sortify/public" className={styles.logo}>
                             <img
                                 src="/sortify-logo-header.png"
                                 alt="sortify logo header version"
-                                style={{height: "100px", width: "100px"}}
+                                style={{height: "75px", width: "75px"}}
                                 className={styles.logoImageHeader}
                             />
                         </a>
                     </div >
                     <div className={styles.nav}>
                         <div className={styles.searchbar}>
-                            <Searcbar/>
+                            <Searchbar/>
                         </div>
                     </div>
 
@@ -31,7 +31,6 @@ export default function Header() {
                         <span>
                             <SignupModal/>
                         </span>
-
                             <DropdownMenu/>
                         </div>
                     </div>

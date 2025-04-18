@@ -1,13 +1,11 @@
 "use client";
 import { distance } from "fastest-levenshtein"
-import { useState, useRef , useEffect} from "react"
+import React, { useState, useRef , useEffect} from "react"
 import { InputAdornment, OutlinedInput, Popper, Paper, List, ListItem, ClickAwayListener } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
 import Link from "next/link";
 
-
-
-export default function Searcbar(){
+export default function Searchbar(){
 
     const [wasteItems, setWasteItems] = useState<string[]>([]);
 
@@ -19,13 +17,9 @@ export default function Searcbar(){
             const items = data.map(obj => obj.name)
             console.log("data:",items)
             setWasteItems(items);
-            
         };
         getWasteItems();
     }, []);
-    
-
-
 
     const [query, setQuery] = useState("")
     const itemList = wasteItems;
@@ -51,28 +45,26 @@ export default function Searcbar(){
             const test = itemList[i].toLowerCase();
     
             if (test === input) {
-                score = 0; // Eksakt match (best mulig treff)
+                score = 0; // Exact match
             } else if (test.startsWith(input)) {
-                score = 1; // Prefiks-match
+                score = 1; // Prefix-match
             } else if (test.includes(input)) {
-                score = 2; // Delvis match
+                score = 2; // Partial match
             } else {
                 score = 3 + distance(input, test); // Fuzzy match
             }
-            sortedResults.set(itemList[i], score) 
-            
+            sortedResults.set(itemList[i], score)
         }
         
         return getSmallestKeys(sortedResults)
-    };
+    }
 
     function getSmallestKeys(map: Map<string, number>, count = 5): string[] {
         return [...map.entries()]
           .sort((a, b) => a[1] - b[1] || a[0].length - b[0].length) // Sort by values in ascending order
           .slice(0, count) // Get the first `count` entries
           .map(([key]) => key); // Extract and return sorted keys
-      };
-
+    }
 
     return (
         <div>
