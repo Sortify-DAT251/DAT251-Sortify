@@ -12,7 +12,7 @@ export default function Searchbar(){
     useEffect(() => {
         const getWasteItems = async () =>{
             const response = await fetch("http://localhost:9876/api/waste");
-            
+
             const data: { name: string }[] = await response.json();
             const items = data.map(obj => obj.name)
             console.log("data:",items)
@@ -43,7 +43,7 @@ export default function Searchbar(){
         for (let i = 0; i < itemList.length; i++) {
             if (itemList[i].length < input.length-2) continue;
             const test = itemList[i].toLowerCase();
-    
+
             if (test === input) {
                 score = 0; // Exact match
             } else if (test.startsWith(input)) {
@@ -55,23 +55,23 @@ export default function Searchbar(){
             }
             sortedResults.set(itemList[i], score)
         }
-        
+
         return getSmallestKeys(sortedResults)
     }
 
     function getSmallestKeys(map: Map<string, number>, count = 5): string[] {
         return [...map.entries()]
-          .sort((a, b) => a[1] - b[1] || a[0].length - b[0].length) // Sort by values in ascending order
-          .slice(0, count) // Get the first `count` entries
-          .map(([key]) => key); // Extract and return sorted keys
+            .sort((a, b) => a[1] - b[1] || a[0].length - b[0].length) // Sort by values in ascending order
+            .slice(0, count) // Get the first `count` entries
+            .map(([key]) => key); // Extract and return sorted keys
     }
 
     return (
         <div>
-            <OutlinedInput 
-                type="text" 
-                value={query} 
-                placeholder="Søk..." 
+            <OutlinedInput
+                type="text"
+                value={query}
+                placeholder="Søk..."
                 fullWidth
                 onChange={handleChange}
                 onBlur={() => setTimeout(()=> setOpen(false), 200)}
@@ -93,15 +93,15 @@ export default function Searchbar(){
             />
             <Popper open={open} anchorEl={anchorRef.current} placement="bottom-start" sx={{zIndex: 1000}}>
                 <ClickAwayListener onClickAway={() => setOpen(false)}>
-                <Paper>
-                    <List>
-                        {queryResult.map((item) => (
-                            <ListItem key={item}>
-                                <Link href={`/waste/${item}`}>{item}</Link>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Paper>
+                    <Paper>
+                        <List>
+                            {queryResult.map((item) => (
+                                <ListItem key={item}>
+                                    <Link href={`/waste/${item}`}>{item}</Link>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Paper>
                 </ClickAwayListener>
             </Popper>
         </div>
