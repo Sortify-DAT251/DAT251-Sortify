@@ -165,7 +165,10 @@ function addLocationMarkers(map, locations) {
             fillOpacity: 0.8,
         })
             .addTo(map)
-            .bindPopup(`<b>${loc.name}, ${loc.address}</b><br>${loc.info}`);
+            .bindPopup(`
+  <b>${loc.name}, ${loc.address}</b><br>
+  ${[...new Set(loc.wasteTypes)].join(", ")}
+`);
     });
 }
 

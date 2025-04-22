@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface WasteRepository : JpaRepository<Waste, UUID>
+interface WasteRepository : JpaRepository<Waste, UUID>{
+    fun findAllByTypeIn(types: List<String>): List<Waste>
+}
+
+
