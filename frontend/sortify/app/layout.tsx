@@ -21,22 +21,22 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-    <head>
-      <title></title>
-    </head>
+      <html lang="en">
+      <head>
+        <title></title>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <AppRouterCacheProvider>
-          <Header/>
-          {children}
-          <Footer/>
-        </AppRouterCacheProvider>
+      <AppRouterCacheProvider>
+        <Header/>
+        {children}
+        <Footer/>
+      </AppRouterCacheProvider>
       </body>
-    </html>
+      </html>
   );
 }

@@ -5,9 +5,9 @@ const Map = dynamic(() => import("./component/map"), {ssr: false});
 
 export default function Page(){
     return(
-    <main>
-        <h1>Recycling Map</h1>
-        <Map/>
-    </main>
+        <main>
+            <h1>Recycling Map</h1>
+            <Map/>
+        </main>
     );
 }

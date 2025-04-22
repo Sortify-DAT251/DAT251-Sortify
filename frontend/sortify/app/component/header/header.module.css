@@ -1,98 +1,52 @@
 .headerContainer {
     width: 100%;
-    background-color: #EEEFED;
-    border-bottom: 2px solid #545454; /* Green line at the bottom */
-    box-sizing: border-box; /* Ensures padding and borders don't cause overflow */
+    background-color: #DBBC99;
+    border-bottom: 3px solid #D9996B;
+    box-sizing: border-box;
+    margin: 0 auto;
 }
 
 .header {
+    padding: 10px 32px;
     display: flex;
-    justify-content: space-between;
-    padding: 10px;
+    align-items: center; /* Midtstill vertikalt */
 }
 
 .nav {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
     width: 100%;
+    /*flex: 1;*/
 }
 
-.searchbar {
+.logoWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    padding: 5px;
+}
+
+.logoImageHeader {
+    width: 100px;
+    margin-left: 30px;
+}
+
+.searchWrapper {
+    flex: 1;
     display: flex;
     justify-content: center;
-    flex: 1;
+    align-items: center;
+    min-width: 250px;
 }
 
 .items {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    gap: 16px;
 }
-
-.button {
-    margin: 10px;
-    background-color: #87C75C;
-    color: #0B540D;
-    padding: 12px 24px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: 2px solid #0B540D;
-}
-
-.button:hover {
-    background-color: #6CA047;
-}
-
-.dropdownMenu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: black;
-    border-radius: 8px;
-    min-width: 160px;
-    z-index: 2000;
-    margin-top: 10px;
-}
-
-.dropdownMenu.show {
-    display: block;
-}
-
-.menuItem {
-    padding: 12px 16px;
-    font-size: 16px;
-    color: #0B540D;
-    background-color: #4CAF50;
-    cursor: pointer;
-    display: block;
-    text-decoration: none;
-}
-
-.menuItem:hover {
-    background-color: pink;
-    color: #0B540D;
-    font-weight: bold;
-}
-
-.menuWrapper {
-    position: relative;
-}
-
-.menuWrapper::after {
-    content: "";
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid #4CAF50;
-}
-
