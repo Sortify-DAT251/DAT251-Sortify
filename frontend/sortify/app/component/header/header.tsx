@@ -1,7 +1,7 @@
 import styles from "./header.module.css";
-import Searcbar from "../searchbar";
-import SignupModal from "../signup/signup";
-import DropdownMenu from "../dropDownMeny/dropDownMenu";
+import Searchbar from "../searchbar/searchbar";
+import SignupModal from "@/app/component/signup/signup";
+import DropdownMenu from "@/app/component/dropDownMeny/dropDownMenu";
 
 export default function Header() {
     return (
@@ -19,7 +19,7 @@ export default function Header() {
                         </a>
                     </div>
                     <div className={styles.searchWrapper}>
-                        <Searcbar />
+                        <Searchbar />
                     </div>
 
                     {/* Navigation Links */}

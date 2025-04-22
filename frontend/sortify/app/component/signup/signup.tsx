@@ -1,92 +1,111 @@
-'use client';
-
-import React, { useState } from 'react';
-import styles from './signup.module.css';
+'use client'
+import styles from "./signup.module.css";
+import React, { useState } from "react";
+import { Modal, Box, Typography, Button, Grid, TextField } from "@mui/material";
 
 export default function SignupModal() {
-    const [open, setOpen] = useState(false);
-    const [isSignup, setIsSignup] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const [isSignup, setIsSignup] = useState<boolean>(false);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const handleToggleForm = () => setIsSignup(prev => !prev);
+    const handleToggleForm = () => setIsSignup(!isSignup);
 
     return (
-        <>
-            <button onClick={handleOpen} className={styles.buttonPrimary}>
+        <div>
+            <a
+                className={styles.signupButton}
+                onClick={handleOpen}
+            >
                 Sign Up / In
-            </button>
+            </a>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby='modal-modal-title'
+                aria-describedby='modal-modal-description'
+            >
+                <Box className={styles.modalBox}>
+                    <Typography
+                        id='modal-modal-title'
+                        variant='h6'
+                        component='h2'
+                        sx={{ marginBottom: 2, fontWeight: 600 }}
+                    >
+                        {isSignup ? 'Create an account' : 'Log in to your account'}
+                    </Typography>
 
-            {open && (
-                <div className={styles.modalOverlay}>
-                    <div className={styles.modalContainer}>
-                        <h2 className={styles.modalTitle}>
-                            {isSignup ? 'Create an account' : 'Log in to your account'}
-                        </h2>
-
-                        <form
-                            className={styles.form}
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                // handle submit logic here
-                            }}
-                        >
-                            {isSignup && (
-                                <input
-                                    type="text"
-                                    placeholder="Username"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    className={styles.inputField}
+                    <Grid container spacing={2} justifyContent='center'>
+                        {isSignup ? (
+                            <>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        className={styles.formField}
+                                        label='Username'
+                                        variant='filled'
+                                        fullWidth
+                                        required
+                                        value={username}
+                                        onChange={e => setUsername(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        className={styles.formField}
+                                        label='Email'
+                                        variant='filled'
+                                        fullWidth
+                                        required
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
+                                    />
+                                </Grid>
+                            </>
+                        ) : (
+                            <Grid item xs={6}>
+                                <TextField
+                                    className={styles.formField}
+                                    label='Username/Email'
+                                    variant='filled'
+                                    fullWidth
                                     required
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
                                 />
-                            )}
+                            </Grid>
+                        )}
 
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className={styles.inputField}
+                        <Grid item xs={4}>
+                            <TextField
+                                className={styles.formField}
+                                label='Password'
+                                variant='filled'
+                                fullWidth
                                 required
-                            />
-
-                            <input
-                                type="password"
-                                placeholder="Password"
+                                type='password'
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className={styles.inputField}
-                                required
+                                onChange={e => setPassword(e.target.value)}
                             />
+                        </Grid>
+                    </Grid>
 
-                            <button type="submit" className={styles.buttonPrimary}>
-                                {isSignup ? 'Sign up' : 'Sign in'}
-                            </button>
-                        </form>
+                    <Button className={styles.actionButton}>
+                        {isSignup ? 'Sign up' : 'Sign in'}
+                    </Button>
 
-                        <button
-                            className={styles.buttonSecondary}
-                            onClick={handleToggleForm}
-                        >
-                            {isSignup
-                                ? 'Already have an account?'
-                                : "Don't have an account?"}
-                        </button>
-
-                        <button
-                            className={styles.modalCloseButton}
-                            onClick={handleClose}
-                            aria-label="Close modal"
-                        >
-                            ×
-                        </button>
-                    </div>
-                </div>
-            )}
-        </>
+                    <Button
+                        className={styles.toggleButton}
+                        variant='text'
+                        fullWidth
+                        onClick={handleToggleForm}
+                    >
+                        {isSignup ? 'Already have an account?' : "Don't have an account?"}
+                    </Button>
+                </Box>
+            </Modal>
+        </div>
     );
 }
