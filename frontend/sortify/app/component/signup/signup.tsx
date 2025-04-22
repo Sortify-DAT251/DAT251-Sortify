@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import styles from './signup.module.css'; // your existing styles
+import styles from './signup.module.css';
 
 export default function SignupModal() {
     const [open, setOpen] = useState(false);

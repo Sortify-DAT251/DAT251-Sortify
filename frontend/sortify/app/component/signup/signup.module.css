@@ -1,101 +1,72 @@
-/* Modal Overlay (for background dimming) */
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
+.signupButton {
+    display: inline-block;
+    background-color: #D9996B;
+    color: #3E4739;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 2px solid #3E4739;
 }
 
-/* Modal Container */
-.modalContainer {
-    position: relative;
-    background-color: #87C75C;
-    border: 2px solid #0B540D;
+.signupButton:hover {
+    background-color: #B6CBBC;
+}
+
+.modalBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: #DBBC99;
+    border: 3px solid #D9996B;
     border-radius: 8px;
-    padding: 24px;
-    width: 90%;
-    max-width: 500px;
+    box-shadow: 0 2px 10px;
+    padding: 32px;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    align-items: center;
 }
 
-/* Modal Title */
-.modalTitle {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #0B540D;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-/* Inputs */
-.inputField {
-    background-color: #ffffff;
-    border: 2px solid #0B540D;
+.formField :global(.MuiFilledInput-root) {
+    background-color: #FFFFFF;
+    border: 2px solid #3E4739;
     border-radius: 8px;
-    padding: 12px;
-    font-size: 1rem;
-    margin-bottom: 16px;
-    color: #0B540D;
 }
 
-.inputField:focus {
-    outline: none;
-    border-color: #6CA047;
-    box-shadow: 0 0 0 2px rgba(108, 160, 71, 0.4);
+.formField :global(.MuiFilledInput-root:hover) {
+    background-color: #D5D5D5 !important;
+    transition: all 0.2s ease;
 }
 
-/* Primary Button */
-.buttonPrimary {
-    background-color: #ffffff;
-    color: #0B540D;
-    border: 2px solid #0B540D;
-    padding: 10px;
-    border-radius: 8px;
+.actionButton {
+    background-color: #D9996B !important;
+    color: #3E4739 !important;
+    border: 2px solid #3E4739 !important;
+    margin-top: 16px !important;
     font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
 }
 
-.buttonPrimary:hover {
-    background-color: #6CA047;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.actionButton:hover {
+    background-color: #B6CBBC !important;
+    border-color: #3E4739 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Secondary Button */
-.buttonSecondary {
-    margin-top: 12px;
-    background: none;
-    border: none;
-    color: #0B540D;
-    font-weight: 600;
-    cursor: pointer;
-    text-align: center;
-    font-size: 0.95rem;
+.toggleButton {
+    margin-top: 16px !important;
+    color: #3E4739 !important;
+    font-weight: 600 !important;
 }
 
-/* Close Button (top-right X) */
-.modalCloseButton {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    color: #0B540D;
-    cursor: pointer;
-    padding: 4px;
-    line-height: 1;
-}
-
-.modalCloseButton:hover {
-    color: #6CA047;
+.toggleButton:hover {
+    background: #D7D1C8;
+    cursor: pointer !important;
 }

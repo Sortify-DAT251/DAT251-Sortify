@@ -1,39 +1,30 @@
 .footerContainer {
     width: 100%;
-    background-color: #EEEFED;
-    border-top: 2px solid #545454;
-    box-sizing: border-box;
+    background: #DBBC99;
+    border-top: 3px solid #D9996B;
     text-align: center;
-    overflow: hidden;
+    box-sizing: border-box;
+    margin: 0 auto;
 }
 
 .footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    max-height: 50px;
-}
-
-.footerText {
-    color: #187B1B;
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 70px;
+    flex-wrap: wrap;
+    padding: 5px 20px;
 }
 
 .logoImageFooter {
     width: 200px;
-    margin-left: 70px;
+    margin-left: 30px;
 }
 
-
-/*.footerContainer {*/
-/*    width: 100%;*/
-/*    background-color: #EEEFED;*/
-/*    border-top: 2px solid #545454; !* Black line at the top *!*/
-/*    text-align: center;*/
-/*    box-sizing: border-box; !* Ensure padding and borders don't cause overflow *!*/
-/*    overflow: hidden; !* Prevent corners from overflowing the container *!*/
-/*    !*margin: 0 auto; !* Ensures footer stays within the bounds of the screen *!*!*/
-/*}*/
+.footerText {
+    color: #3E4739;
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: bold;
+    margin-right: 30px;
+    text-align: right;
+    flex: 1;
+}
