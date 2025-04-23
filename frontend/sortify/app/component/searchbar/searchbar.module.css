@@ -17,7 +17,8 @@
 }
 
 .searchbarContainer:hover {
-    background-color: #D5D5D5;
+    background-color: #D7D1C8;
+    font-weight: bold;
 }
 
 .searchbarWrapper {

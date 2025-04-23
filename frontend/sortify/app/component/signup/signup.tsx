@@ -34,6 +34,7 @@ export default function SignupModal() {
                         variant='h6'
                         component='h2'
                         sx={{ marginBottom: 2, fontWeight: 600 }}
+                        className={styles.modalTitle}
                     >
                         {isSignup ? 'Create an account' : 'Log in to your account'}
                     </Typography>

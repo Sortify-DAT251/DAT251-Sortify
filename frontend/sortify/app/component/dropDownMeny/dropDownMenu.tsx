@@ -33,6 +33,11 @@ const DropdownMenu = () => {
                 onClose={handleClose}
                 anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
                 transformOrigin={{ vertical: "top", horizontal: "left" }}
+                PaperProps={{
+                    sx: {
+                        backgroundColor: "#FFFFFF" // sett ønsket farge for dropDownMenu
+                    }
+                }}
             >
                 <MenuItem component="a" href="/en/" className={styles.menuItem} onClick={handleClose}>
                     Home
