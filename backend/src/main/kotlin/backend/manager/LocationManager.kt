@@ -5,45 +5,44 @@ import backend.repository.LocationRepository
 import org.springframework.stereotype.Service
 import java.util.UUID
 import kotlin.NoSuchElementException
+import backend.repository.WasteRepository
 
 @Service
-class LocationManager (private val LocationRepository: LocationRepository) {
+class LocationManager (private val locationRepository: LocationRepository, private val wasteRepository: WasteRepository) {
 
 
-    fun createLocation(name: String, address: String, latitude: Double, longitude: Double, info: String): Location {
-
-        val Location = Location(name = name, address = address, latitude = latitude, longitude = longitude, info = info)
-        return LocationRepository.save(Location)
+    fun createLocation(name: String, address: String, latitude: Double, longitude: Double, wasteTypes: List<String>): Location {
+        val wastes = wasteRepository.findAllByTypeIn(wasteTypes) // or by name/UUID
+        val location = Location(name = name, address = address, latitude = latitude, longitude = longitude, wasteTypes = wastes.toSet())
+        return locationRepository.save(location)
     }
 
     fun getLocationById(id: Long): Location? {
-        return LocationRepository.findById(id).orElse(null)
+        return locationRepository.findById(id).orElse(null)
     }
 
-    fun updateLocation(id: Long, updatedLocation: Location): Location {
-        val existingLocation = LocationRepository.findById(id).orElseThrow { NoSuchElementException("Location not found") }
-
-        val LocationToUpdate = existingLocation.copy(
-                id = existingLocation.id,
-                name = updatedLocation.name,
-                address = updatedLocation.address,
-                latitude = updatedLocation.latitude,
-                longitude = updatedLocation.longitude,
-                info = updatedLocation.info
+    fun updateLocation(id: Long, name: String, address: String, latitude: Double, longitude: Double, wasteTypes: List<String>): Location {
+        val existingLocation = locationRepository.findById(id).orElseThrow { NoSuchElementException("Location not found") }
+        val wastes = wasteRepository.findAllByTypeIn(wasteTypes)
+        val updated = existingLocation.copy(
+                name = name,
+                address = address,
+                latitude = latitude,
+                longitude = longitude,
+                wasteTypes = wastes.toSet()
         )
-
-        return LocationRepository.save(LocationToUpdate)
+        return locationRepository.save(updated)
     }
 
     fun deleteLocation(id: Long) {
-        if (!LocationRepository.existsById(id)) {
+        if (!locationRepository.existsById(id)) {
             throw NoSuchElementException("Location not found")
         }
-        LocationRepository.deleteById(id)
+        locationRepository.deleteById(id)
 
         }
 
     fun getAllLocation(): List<Location> {
-        return LocationRepository.findAll()
+        return locationRepository.findAll()
     }
 }

@@ -23,7 +23,7 @@ class LocationsController(private val LocationManager: LocationManager,
     @PostMapping
     fun createLocations(@RequestBody @Valid request: LocationsRequest): ResponseEntity<Any> {
         return try {
-            val location = LocationManager.createLocation(request.name, request.address, request.latitude, request.longitude, request.info)
+            val location = LocationManager.createLocation(request.name, request.address, request.latitude, request.longitude, request.wasteTypes)
             ResponseEntity.status(HttpStatus.CREATED).body(location)
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("error" to "Location already exists"))
@@ -40,20 +40,15 @@ class LocationsController(private val LocationManager: LocationManager,
     @PutMapping("/{id}")
     fun updateLocations(@PathVariable id: Long, @RequestBody @Valid request: LocationsRequest): ResponseEntity<Location> {
         return try {
-            val updatedLocation = Location(
-                    name = request.name,
-                    address = request.address,
-                    latitude = request.latitude,
-                    longitude = request.longitude,
-                    info = request.info
+            val location = LocationManager.updateLocation(
+                    id,
+                    request.name,
+                    request.address,
+                    request.latitude,
+                    request.longitude,
+                    request.wasteTypes
             )
-            val location = LocationManager.updateLocation(id, updatedLocation)
-
-            if (location != null) {
-                ResponseEntity.ok(location)
-            } else {
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-            }
+            ResponseEntity.ok(location)
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
@@ -103,8 +98,8 @@ data class LocationsRequest(
         @field:Size(min = 1)
         val longitude: Double,
 
-        @field:NotBlank
-        val info: String
+        @field:Size(min = 1)
+        val wasteTypes: List<String>
 
 )
 
@@ -115,18 +110,17 @@ data class LocationDto(
     val address: String,
     val latitude: Double,
     val longitude: Double,
-    val info: String
+    val wasteTypes: List<String>
 ) {
     companion object {
-        // Convert Location entity to LocationDto
         fun fromEntity(location: Location): LocationDto {
             return LocationDto(
-                id = location.id!!,  // Assuming id will not be null
+                id = location.id!!,
                 name = location.name,
                 address = location.address,
                 latitude = location.latitude,
                 longitude = location.longitude,
-                info = location.info
+                    wasteTypes = location.wasteTypes.map { it.type }
             )
         }
     }

@@ -33,7 +33,11 @@ data class Location(
         @field: NotNull
         val longitude: Double,
 
-        @Column(nullable = false)
-        @field: NotBlank
-        val info: String
+        @ManyToMany
+        @JoinTable(
+                name = "location_waste",
+                joinColumns = [JoinColumn(name = "location_id")],
+                inverseJoinColumns = [JoinColumn(name = "waste_id")]
+        )
+        val wasteTypes: Set<Waste> = emptySet()
 )
