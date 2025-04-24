@@ -18,6 +18,13 @@
     background-color: #B6CBBC;
 }
 
+.modalTitle {
+    color: #3E4739;
+    font-weight: 700;
+    text-align: center;
+}
+
+
 .modalBox {
     position: absolute;
     top: 50%;
@@ -67,6 +74,6 @@
 }
 
 .toggleButton:hover {
-    background: #D7D1C8;
+    background: #d2b392;
     cursor: pointer !important;
 }

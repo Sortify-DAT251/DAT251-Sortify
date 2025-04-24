@@ -1,28 +1,73 @@
 "use client";
 import { distance } from "fastest-levenshtein"
-import React, { useState, useRef , useEffect} from "react"
+import { useState, useRef , useEffect} from "react"
 import { InputAdornment, OutlinedInput, Popper, Paper, List, ListItem, ClickAwayListener } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
-import Link from "next/link";
+import styles from "./searchbar.module.css"
 
-export default function Searchbar(){
+
+
+export default function Searcbar(){
 
     const [wasteItems, setWasteItems] = useState<string[]>([]);
 
     useEffect(() => {
         const getWasteItems = async () =>{
-            const response = await fetch("http://localhost:9876/api/waste");
+            //const response = await fetch("http://localhost:9876/api/waste");
 
-            const data: { name: string }[] = await response.json();
-            const items = data.map(obj => obj.name)
-            console.log("data:",items)
-            setWasteItems(items);
+            //const data: { name: string }[] = await response.json();
+            //const items = data.map(obj => obj.name)
+            //console.log("data:",items)
+            // setWasteItems(items);
+
         };
         getWasteItems();
     }, []);
 
+
+
+
     const [query, setQuery] = useState("")
     const itemList = wasteItems;
+//     ["Plastpose", "Plastflaske", "Plastbeger", "Plastbestikk", "Plastemballasje",
+//     "Plastfolie", "Plastkork", "Mykplast", "Hardplast", "Isopor",
+//     "Bobleplast", "Engangsplast", "PP-plast", "PET-flaske", "LDPE-plast", "PVC-rør",
+
+//     "Papirpose", "Pappeske", "Avispapir", "Reklamepapir", "Kartong",
+//     "Melkekartong", "Eggekartong", "Toalettpapirrull", "Tegnepapir",
+//     "Konvolutt", "Bokomslag", "Bølgepapp", "Serviett", "Matpapir",
+
+//     "Glassflaske", "Metallboks", "Hermetikkboks", "Syltetøyglass",
+//     "Vinflaske", "Ølflaske", "Metallfolie", "Aluminiumsboks",
+//     "Aluminiumsfolie", "Stålboks", "Lokk i metall", "Lysestake i glass",
+//     "Speil", "Drikkeboks",
+
+//     "Mobiltelefon", "Datamaskin", "Nettbrett", "Lader", "Batteri",
+//     "Litiumbatteri", "LED-lyspære", "Halogenpære", "Lysrør",
+//     "Kabel", "Høyttaler", "Hodetelefoner", "Fjernkontroll", "Strømledning",
+
+//     "Klær", "Sko", "Gardiner", "Sengetøy", "Håndklær",
+//     "Veske", "Belte", "Ullklær", "Jeans", "Skinnjakke",
+//     "Pledd", "Dyne", "Teppe", "Lær",
+
+//     "Maling", "Sprayboks", "Lakk", "Kjemikalier", "Rengjøringsmiddel",
+//     "Løsemidler", "Neglelakk", "Neglelakkfjerner", "Lim", "Blekkpatron",
+//     "Printerblekk", "Medisiner", "Desinfeksjonsmiddel", "Oljefilter",
+
+//     "Matrester", "Banan", "Epleskrott", "Kjøttrester", "Brødskalk",
+//     "Eggeskall", "Kaffegrut", "Tepose", "Fiskebein", "Grønnsaksskrell",
+//     "Nøtteskall", "Potetskrell", "Skall fra sitrusfrukt",
+
+//     "Gressklipp", "Løv", "Kvister", "Greiner", "Jord",
+//     "Planter", "Blomster", "Ugress", "Busker", "Hageavfall",
+
+//     "Stearinlys", "Tannbørste", "Q-tips", "Bomullspads",
+//     "Engangshanske", "Bleie", "Bind", "Tampong", "Snus", "Sigarettsneip",
+
+//     "Sofa", "Stol", "Bord", "Kommode", "Skap",
+//     "Seng", "Madrass", "Teppe", "Speil", "Sykkel",
+//     "Barnevogn", "TV", "Høyttaler"
+//   ];
     const [queryResult, setQueryResult] = useState<string[]>([])
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
@@ -45,29 +90,31 @@ export default function Searchbar(){
             const test = itemList[i].toLowerCase();
 
             if (test === input) {
-                score = 0; // Exact match
+                score = 0; // Eksakt match (best mulig treff)
             } else if (test.startsWith(input)) {
-                score = 1; // Prefix-match
+                score = 1; // Prefiks-match
             } else if (test.includes(input)) {
-                score = 2; // Partial match
+                score = 2; // Delvis match
             } else {
                 score = 3 + distance(input, test); // Fuzzy match
             }
             sortedResults.set(itemList[i], score)
+
         }
 
         return getSmallestKeys(sortedResults)
-    }
+    };
 
     function getSmallestKeys(map: Map<string, number>, count = 5): string[] {
         return [...map.entries()]
             .sort((a, b) => a[1] - b[1] || a[0].length - b[0].length) // Sort by values in ascending order
             .slice(0, count) // Get the first `count` entries
             .map(([key]) => key); // Extract and return sorted keys
-    }
+    };
+
 
     return (
-        <div>
+        <div className={styles.searchbarWrapper}>
             <OutlinedInput
                 type="text"
                 value={query}
@@ -77,18 +124,9 @@ export default function Searchbar(){
                 onBlur={() => setTimeout(()=> setOpen(false), 200)}
                 inputRef={anchorRef}
                 startAdornment = {<InputAdornment position="start"><SearchIcon/></InputAdornment>}
+                className={styles.searchbarContainer}
                 sx={{
-                    width: 300,
-                    height: 45,
-                    border: "2px solid #0B540D",
-                    borderRadius: 5,
-                    backgroundColor: "#F5F5F5",
-                    "&:hover": {
-                        backgroundColor: "#E0E0E0",
-                    },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                        border: "none",
-                    },
+                    borderRadius: '40px',
                 }}
             />
             <Popper open={open} anchorEl={anchorRef.current} placement="bottom-start" sx={{zIndex: 1000}}>
@@ -97,7 +135,7 @@ export default function Searchbar(){
                         <List>
                             {queryResult.map((item) => (
                                 <ListItem key={item}>
-                                    <Link href={`/waste/${item}`}>{item}</Link>
+                                    {item}
                                 </ListItem>
                             ))}
                         </List>

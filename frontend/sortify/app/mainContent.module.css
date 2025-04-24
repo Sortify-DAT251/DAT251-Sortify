@@ -1,0 +1,15 @@
+.mainContent {
+  width: 100%;
+  max-width: 1200px;
+  padding: 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.title {
+  color: #D7D1C8;
+  font-size: clamp(18px, 3vw, 36px);
+}
