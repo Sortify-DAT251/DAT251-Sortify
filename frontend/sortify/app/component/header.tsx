@@ -2,7 +2,6 @@ import styles from "../component/header.module.css";
 import Searcbar from "./searchbar";
 import SignupModal from "@/app/component/signup";
 import DropdownMenu from "@/app/component/dropDownMenu";
-import ProfileModal from "@/app/component/profile";
 import ProfileForm from "@/app/component/profile";
 
 export default function Header() {

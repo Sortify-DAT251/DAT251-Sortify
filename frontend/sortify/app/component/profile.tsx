@@ -63,7 +63,7 @@ function ProfileField({ label, placeholder = "Change here", value, onChange, typ
 
 export default function ProfileForm() {
     // Dummy userId - bytt ut med reell id når autentisering er implementert
-    const userId = "90a013dc-1376-412a-aa9f-7ab0546650e8"
+    const userId = "ba4dbab1-0417-42ff-8377-9c263685c427"
     const API_BASE_URL = "http://localhost:9876/api"
 
     // Samlet state for profildata (dummy-data)
