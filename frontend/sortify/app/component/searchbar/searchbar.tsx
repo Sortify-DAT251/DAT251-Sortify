@@ -4,21 +4,28 @@ import { useState, useRef , useEffect} from "react"
 import { InputAdornment, OutlinedInput, Popper, Paper, List, ListItem, ClickAwayListener } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
 import styles from "./searchbar.module.css"
+import { UUID } from "crypto";
 
-
+type wasteItem = {
+    id: UUID,
+    info: string,
+    name: string,
+    type: string
+}
 
 export default function Searcbar(){
 
-    const [wasteItems, setWasteItems] = useState<string[]>([]);
+    const [wasteItems, setWasteItems] = useState<wasteItem[]>([]);
 
     useEffect(() => {
         const getWasteItems = async () =>{
-            //const response = await fetch("http://localhost:9876/api/waste");
+            const response = await fetch("http://localhost:9876/api/waste");
 
-            //const data: { name: string }[] = await response.json();
-            //const items = data.map(obj => obj.name)
-            //console.log("data:",items)
-            // setWasteItems(items);
+            const data: wasteItem[] = await response.json();
+            const items = data;
+            setWasteItems(items);
+            console.log("items:",items)
+            console.log(items[0].name, items[0].info, items[0].type)
 
         };
         getWasteItems();
@@ -28,46 +35,7 @@ export default function Searcbar(){
 
 
     const [query, setQuery] = useState("")
-    const itemList = wasteItems;
-//     ["Plastpose", "Plastflaske", "Plastbeger", "Plastbestikk", "Plastemballasje",
-//     "Plastfolie", "Plastkork", "Mykplast", "Hardplast", "Isopor",
-//     "Bobleplast", "Engangsplast", "PP-plast", "PET-flaske", "LDPE-plast", "PVC-rør",
-
-//     "Papirpose", "Pappeske", "Avispapir", "Reklamepapir", "Kartong",
-//     "Melkekartong", "Eggekartong", "Toalettpapirrull", "Tegnepapir",
-//     "Konvolutt", "Bokomslag", "Bølgepapp", "Serviett", "Matpapir",
-
-//     "Glassflaske", "Metallboks", "Hermetikkboks", "Syltetøyglass",
-//     "Vinflaske", "Ølflaske", "Metallfolie", "Aluminiumsboks",
-//     "Aluminiumsfolie", "Stålboks", "Lokk i metall", "Lysestake i glass",
-//     "Speil", "Drikkeboks",
-
-//     "Mobiltelefon", "Datamaskin", "Nettbrett", "Lader", "Batteri",
-//     "Litiumbatteri", "LED-lyspære", "Halogenpære", "Lysrør",
-//     "Kabel", "Høyttaler", "Hodetelefoner", "Fjernkontroll", "Strømledning",
-
-//     "Klær", "Sko", "Gardiner", "Sengetøy", "Håndklær",
-//     "Veske", "Belte", "Ullklær", "Jeans", "Skinnjakke",
-//     "Pledd", "Dyne", "Teppe", "Lær",
-
-//     "Maling", "Sprayboks", "Lakk", "Kjemikalier", "Rengjøringsmiddel",
-//     "Løsemidler", "Neglelakk", "Neglelakkfjerner", "Lim", "Blekkpatron",
-//     "Printerblekk", "Medisiner", "Desinfeksjonsmiddel", "Oljefilter",
-
-//     "Matrester", "Banan", "Epleskrott", "Kjøttrester", "Brødskalk",
-//     "Eggeskall", "Kaffegrut", "Tepose", "Fiskebein", "Grønnsaksskrell",
-//     "Nøtteskall", "Potetskrell", "Skall fra sitrusfrukt",
-
-//     "Gressklipp", "Løv", "Kvister", "Greiner", "Jord",
-//     "Planter", "Blomster", "Ugress", "Busker", "Hageavfall",
-
-//     "Stearinlys", "Tannbørste", "Q-tips", "Bomullspads",
-//     "Engangshanske", "Bleie", "Bind", "Tampong", "Snus", "Sigarettsneip",
-
-//     "Sofa", "Stol", "Bord", "Kommode", "Skap",
-//     "Seng", "Madrass", "Teppe", "Speil", "Sykkel",
-//     "Barnevogn", "TV", "Høyttaler"
-//   ];
+    const itemList = wasteItems.map((item) => item.name);
     const [queryResult, setQueryResult] = useState<string[]>([])
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
