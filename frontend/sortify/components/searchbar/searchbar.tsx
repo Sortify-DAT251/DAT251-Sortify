@@ -5,6 +5,8 @@ import { InputAdornment, OutlinedInput, Popper, Paper, List, ListItem, ClickAway
 import SearchIcon from "@mui/icons-material/Search"
 import styles from "./searchbar.module.css"
 import { UUID } from "crypto";
+import { useSearch } from "@/app/context/searchContext";
+
 
 type wasteItem = {
     id: UUID,
@@ -14,6 +16,8 @@ type wasteItem = {
 }
 
 export default function Searcbar(){
+
+    const { search, setSearch } = useSearch()
 
     const [wasteItems, setWasteItems] = useState<wasteItem[]>([]);
 
@@ -35,8 +39,8 @@ export default function Searcbar(){
 
 
     const [query, setQuery] = useState("")
-    const itemList = wasteItems.map((item) => item.name);
-    const [queryResult, setQueryResult] = useState<string[]>([])
+    //const itemList = wasteItems.map((item) => item.name);
+    const [queryResult, setQueryResult] = useState<wasteItem[]>([])
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
 
@@ -48,14 +52,14 @@ export default function Searcbar(){
         console.log("Query updated:", newQuery);
     };
 
-    function searchResults(query: String): string[]{
+    function searchResults(query: String): wasteItem[]{
         if (query.length === 0) return [];
         const sortedResults = new Map();
         const input = query.toLowerCase();
         let score = 1000;
-        for (let i = 0; i < itemList.length; i++) {
-            if (itemList[i].length < input.length-2) continue;
-            const test = itemList[i].toLowerCase();
+        for (let i = 0; i < wasteItems.length; i++) {
+            if (wasteItems[i].name.length < input.length-2) continue;
+            const test = wasteItems[i].name.toLowerCase();
 
             if (test === input) {
                 score = 0; // Eksakt match (best mulig treff)
@@ -66,20 +70,19 @@ export default function Searcbar(){
             } else {
                 score = 3 + distance(input, test); // Fuzzy match
             }
-            sortedResults.set(itemList[i], score)
+            sortedResults.set(wasteItems[i], score)
 
         }
 
         return getSmallestKeys(sortedResults)
     };
 
-    function getSmallestKeys(map: Map<string, number>, count = 5): string[] {
+    function getSmallestKeys(map: Map<wasteItem, number>, count = 5): wasteItem[] {
         return [...map.entries()]
-            .sort((a, b) => a[1] - b[1] || a[0].length - b[0].length) // Sort by values in ascending order
+            .sort((a, b) => a[1] - b[1] || a[0].name.length - b[0].name.length) // Sort by values in ascending order
             .slice(0, count) // Get the first `count` entries
             .map(([key]) => key); // Extract and return sorted keys
     };
-
 
     return (
         <div className={styles.searchbarWrapper}>
@@ -102,8 +105,8 @@ export default function Searcbar(){
                     <Paper>
                         <List>
                             {queryResult.map((item) => (
-                                <ListItem key={item}>
-                                    {item}
+                                <ListItem key={item.name}>
+                                    <p onClick={() => setSearch(item.type)}>{item.name}</p>
                                 </ListItem>
                             ))}
                         </List>
