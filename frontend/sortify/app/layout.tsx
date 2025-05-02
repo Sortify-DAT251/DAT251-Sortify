@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "./component/header/header"
+import Header from "@/components/header/header"
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import Footer from "./component/footer/footer";
-import MainContent from "../app/mainContent";
+import Footer from "@/components/footer/footer";
+import Page from "./page";
 import styles from "./layout.module.css"
+import { SearchProvider } from "@/app/context/searchContext";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -34,10 +35,10 @@ export default function RootLayout({
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AppRouterCacheProvider>
             <div className={styles.pageWrapper}>
-                <Header/>
-                <main className={styles.mainWrapper}>
-                    <MainContent/>
-                </main>
+                <SearchProvider>
+                    <Header/>
+                    {children}
+                </SearchProvider>
                 <Footer/>
             </div>
         </AppRouterCacheProvider>

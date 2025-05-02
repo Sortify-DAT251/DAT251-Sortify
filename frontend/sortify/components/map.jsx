@@ -16,7 +16,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow.src ?? markerShadow,
 });
 
-export default function Map() {
+export default function Map({filter}) {
     // Store references to map and marker instances
     const mapRef = useRef(null);
     const markerRef = useRef(null);
@@ -28,8 +28,13 @@ export default function Map() {
     const routeLayerRef = useRef(null);
     const [routeVisible, setRouteVisible] = useState(false);
 
+    console.log("filter: " + filter)
+
     // Initialize map only once on component mount
     useEffect(() => {
+
+        console.log("Initializing Map")
+
         if (typeof window === 'undefined') return;
 
         const map = L.map('map').setView([60.39, 5.32], 11);
@@ -45,8 +50,11 @@ export default function Map() {
 
     // Fetch user's geolocation when component mounts
     useEffect(() => {
+
+        console.log("Finding current position");
         navigator.geolocation.getCurrentPosition(
             (position) => {
+                console.log("coords",position.coords)
                 setUserLocation({
                     lat: position.coords.latitude,
                     lon: position.coords.longitude,
@@ -58,10 +66,22 @@ export default function Map() {
 
     // When both map and location are available, update the map view
     useEffect(() => {
-        if (!mapRef.current || !userLocation) return;
+
+        console.log("Trying to display locations")
+
+        if (!mapRef.current || !userLocation) {
+            console.log("Could not find map or userLocation")
+            return;
+        }
         updateUserMarker(mapRef.current, userLocation);
-        fetchAndDisplayLocations(mapRef.current, userLocation, setLocations, setNearestLocation);
-    }, [userLocation]);
+        fetchAndDisplayLocations(
+            mapRef.current,
+            userLocation,
+            setLocations,
+            setNearestLocation,
+            filter
+        );
+    }, [userLocation, filter]);
 
     // Functionality to toggle the route on or off
     const toggleRoute = async () => {
@@ -133,21 +153,31 @@ function updateUserMarker(map, location) {
  * Fetches nearby locations from the backend,
  * highlights the nearest, and displays all with markers.
  */
-async function fetchAndDisplayLocations(map, userLocation, setLocations, setNearestLocation) {
+async function fetchAndDisplayLocations(map, userLocation, setLocations, setNearestLocation, filter) {
+    console.log("Fetching Locations")
     try {
         const res = await fetch(`http://localhost:9876/api/locations/sorted?lat=${userLocation.lat}&lon=${userLocation.lon}`);
         if (!res.ok) throw new Error("Failed to fetch locations");
 
-        const allLocations = await res.json();
+        let allLocations = await res.json();
         setLocations(allLocations);
+
+        // Set filter
+        if(filter) {
+            console.log("Before filter: " + filter, allLocations)
+            allLocations = allLocations.filter(location => location.wasteTypes.includes(filter))
+            console.log("After filter: " + filter, allLocations)
+        }
+        console.log(allLocations)
 
         if (!allLocations.length) return;
 
         const nearest = allLocations[0];
         setNearestLocation(nearest);
 
+
         addLocationMarkers(map, allLocations);
-        showNearestMarker(map, nearest);
+        //showNearestMarker(map, nearest);
     } catch (err) {
         console.error("Error fetching locations:", err);
     }
@@ -156,7 +186,14 @@ async function fetchAndDisplayLocations(map, userLocation, setLocations, setNear
 /**
  * Adds circular markers for all nearby locations
  */
+let currentMarkerGroup = null;
 function addLocationMarkers(map, locations) {
+    if (currentMarkerGroup) {
+        map.removeLayer(currentMarkerGroup)
+    }
+    const markerGroup = L.layerGroup().addTo(map)
+    currentMarkerGroup = markerGroup
+
     locations.forEach((loc) => {
         L.circleMarker([loc.latitude, loc.longitude], {
             radius: 8,
@@ -164,7 +201,7 @@ function addLocationMarkers(map, locations) {
             fillColor: '#3f51b5',
             fillOpacity: 0.8,
         })
-            .addTo(map)
+            .addTo(markerGroup)
             .bindPopup(`
   <b>${loc.name}, ${loc.address}</b><br>
   ${[...new Set(loc.wasteTypes)].join(", ")}
