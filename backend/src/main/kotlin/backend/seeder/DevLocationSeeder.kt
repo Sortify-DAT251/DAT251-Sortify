@@ -29,6 +29,7 @@ class DevLocationSeeder(
 
     override fun run(args: ApplicationArguments?) {
         println(">>> Location Seeder is running")
+        locationRepository.deleteAll();
 
         try {
             val inputStream = javaClass.getResourceAsStream("/dev-data/locations.json")

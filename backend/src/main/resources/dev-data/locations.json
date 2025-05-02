@@ -2,29 +2,127 @@
   {
     "name": "Rema 1000 Kjøkkelvik",
     "address": "Nedbergeveien 7, 5178 Loddefjord",
-    "wasteTypes": ["Papp og papir"],
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær"],
     "latitude": 60.38189752745541,
     "longitude": 5.229424785747146
   },
   {
     "name": "Miljøstasjon",
     "address": "Stongafjellsvegen 40, 5300 Kleppestø",
-    "wasteTypes": ["Plast"],
+    "wasteTypes": ["Plast", "Papp og papir", "Glass og metall"],
     "latitude": 60.40479325217316,
     "longitude": 5.210399197390439
   },
   {
     "name": "BIR gjenvinningsstasjon Møllendalsveien",
     "address": "Møllendalsveien 31, 5009 Bergen",
-    "wasteTypes": ["Papp og papir", "Plast", "Glass og Metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
     "latitude": 60.380319044019664,
     "longitude": 5.344163263190439
   },
   {
     "name": "BIR Åsane",
     "address": "Salhusvegen 49, 5131 Bergen",
-    "wasteTypes": ["Klær"],
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
     "latitude": 60.49010764488316,
     "longitude": 5.317018048776933
+  },
+  {
+    "name": "BIR kontainer",
+    "address": "Allégaten 51, 5007 Bergen",
+    "wasteTypes": ["Papp og papir"],
+    "latitude": 60.384488,
+    "longitude": 5.330380
+  },
+  {
+    "name": "BIR kontainer",
+    "address": "Parkveien 9, 5007 Bergen",
+    "wasteTypes": ["Glass og metall"],
+    "latitude": 60.386300,
+    "longitude": 5.324167
+  },
+  {
+    "name": "BIR bossnett",
+    "address": "Welhavens gate 71, 5006 Bergen",
+    "wasteTypes": ["Restavfall"],
+    "latitude": 60.384262,
+    "longitude": 5.325265
+  },
+  {
+    "name": "BIR bossnett",
+    "address": "Welhavens gate 76, 5006 Bergen",
+    "wasteTypes": ["Restavfall"],
+    "latitude": 60.383880,
+    "longitude": 5.326449
+  },
+  {
+    "name": "BIR bossnett",
+    "address": "Rosenbergsgaten 36, 5007 Bergen",
+    "wasteTypes": ["Restavfall"],
+    "latitude": 60.388977,
+    "longitude": 5.322062
+  },
+  {
+    "name": "BIR/Fretex kontainer",
+    "address": "Rema 1000 Wergeland, 5007 Bergen",
+    "wasteTypes": ["Glass og metall", "Klær"],
+    "latitude": 60.360284,
+    "longitude": 5.351140
+  },
+  {
+    "name": "Franzefoss Gjenvinning",
+    "address": "Mustadbakken 3, 5355 Knarrvik",
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
+    "latitude": 60.37422021480734,
+    "longitude": 5.156572619095874
+  },
+  {
+    "name": "BIR Askøy",
+    "address": "Rindadalsvegen 90, 5310 Hauglandshella",
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
+    "latitude": 60.47614026799932,
+    "longitude": 5.142460581938014
+  },
+  {
+    "name": "BIR miljøpark Espehaugen",
+    "address": "Espehaugen 17, 5258 Blomsterdalen",
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
+    "latitude": 60.28181768890957,
+    "longitude": 5.232656727467011
+  },
+  {
+    "name": "NGIR - Mjåtveit gjenvinningsstasjon",
+    "address": "Mjåtveit næringspark, Rosslandsvegen 392, 5918 Frekhaug",
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
+    "latitude": 60.519328224421585,
+    "longitude": 5.208735104702521
+  },
+  {
+    "name": "ØyVAR AS - Midtstegen Gjenbruksstasjon",
+    "address": "Midtstegen 50, 5382 Skogsvåg",
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
+    "latitude": 60.278416922511354,
+    "longitude": 5.080314472996004
+  },
+  {
+    "name": "BIR Bedrift AS",
+    "address": "Lønningshaugen 6, 5258 Blomsterdalen",
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
+    "latitude": 60.28311948661961,
+    "longitude": 5.234643775039375
+  },
+  {
+    "name": "NGIR - Kjevikdalen gjenvinningsstasjon",
+    "address": "Lindåsvegen 1260, 5956 Hundvin",
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
+    "latitude": 60.660788647790085,
+    "longitude": 5.253573408763222
+  },
+  {
+    "name": "BIR Miljøpark Samnanger",
+    "address": "Raunekleivvegen 88, 5652 Årland",
+    "wasteTypes": ["Papp og papir", "Plast", "Glass og metall", "Klær", "Restavfall", "El-avfall", "Brennbart avfall", "Farlig avfall", "Matavfall", "Hageavfall"],
+    "latitude": 60.41473707503777,
+    "longitude": 5.7035334972462834
   }
 ]
