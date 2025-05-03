@@ -28,6 +28,7 @@ export default function Map({filter}) {
     const routeLayerRef = useRef(null);
     const [routeVisible, setRouteVisible] = useState(false);
 
+    // For testing purposes
     console.log("filter: " + filter)
 
     // Initialize map only once on component mount
@@ -64,7 +65,16 @@ export default function Map({filter}) {
         );
     }, []);
 
-    // When both map and location are available, update the map view
+    // When both map and location are available, mark and zoom onto the users geolocation
+    useEffect( () => {
+        if (!mapRef.current || !userLocation) {
+            console.log("Could not find map or userLocation")
+            return;
+        }
+        createUserMarker(mapRef.current, userLocation);
+    }, []);
+
+    // Update the displayed users location and the displayed locations, if they have changed
     useEffect(() => {
 
         console.log("Trying to display locations")
@@ -135,7 +145,7 @@ export default function Map({filter}) {
 /**
  * Places a marker at the user's location and centers the map
  */
-function updateUserMarker(map, location) {
+function createUserMarker(map, location) {
     if (map._userMarker) {
         map.removeLayer(map._userMarker);
     }
@@ -150,28 +160,44 @@ function updateUserMarker(map, location) {
 }
 
 /**
+ * Updates the userMarkers location
+ */
+function updateUserMarker(map, location) {
+    if (map._userMarker) {
+        map.removeLayer(map._userMarker);
+    }
+
+    const marker = L.marker([location.lat, location.lon])
+        .addTo(map)
+
+    map._userMarker = marker;
+}
+
+/**
  * Fetches nearby locations from the backend,
  * highlights the nearest, and displays all with markers.
  */
 async function fetchAndDisplayLocations(map, userLocation, setLocations, setNearestLocation, filter) {
-    console.log("Fetching Locations")
+    console.log("Fetching Locations: ")
     try {
         const res = await fetch(`http://localhost:9876/api/locations/sorted?lat=${userLocation.lat}&lon=${userLocation.lon}`);
         if (!res.ok) throw new Error("Failed to fetch locations");
 
         let allLocations = await res.json();
         setLocations(allLocations);
+        console.log(allLocations)
 
-        // Set filter
+        // If filter, only keep relevant locations in list
         if(filter) {
             console.log("Before filter: " + filter, allLocations)
             allLocations = allLocations.filter(location => location.wasteTypes.includes(filter))
             console.log("After filter: " + filter, allLocations)
         }
-        console.log(allLocations)
 
+        // If no locations, return
         if (!allLocations.length) return;
 
+        // makes the routing go to the nearest location
         const nearest = allLocations[0];
         setNearestLocation(nearest);
 
