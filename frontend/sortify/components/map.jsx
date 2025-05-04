@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import './map.css';
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -27,6 +28,7 @@ export default function Map({filter}) {
 
     const routeLayerRef = useRef(null);
     const [routeVisible, setRouteVisible] = useState(false);
+    const [routeInfo, setRouteInfo] = useState(null);
 
     // For testing purposes
     console.log("filter: " + filter)
@@ -111,6 +113,18 @@ export default function Map({filter}) {
                 const routeData = await routeRes.json();
 
                 if (routeData.routes?.length) {
+
+                    const distanceMeters = routeData.routes[0].distance;
+                    const durationSeconds = routeData.routes[0].duration;
+
+                    setRouteInfo({
+                        distance: (distanceMeters / 1000).toFixed(2),
+                        duration: (durationSeconds / 60).toFixed(2),
+                    });
+
+                    console.log(`Distance to nearest: ${(distanceMeters / 1000).toFixed(2)} km`);
+                    console.log(`ETA: ${(durationSeconds / 60).toFixed(2)} minutes`);
+
                     const geoJSON = routeData.routes[0].geometry;
                     const routeLine = L.geoJSON(geoJSON, {
                         style: { color: 'blue', weight: 4 },
@@ -119,6 +133,24 @@ export default function Map({filter}) {
                     routeLayerRef.current = routeLine;
                     setRouteVisible(true);
                     map.fitBounds(routeLine.getBounds());
+
+                    // Retrieves distance and estimates time for a trip to the destination (driving).
+                    const midpoint = routeLine.getBounds().getCenter();
+
+                    L.popup({
+                        closeButton: false,
+                        autoClose: false,
+                        className: 'route-popup'
+                    })
+                        .setLatLng(midpoint)
+                        .setContent(`
+                        <div>
+                            <strong>Distance:</strong> ${(distanceMeters / 1000).toFixed(2)} km<br/>
+                            <strong>ETA:</strong> ${(durationSeconds / 60).toFixed(2)} min
+                        </div>
+                    `)
+                        .openOn(map);
+
                 }
             } catch (err) {
                 console.error("Error drawing route:", err);
@@ -129,16 +161,31 @@ export default function Map({filter}) {
     // Map component
     // Button for toggling the route on or off
     return (
-        <>
-            <div id="map" style={{ height: '500px', width: '800px' }} />
-            <button
-                onClick={toggleRoute}
-                disabled={!nearestLocation}
-                style={{ marginTop: '10px' }}
-            >
-                {routeVisible ? "Hide Route" : "Show Route to Nearest Location"}
-            </button>
-        </>
+        <div>
+            <div>
+                <div id="map" className="map"/>
+
+                <div className="map-container">
+                    <button
+                        onClick={toggleRoute}
+                        disabled={!nearestLocation}
+                        style={{marginRight: '10px'}}
+                    >
+                        {routeVisible ? "Hide Route" : "Find Route"}
+                    </button>
+
+                    {/* ➕ Interactive Box */}
+                    {routeInfo && (
+                        <div className="info-box">
+                            <div><strong>Distance:</strong> {routeInfo.distance} km</div>
+                            <div><strong>ETA:</strong> {routeInfo.duration} min</div>
+                            <hr style={{ margin: '8px 0' }} />
+                            <button onClick={() => alert('Extra action!')}>Extra Action</button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 }
 
