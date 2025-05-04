@@ -30,6 +30,34 @@ export default function Map({filter}) {
     const [routeVisible, setRouteVisible] = useState(false);
     const [routeInfo, setRouteInfo] = useState(null);
 
+    const [filters, setFilters] = useState({
+        "Plast": true,
+        "Restavfall": false,
+        "Matavfall": true,
+        "Papp og papir": false,
+        "El-avfall": false,
+        "Klær": false,
+        "Farlig avfall": false,
+        "Glass og metall": false,
+        "Hageavfall": false,
+        "Brennbart avfall": false
+    });
+
+    const toggleFilter = (type) => {
+        setFilters(prev => ({
+            ...prev,
+            [type]: !prev[type]
+        }));
+    };
+
+    const handleCheckboxChange = (key, isChecked) => {
+        // Reset local filters when interacting with checkboxes
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            [key]: isChecked
+        }));
+    };
+
     // For testing purposes
     console.log("filter: " + filter)
 
@@ -91,9 +119,9 @@ export default function Map({filter}) {
             userLocation,
             setLocations,
             setNearestLocation,
-            filter
+            filter, filters, setFilters
         );
-    }, [userLocation, filter]);
+    }, [userLocation, filter, filters]);
 
     // Functionality to toggle the route on or off
     const toggleRoute = async () => {
@@ -146,7 +174,93 @@ export default function Map({filter}) {
     return (
         <div>
             <div className="container">
-                <div id="map" className="map"/>
+                <div className="map-and-filters">
+                    <div id="map" className="map" />
+                    <div className="filter-panel">
+                        <h3>Filters</h3>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters.Plast}
+                                onChange={() => toggleFilter("Plast")}
+                            />
+                            Plast
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters.Restavfall}
+                                onChange={() => toggleFilter("Restavfall")}
+                            />
+                            Restavfall
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters["Matavfall"]}
+                                onChange={() => toggleFilter("Matavfall")}
+                            />
+                            Matavfall
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters["Papp og papir"]}
+                                onChange={() => toggleFilter("Papp og papir")}
+                            />
+                            Papp og papir
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters["El-avfall"]}
+                                onChange={() => toggleFilter("El-avfall")}
+                            />
+                            El-avfall
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters["Klær"]}
+                                onChange={() => toggleFilter("Klær")}
+                            />
+                            Klær
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters["Farlig avfall"]}
+                                onChange={() => toggleFilter("Farlig avfall")}
+                            />
+                            Farlig avfall
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters["Glass og metall"]}
+                                onChange={() => toggleFilter("Glass og metall")}
+                            />
+                            Glass og metall
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters["Hageavfall"]}
+                                onChange={() => toggleFilter("Hageavfall")}
+                            />
+                            Hageavfall
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={filters["Brennbart avfall"]}
+                                onChange={() => toggleFilter("Brennbart avfall")}
+                            />
+                            Brennbart avfall
+                        </label>
+
+                    </div>
+                </div>
 
                 <div className="info-box-container">
                     <button
@@ -157,13 +271,11 @@ export default function Map({filter}) {
                         {routeVisible ? "Hide Route" : "Find Route"}
                     </button>
 
-                    {/* Additional Info */}
                     {routeInfo && (
                         <div className="info-box">
                             <div><strong>Distance:</strong> {routeInfo.distance} km</div>
                             <div><strong>ETA:</strong> {routeInfo.duration} min</div>
                             <hr style={{margin: '8px 0'}}/>
-                            <button onClick={() => alert('Extra action!')}>Extra Action</button>
                         </div>
                     )}
                 </div>
@@ -207,7 +319,7 @@ function updateUserMarker(map, location) {
  * Fetches nearby locations from the backend,
  * highlights the nearest, and displays all with markers.
  */
-async function fetchAndDisplayLocations(map, userLocation, setLocations, setNearestLocation, filter) {
+async function fetchAndDisplayLocations(map, userLocation, setLocations, setNearestLocation, filter, filters, setFilters) {
     console.log("Fetching Locations: ")
     try {
         const res = await fetch(`http://localhost:9876/api/locations/sorted?lat=${userLocation.lat}&lon=${userLocation.lon}`);
@@ -216,21 +328,30 @@ async function fetchAndDisplayLocations(map, userLocation, setLocations, setNear
         let allLocations = await res.json();
         setLocations(allLocations);
         console.log(allLocations)
-
-        // If filter, only keep relevant locations in list
-        if(filter) {
-            console.log("Before filter: " + filter, allLocations)
-            allLocations = allLocations.filter(location => location.wasteTypes.includes(filter))
-            console.log("After filter: " + filter, allLocations)
-        }
-
         // If no locations, return
         if (!allLocations.length) return;
+
+        if (filter) {
+            allLocations = allLocations.filter(location =>
+                location.wasteTypes.includes(filter)
+            );
+            console.log("After filter: ", allLocations);
+        } else {
+            // If no filter, apply the checkbox filters
+            const selectedFilters = Object.entries(filters)
+                .filter(([_, isChecked]) => isChecked)
+                .map(([type]) => type);
+
+            if (selectedFilters.length > 0) {
+                allLocations = allLocations.filter(location =>
+                    location.wasteTypes.some(type => selectedFilters.includes(type))
+                );
+            }
+        }
 
         // makes the routing go to the nearest location
         const nearest = allLocations[0];
         setNearestLocation(nearest);
-
 
         addLocationMarkers(map, allLocations);
         //showNearestMarker(map, nearest);

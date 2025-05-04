@@ -28,3 +28,19 @@
     padding: 0 1rem;
     box-sizing: border-box;
 }
+
+.listItem {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, font-weight 0.2s ease;
+}
+
+.listItem:hover {
+    background-color: #D7D1C8;
+    font-weight: bold;
+}
+
+.listItem:active {
+    background-color: #BEB7AC;
+}
