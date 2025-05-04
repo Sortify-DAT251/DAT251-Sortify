@@ -6,11 +6,13 @@
     align-items: flex-start;
     width: 800px;
     height: 600px;
+    position: relative;
 }
 
 .map {
-    height: 600px;
-    width: 800px;
+    width: 800px;   /* Full width of the container */
+    height: 500px; /* Fixed height for the map */
+    flex-shrink: 0; /* Prevent map from shrinking */
 }
 
 /* Route button with .signupButton styles */
