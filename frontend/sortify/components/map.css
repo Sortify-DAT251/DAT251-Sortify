@@ -1,36 +1,98 @@
 /* map.css */
-.map-container {
-    height: 500px;
-    width: 800px;
+
+.container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    width: 800px;
+    height: 600px;
 }
 
 .map {
+    height: 600px;
+    width: 800px;
 }
 
+/* Route button with .signupButton styles */
 .route-button {
-    margin-top: 10px;
-    margin-right: 10px;
+    display: inline-block;
+    background-color: #D9996B;
+    color: #3E4739;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 2px solid #3E4739;
 }
 
+/* Hover effect for the route button */
+.route-button:hover {
+    background-color: #B6CBBC;
+}
+
+/* Disabled route button style */
+.route-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+    border: 2px solid #ccc;
+}
+
+/* Container for the info box and button */
+.info-box-container {
+    background-color: #DBBC99; /* Warm beige color for the container */
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 220px;  /* Limit the width of the container */
+    width: 100%; /* Makes sure it is responsive */
+    margin: 0 auto;  /* Centers the container horizontally */
+}
+
+/* Styling for the info box */
 .info-box {
-    border: 1px solid #ccc;
+    border: 2px solid #3E4739;  /* Dark green border for contrast */
     border-radius: 8px;
     padding: 10px;
     min-width: 150px;
-    background: #f9f9f9;
+    background: #f9f9f9;  /* Light background */
     font-size: 14px;
+    color: #3E4739;  /* Text color to match the border */
 }
 
+/* Info box text spacing */
 .info-box div {
     margin-bottom: 8px;
 }
 
+/* Button inside the info box */
 .info-box button {
-    margin-top: 10px;
+    background-color: #D9996B;  /* Same background color as route button */
+    color: #3E4739;  /* Text color */
     padding: 6px 12px;
     cursor: pointer;
+    font-size: 14px;
+    border-radius: 30px;
+    border: 2px solid #3E4739;  /* Matching border */
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for info box button */
+.info-box button:hover {
+    background-color: #B6CBBC;  /* Lighter color on hover */
+}
+
+/* Disabled button in info box */
+.info-box button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+    border: 2px solid #ccc;
 }

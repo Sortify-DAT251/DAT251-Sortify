@@ -134,23 +134,6 @@ export default function Map({filter}) {
                     setRouteVisible(true);
                     map.fitBounds(routeLine.getBounds());
 
-                    // Retrieves distance and estimates time for a trip to the destination (driving).
-                    const midpoint = routeLine.getBounds().getCenter();
-
-                    L.popup({
-                        closeButton: false,
-                        autoClose: false,
-                        className: 'route-popup'
-                    })
-                        .setLatLng(midpoint)
-                        .setContent(`
-                        <div>
-                            <strong>Distance:</strong> ${(distanceMeters / 1000).toFixed(2)} km<br/>
-                            <strong>ETA:</strong> ${(durationSeconds / 60).toFixed(2)} min
-                        </div>
-                    `)
-                        .openOn(map);
-
                 }
             } catch (err) {
                 console.error("Error drawing route:", err);
@@ -162,24 +145,24 @@ export default function Map({filter}) {
     // Button for toggling the route on or off
     return (
         <div>
-            <div>
+            <div className="container">
                 <div id="map" className="map"/>
 
-                <div className="map-container">
+                <div className="info-box-container">
                     <button
                         onClick={toggleRoute}
                         disabled={!nearestLocation}
-                        style={{marginRight: '10px'}}
+                        className="route-button"
                     >
                         {routeVisible ? "Hide Route" : "Find Route"}
                     </button>
 
-                    {/* ➕ Interactive Box */}
+                    {/* Additional Info */}
                     {routeInfo && (
                         <div className="info-box">
                             <div><strong>Distance:</strong> {routeInfo.distance} km</div>
                             <div><strong>ETA:</strong> {routeInfo.duration} min</div>
-                            <hr style={{ margin: '8px 0' }} />
+                            <hr style={{margin: '8px 0'}}/>
                             <button onClick={() => alert('Extra action!')}>Extra Action</button>
                         </div>
                     )}
