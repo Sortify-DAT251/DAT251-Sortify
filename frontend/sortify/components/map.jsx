@@ -18,7 +18,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow.src ?? markerShadow,
 });
 
-export default function Map({filter}) {
+export default function Map() {
     // Store references to map and marker instances
     const mapRef = useRef(null);
     const markerRef = useRef(null);
