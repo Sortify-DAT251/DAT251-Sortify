@@ -54,29 +54,16 @@ export default function Map() {
         }));
     };
 
-    const handleCheckboxChange = (key, isChecked) => {
-        // Reset local filters when interacting with checkboxes
-        setFilters(prevFilters => ({
-            ...prevFilters,
-            [key]: isChecked
-        }));
-    };
-
     // Initialize map only once on component mount
     useEffect(() => {
-
         console.log("Initializing Map")
-
         if (typeof window === 'undefined') return;
-
         const map = L.map('map').setView([60.39, 5.32], 11);
         mapRef.current = map;
-
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(map);
-
         return () => map.remove();
     }, []);
 
@@ -87,48 +74,68 @@ export default function Map() {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 console.log("coords",position.coords)
-                setUserLocation({
+                const newLocation = {
                     lat: position.coords.latitude,
                     lon: position.coords.longitude,
-                });
+                };
+                setUserLocation(newLocation);
+                // Create the user marker immediately with the new location
+                createUserMarker(mapRef.current, newLocation);
             },
             (error) => console.error("Error getting location:", error.message)
         );
     }, []);
 
     // When both map and location are available, mark and zoom onto the users geolocation
-    useEffect( () => {
-        if (!mapRef.current || !userLocation) {
-            console.log("Could not find map or userLocation")
-            return;
-        }
-        createUserMarker(mapRef.current, userLocation);
-    }, []);
+    useEffect(() => {
+        if (!mapRef.current || !userLocation) return;
+        updateUserMarker(mapRef.current, userLocation)
+
+        fetch(`http://localhost:9876/api/locations/sorted?lat=${userLocation.lat}&lon=${userLocation.lon}`)
+            .then(res => res.json())
+            .then(data => {
+                setLocations(data);
+            })
+            .catch(err => console.error("Failed to fetch locations:", err));
+    }, [userLocation]);
 
     // Update the displayed users location and the displayed locations, if they have changed
     useEffect(() => {
+        if (!mapRef.current || !userLocation || locations.length === 0) return;
 
-        // Skip this render cycle, used for filtering
-        if (skipNextSearchEffect.current) {
-            skipNextSearchEffect.current = false;
+        let filtered = [...locations]; // Start with all locations
+
+        // Apply search filter if there's a search term
+        if (search) {
+            filtered = filtered.filter(loc => loc.wasteTypes.includes(search));
+            const updatedFilters = Object.fromEntries(
+                Object.keys(filters).map(type => [type, type === search])
+            );
+            setFilters(updatedFilters); // Update the filters state
+            setSearch(""); // Reset search after applying
+        } else {
+            // Apply checkbox filters
+            const selected = Object.entries(filters)
+                .filter(([_, checked]) => checked)
+                .map(([key]) => key);
+            if (selected.length) {
+                filtered = filtered.filter(loc =>
+                    loc.wasteTypes.some(type => selected.includes(type))
+                );
+            }
+        }
+        // Check if there are any filtered locations
+        if (filtered.length === 0) {
+            // Handle case where no locations match the filters (optional)
+            setNearestLocation(null);
+            addLocationMarkers(mapRef.current, []); // Clear any existing markers
             return;
         }
 
-        console.log("Trying to display locations")
-
-        if (!mapRef.current || !userLocation) {
-            console.log("Could not find map or userLocation")
-            return;
-        }
-        updateUserMarker(mapRef.current, userLocation);
-        fetchAndDisplayLocations(
-            mapRef.current,
-            userLocation,
-            setLocations,
-            setNearestLocation,
-            search, setSearch, filters, setFilters, skipNextSearchEffect
-        );
-    }, [userLocation, search, filters]);
+        // Set the nearest location
+        setNearestLocation(filtered[0]);
+        addLocationMarkers(mapRef.current, filtered);
+    }, [search, filters, locations, userLocation]);
 
     // Functionality to toggle the route on or off
     const toggleRoute = async () => {
@@ -323,62 +330,6 @@ function updateUserMarker(map, location) {
 }
 
 /**
- * Fetches nearby locations from the backend,
- * highlights the nearest, and displays all with markers.
- */
-async function fetchAndDisplayLocations(map, userLocation, setLocations, setNearestLocation, filter, setFilter, filters, setFilters, skipNextSearchEffect) {
-    console.log("Fetching Locations: ")
-    try {
-        const res = await fetch(`http://localhost:9876/api/locations/sorted?lat=${userLocation.lat}&lon=${userLocation.lon}`);
-        if (!res.ok) throw new Error("Failed to fetch locations");
-
-        let allLocations = await res.json();
-        setLocations(allLocations);
-        console.log(allLocations)
-        // If no locations, return
-        if (!allLocations.length) return;
-
-        // Check filter
-        console.log("Filter value before: " + filter)
-
-        if (filter && filter !== "") {
-            allLocations = allLocations.filter(location =>
-                location.wasteTypes.includes(filter)
-            );
-            console.log("Locations after searchbar filter: ", allLocations);
-            const updatedFilters = Object.fromEntries(
-                Object.keys(filters).map(type => [type, type === filter])
-            );
-            setFilters(updatedFilters);
-        } else {
-            // If no filter, apply the checkbox filters
-            const selectedFilters = Object.entries(filters)
-                .filter(([_, isChecked]) => isChecked)
-                .map(([type]) => type);
-
-            if (selectedFilters.length > 0) {
-                allLocations = allLocations.filter(location =>
-                    location.wasteTypes.some(type => selectedFilters.includes(type))
-                );
-            }
-        }
-        // Reset filter after use
-        skipNextSearchEffect.current = true;
-        setFilter("");
-        console.log("Filter value after : " + filter)
-
-        // makes the routing go to the nearest location
-        const nearest = allLocations[0];
-        setNearestLocation(nearest);
-
-        addLocationMarkers(map, allLocations);
-        //showNearestMarker(map, nearest);
-    } catch (err) {
-        console.error("Error fetching locations:", err);
-    }
-}
-
-/**
  * Adds circular markers for all nearby locations
  */
 let currentMarkerGroup = null;
@@ -404,12 +355,3 @@ function addLocationMarkers(map, locations) {
     });
 }
 
-/**
- * Highlights the nearest location with a popup marker
- */
-function showNearestMarker(map, location) {
-    L.marker([location.latitude, location.longitude])
-        .addTo(map)
-        .bindPopup(`${location.name}, ${location.address}`)
-        .openPopup();
-}
