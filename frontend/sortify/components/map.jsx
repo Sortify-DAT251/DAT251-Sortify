@@ -105,7 +105,11 @@ export default function Map() {
 
         let filtered = [...locations]; // Start with all locations
 
+        // Debug
+        console.log(locations)
+
         // Apply search filter if there's a search term
+        console.log(search)
         if (search) {
             filtered = filtered.filter(loc => loc.wasteTypes.includes(search));
             const updatedFilters = Object.fromEntries(
@@ -305,12 +309,10 @@ function createUserMarker(map, location) {
     if (map._userMarker) {
         map.removeLayer(map._userMarker);
     }
-
     const marker = L.marker([location.lat, location.lon])
         .addTo(map)
         .bindPopup("You are here!")
         .openPopup();
-
     map._userMarker = marker;
     map.setView([location.lat, location.lon], 17);
 }
@@ -322,10 +324,8 @@ function updateUserMarker(map, location) {
     if (map._userMarker) {
         map.removeLayer(map._userMarker);
     }
-
     const marker = L.marker([location.lat, location.lon])
         .addTo(map)
-
     map._userMarker = marker;
 }
 
@@ -335,23 +335,52 @@ function updateUserMarker(map, location) {
 let currentMarkerGroup = null;
 function addLocationMarkers(map, locations) {
     if (currentMarkerGroup) {
-        map.removeLayer(currentMarkerGroup)
+        map.removeLayer(currentMarkerGroup);
     }
-    const markerGroup = L.layerGroup().addTo(map)
-    currentMarkerGroup = markerGroup
+    const markerGroup = L.layerGroup().addTo(map);
+    currentMarkerGroup = markerGroup;
+
+    // Function to determine color based on waste types
+    function getMarkerColor(wasteTypes) {
+        // Remove duplicates by converting to a Set
+        const uniqueWasteTypes = [...new Set(wasteTypes)];
+
+        if (uniqueWasteTypes.length > 1) {
+            // If the location handles multiple waste types, set it to blue
+            return { color: 'blue', fillColor: 'lightgray' };
+        } else if (uniqueWasteTypes.includes("Plast")) {
+            return { color: 'green', fillColor: 'lightgray' };
+        } else if (uniqueWasteTypes.includes("Glass og metall")) {
+            return { color: 'blue', fillColor: 'lightgray' };
+        } else if (uniqueWasteTypes.includes("El-avfall")) {
+            return { color: 'gray', fillColor: 'lightgray' };
+        } else if (uniqueWasteTypes.includes("Papp og papir")) {
+            return { color: 'brown', fillColor: 'lightgray' };
+        } else if (uniqueWasteTypes.includes("Restavfall")) {
+            return { color: 'red', fillColor: 'lightgray' };
+        } else {
+            return { color: 'purple', fillColor: 'lightgray' }; // Default color
+        }
+    }
 
     locations.forEach((loc) => {
+        // Clean up the wasteTypes by removing duplicates
+        const uniqueWasteTypes = [...new Set(loc.wasteTypes)];
+
+        // Determine marker color based on wasteTypes
+        const { color, fillColor } = getMarkerColor(uniqueWasteTypes);
+
         L.circleMarker([loc.latitude, loc.longitude], {
             radius: 8,
-            color: 'blue',
-            fillColor: '#3f51b5',
+            color: color, // Border color
+            fillColor: fillColor, // Fill color
             fillOpacity: 0.8,
         })
             .addTo(markerGroup)
             .bindPopup(`
-  <b>${loc.name}, ${loc.address}</b><br>
-  ${[...new Set(loc.wasteTypes)].join(", ")}
-`);
+                <b>${loc.name}, ${loc.address}</b><br>
+                ${uniqueWasteTypes.join(", ")}
+            `);
     });
 }
 
