@@ -89,7 +89,7 @@ export default function Searcbar(){
             <OutlinedInput
                 type="text"
                 value={query}
-                placeholder="Søk..."
+                placeholder="Fyll inn søppel her..."
                 fullWidth
                 onChange={handleChange}
                 onBlur={() => setTimeout(()=> setOpen(false), 200)}

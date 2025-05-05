@@ -8,7 +8,7 @@ import { useSearch } from "@/app/context/searchContext";
 export default function Page(){
     return(
         <main className={styles.mainContent}>
-            <h1 className={styles.title}>Recycling map</h1>
+            <h1 className={styles.title}>Gjenvinningskart</h1>
             <Map/>
         </main>
     );

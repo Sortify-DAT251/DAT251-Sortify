@@ -184,7 +184,7 @@ export default function Map() {
                 <div className="map-and-filters">
                     <div id="map" className="map" />
                     <div className="filter-panel">
-                        <h3>Filters</h3>
+                        <h3>Filter</h3>
                         <label>
                             <input
                                 type="checkbox"
@@ -275,13 +275,13 @@ export default function Map() {
                         disabled={!nearestLocation}
                         className="route-button"
                     >
-                        {routeVisible ? "Hide Route" : "Find Route"}
+                        {routeVisible ? "Skjul Rute" : "Finn Rute"}
                     </button>
 
                     {routeInfo && (
                         <div className="info-box">
-                            <div><strong>Distance:</strong> {routeInfo.distance} km</div>
-                            <div><strong>ETA:</strong> {routeInfo.duration} min</div>
+                            <div><strong>Distanse:</strong> {routeInfo.distance} km</div>
+                            <div><strong>Estimert tid:</strong> {routeInfo.duration} min</div>
                             <hr style={{margin: '8px 0'}}/>
                         </div>
                     )}
