@@ -8,6 +8,7 @@ import './map.css';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import {useSearch} from "@/app/context/searchContext";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -29,6 +30,9 @@ export default function Map({filter}) {
     const routeLayerRef = useRef(null);
     const [routeVisible, setRouteVisible] = useState(false);
     const [routeInfo, setRouteInfo] = useState(null);
+
+    const { search, setSearch } = useSearch();
+    const skipNextSearchEffect = useRef(false);
 
     const [filters, setFilters] = useState({
         "Plast": true,
@@ -57,9 +61,6 @@ export default function Map({filter}) {
             [key]: isChecked
         }));
     };
-
-    // For testing purposes
-    console.log("filter: " + filter)
 
     // Initialize map only once on component mount
     useEffect(() => {
@@ -107,6 +108,12 @@ export default function Map({filter}) {
     // Update the displayed users location and the displayed locations, if they have changed
     useEffect(() => {
 
+        // Skip this render cycle, used for filtering
+        if (skipNextSearchEffect.current) {
+            skipNextSearchEffect.current = false;
+            return;
+        }
+
         console.log("Trying to display locations")
 
         if (!mapRef.current || !userLocation) {
@@ -119,9 +126,9 @@ export default function Map({filter}) {
             userLocation,
             setLocations,
             setNearestLocation,
-            filter, filters, setFilters
+            search, setSearch, filters, setFilters, skipNextSearchEffect
         );
-    }, [userLocation, filter, filters]);
+    }, [userLocation, search, filters]);
 
     // Functionality to toggle the route on or off
     const toggleRoute = async () => {
@@ -319,7 +326,7 @@ function updateUserMarker(map, location) {
  * Fetches nearby locations from the backend,
  * highlights the nearest, and displays all with markers.
  */
-async function fetchAndDisplayLocations(map, userLocation, setLocations, setNearestLocation, filter, filters, setFilters) {
+async function fetchAndDisplayLocations(map, userLocation, setLocations, setNearestLocation, filter, setFilter, filters, setFilters, skipNextSearchEffect) {
     console.log("Fetching Locations: ")
     try {
         const res = await fetch(`http://localhost:9876/api/locations/sorted?lat=${userLocation.lat}&lon=${userLocation.lon}`);
@@ -331,11 +338,18 @@ async function fetchAndDisplayLocations(map, userLocation, setLocations, setNear
         // If no locations, return
         if (!allLocations.length) return;
 
-        if (filter) {
+        // Check filter
+        console.log("Filter value before: " + filter)
+
+        if (filter && filter !== "") {
             allLocations = allLocations.filter(location =>
                 location.wasteTypes.includes(filter)
             );
-            console.log("After filter: ", allLocations);
+            console.log("Locations after searchbar filter: ", allLocations);
+            const updatedFilters = Object.fromEntries(
+                Object.keys(filters).map(type => [type, type === filter])
+            );
+            setFilters(updatedFilters);
         } else {
             // If no filter, apply the checkbox filters
             const selectedFilters = Object.entries(filters)
@@ -348,6 +362,10 @@ async function fetchAndDisplayLocations(map, userLocation, setLocations, setNear
                 );
             }
         }
+        // Reset filter after use
+        skipNextSearchEffect.current = true;
+        setFilter("");
+        console.log("Filter value after : " + filter)
 
         // makes the routing go to the nearest location
         const nearest = allLocations[0];
