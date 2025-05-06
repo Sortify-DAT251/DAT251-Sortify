@@ -20,7 +20,7 @@ export default function SignupModal() {
                 className={styles.signupButton}
                 onClick={handleOpen}
             >
-                Sign Up / In
+                Lag konto / Logg inn
             </a>
             <Modal
                 open={open}
@@ -36,7 +36,7 @@ export default function SignupModal() {
                         sx={{ marginBottom: 2, fontWeight: 600 }}
                         className={styles.modalTitle}
                     >
-                        {isSignup ? 'Create an account' : 'Log in to your account'}
+                        {isSignup ? 'Lag en bruker' : 'Logg inn på din bruker'}
                     </Typography>
 
                     <Grid container spacing={2} justifyContent='center'>
@@ -45,7 +45,7 @@ export default function SignupModal() {
                                 <Grid item xs={6}>
                                     <TextField
                                         className={styles.formField}
-                                        label='Username'
+                                        label='Brukernavn'
                                         variant='filled'
                                         fullWidth
                                         required
@@ -56,7 +56,7 @@ export default function SignupModal() {
                                 <Grid item xs={6}>
                                     <TextField
                                         className={styles.formField}
-                                        label='Email'
+                                        label='Epost'
                                         variant='filled'
                                         fullWidth
                                         required
@@ -69,7 +69,7 @@ export default function SignupModal() {
                             <Grid item xs={6}>
                                 <TextField
                                     className={styles.formField}
-                                    label='Username/Email'
+                                    label='Brukernavn/Epost'
                                     variant='filled'
                                     fullWidth
                                     required
@@ -82,7 +82,7 @@ export default function SignupModal() {
                         <Grid item xs={4}>
                             <TextField
                                 className={styles.formField}
-                                label='Password'
+                                label='Passord'
                                 variant='filled'
                                 fullWidth
                                 required
@@ -94,7 +94,7 @@ export default function SignupModal() {
                     </Grid>
 
                     <Button className={styles.actionButton}>
-                        {isSignup ? 'Sign up' : 'Sign in'}
+                        {isSignup ? 'Lag bruker' : 'logg inn'}
                     </Button>
 
                     <Button
@@ -103,7 +103,7 @@ export default function SignupModal() {
                         fullWidth
                         onClick={handleToggleForm}
                     >
-                        {isSignup ? 'Already have an account?' : "Don't have an account?"}
+                        {isSignup ? 'Har du allerede en bruker?' : "Har du ikke en bruker?"}
                     </Button>
                 </Box>
             </Modal>

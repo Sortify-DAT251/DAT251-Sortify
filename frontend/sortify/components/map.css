@@ -1,0 +1,131 @@
+/* map.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 800px;
+    position: relative;
+}
+
+/* Wrap map and filters horizontally */
+.map-and-filters {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.filter-panel {
+    background-color: #DBBC99;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid #3E4739; /* Dark green border for consistency */
+    max-width: 180px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+    color: #3E4739;
+    margin-left: 20px; /* Space between map and panel */
+    height: 100%;
+    margin-top: 12px;
+}
+
+/* Optional: Style for each filter checkbox line */
+.filter-panel label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+/* Adjust map width to allow space for filter panel */
+.map {
+    flex-grow: 1;
+    height: 500px;
+}
+
+/* Route button with .signupButton styles */
+.route-button {
+    display: inline-block;
+    background-color: #D9996B;
+    color: #3E4739;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 2px solid #3E4739;
+}
+
+/* Hover effect for the route button */
+.route-button:hover {
+    background-color: #B6CBBC;
+}
+
+/* Disabled route button style */
+.route-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+    border: 2px solid #ccc;
+}
+
+/* Container for the info box and button */
+.info-box-container {
+    background-color: #DBBC99; /* Warm beige color for the container */
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 220px;  /* Limit the width of the container */
+    width: 100%; /* Makes sure it is responsive */
+    margin: 0 auto;  /* Centers the container horizontally */
+}
+
+/* Styling for the info box */
+.info-box {
+    border: 2px solid #3E4739;  /* Dark green border for contrast */
+    border-radius: 8px;
+    padding: 10px;
+    min-width: 150px;
+    background: #f9f9f9;  /* Light background */
+    font-size: 14px;
+    color: #3E4739;  /* Text color to match the border */
+}
+
+/* Info box text spacing */
+.info-box div {
+    margin-bottom: 8px;
+}
+
+/* Button inside the info box */
+.info-box button {
+    background-color: #D9996B;  /* Same background color as route button */
+    color: #3E4739;  /* Text color */
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 30px;
+    border: 2px solid #3E4739;  /* Matching border */
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for info box button */
+.info-box button:hover {
+    background-color: #B6CBBC;  /* Lighter color on hover */
+}
+
+/* Disabled button in info box */
+.info-box button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+    border: 2px solid #ccc;
+}

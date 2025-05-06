@@ -89,7 +89,7 @@ export default function Searcbar(){
             <OutlinedInput
                 type="text"
                 value={query}
-                placeholder="Søk..."
+                placeholder="Fyll inn søppel her..."
                 fullWidth
                 onChange={handleChange}
                 onBlur={() => setTimeout(()=> setOpen(false), 200)}
@@ -105,8 +105,12 @@ export default function Searcbar(){
                     <Paper>
                         <List>
                             {queryResult.map((item) => (
-                                <ListItem key={item.name}>
-                                    <p onClick={() => setSearch(item.type)}>{item.name}</p>
+                                <ListItem
+                                    key={item.name}
+                                    className={styles.listItem}
+                                    onClick={() => setSearch(item.type)}
+                                >
+                                    <p>{item.name}</p>
                                 </ListItem>
                             ))}
                         </List>

@@ -14,7 +14,7 @@ export default function Footer() {
                     />
                 </a>
                 <p className={styles.footerText}>
-                    &copy; 2025 Sortify. All rights reserved.
+                    &copy; 2025 Sortify.
                 </p>
             </div>
         </div>
